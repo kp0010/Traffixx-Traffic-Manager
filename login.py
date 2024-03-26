@@ -88,6 +88,29 @@ class login:
         self.sign_up_button_label.image = photo
         self.sign_up_button_label.place(x=750,y=614)
 
+        self.show_image = Image.open('images\\show.png')
+        self.photo1 = ImageTk.PhotoImage(self.show_image)
+        self.show_button = Button(self.lgn_frame,image = self.photo1,bg= 'white',activebackground='white',cursor='hand2',bd=0,command=self.show)
+        self.show_button.image = self.photo1
+        self.show_button.place(x=906,y=478)
+
+        self.hide_image = Image.open('images\\hide.png')
+        self.photo = ImageTk.PhotoImage(self.hide_image)
+        
+
+    def show(self):
+        self.hide_button = Button(self.lgn_frame,image = self.photo,bg= 'white',activebackground='white',cursor='hand2',bd=0,command=self.hide)
+        self.hide_button.image = self.photo
+        self.hide_button.place(x=906,y=478)
+        self.password_entry.config(show='')
+    
+    def hide(self):
+        self.show_button = Button(self.lgn_frame,image = self.photo1,bg= 'white',activebackground='white',cursor='hand2',bd=0,command=self.show)
+        self.show_button.image = self.photo1
+        self.show_button.place(x=906,y=478)
+        self.password_entry.config(show = '*')
+
+
 
 def page():
     window = Tk(className='LoginPage')
