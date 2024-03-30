@@ -139,6 +139,7 @@ class login:
         self.show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
                                   cursor="hand2", bd=0, command=self.show)
         self.show_button.image = self.photo1
+        self.hide()
         self.show_button.place(x=906, y=478)
 
         self.hide_image = Image.open("Assets/Images/HideIcon.png")
