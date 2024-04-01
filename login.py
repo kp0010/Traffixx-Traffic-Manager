@@ -115,7 +115,7 @@ class login:
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?", font=("Ariel", 13, "bold underline"),
                                     width=25, bd=0, bg="black", cursor="hand2", activebackground="black",
                                     activeforeground="green", fg="white")
-        self.forgot_button.place(x=640, y=570)
+        self.forgot_button.place(x=625, y=570)
 
 
         # Sign Up
