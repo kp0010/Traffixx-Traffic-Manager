@@ -1,7 +1,6 @@
 import os
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
-import tkvideo.tkvideo as tkv
 
 BGCOLOR = "#2A2A2A"
 
