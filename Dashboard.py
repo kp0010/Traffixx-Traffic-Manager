@@ -1,14 +1,19 @@
+import os
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 import tkvideo.tkvideo as tkv
 
 BGCOLOR = "#2A2A2A"
 
+VIDEO_PATH = "Assets/Videos/"
+VIDEOS = os.listdir(VIDEO_PATH)
+VIDEOS = [VIDEO_PATH + vid for vid in VIDEOS]
+
 
 class Dashboard(tk.Frame):
-    def __init__(self, window):
+    def __init__(self, root):
         super().__init__()
-        self.window = window
+        self.window = root
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
@@ -31,8 +36,8 @@ class Dashboard(tk.Frame):
         col1_x = .21
         col2_x = .60
 
-        row1_y = .26
-        row2_y = .74
+        row1_y = .27
+        row2_y = .73
 
 
         rel_positions = [(col1_x, row1_y), (col1_x, row2_y), (col2_x, row1_y), (col2_x, row2_y)]
@@ -46,9 +51,14 @@ class Dashboard(tk.Frame):
                       relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
 
         player1 = TkinterVideo(master=p1frame, bg=BGCOLOR, height=800, width=390)
-        player1.load(r"Assets/Videos/rush.mp4")
+        player1.load(VIDEOS[0])
         player1.set_size((pl_width, pl_height))
         player1.play()
+
+        def loop1(e):
+            player1.play()
+
+        player1.bind("<<Ended>>", loop1)
         player1.pack(expand=tk.YES, fill=tk.BOTH)
 
         # Player 2
@@ -60,7 +70,7 @@ class Dashboard(tk.Frame):
                       relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
 
         player2 = TkinterVideo(master=p2frame, bg=BGCOLOR, height=800, width=390)
-        player2.load(r"Assets/Videos/rush.mp4")
+        player2.load(VIDEOS[1])
         player2.set_size((pl_width, pl_height))
         player2.play()
         player2.pack(expand=tk.YES, fill=tk.BOTH)
@@ -74,7 +84,7 @@ class Dashboard(tk.Frame):
                       relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
 
         player3 = TkinterVideo(master=p3frame, bg=BGCOLOR, height=800, width=390)
-        player3.load(r"Assets/Videos/rush.mp4")
+        player3.load(VIDEOS[3])
         player3.set_size((pl_width, pl_height))
         player3.play()
         player3.pack(expand=tk.YES, fill=tk.BOTH)
@@ -88,23 +98,32 @@ class Dashboard(tk.Frame):
                       relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
 
         player4 = TkinterVideo(master=p4frame, bg=BGCOLOR, height=800, width=390)
-        player4.load(r"Assets/Videos/rush.mp4")
+        player4.load(VIDEOS[2])
         player4.set_size((pl_width, pl_height))
         player4.play()
         player4.pack(expand=tk.YES, fill=tk.BOTH)
 
-
-        # def p2stop():
-        #     player2.pause()
-        #     def p2play():
-        #         player2.play()
-        #         return
-        #
-        #     window.after(5000, p2play)
-        #
-        # window.after(5000, p2stop)
-
         self.window.update()
+
+        players = [player1, player2, player3, player4]
+
+        # Buttons
+
+        def play_all():
+            for element in players:
+                element.play()
+
+        play_all_btn = tk.Button(text="Play All", command=play_all)
+        play_all_btn.place(x=1222, y=80, relheight=0.05, relwidth=0.19)
+
+        def pause_all():
+            for element in players:
+                element.pause()
+
+        pause_all_btn = tk.Button(text="Pause All", command=pause_all)
+        pause_all_btn.place(x=1222, y=152, relheight=0.05, relwidth=0.19)
+
+        self.window.after(200, pause_all)
 
 
 if __name__ == "__main__":
