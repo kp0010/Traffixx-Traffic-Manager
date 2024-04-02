@@ -30,9 +30,9 @@ class SignUp(tk.Frame):
 
         # Title Text
 
-        self.txt = "SIGN UP FORM"
+        self.txt = "REGISTER"
         self.heading = Label(self.sign_up_frame, text=self.txt, font=("Ariel", 25, "bold"), bg=BGCOLOR, fg="white")
-        self.heading.place(x=70, y=45, width=900, height=30)
+        self.heading.place(relx=.5, rely=.1, width=900, height=30, anchor=tk.CENTER)
 
         # Traffic Police ID
 
@@ -90,12 +90,25 @@ class SignUp(tk.Frame):
 
         # Phone Number
 
+        def validate_phoneno(inp):
+            if len(str(inp)) > 10:
+                return False
+
+            elif inp.isdigit() or inp == "":
+                return True
+
+            return False
+
+        validator = self.window.register(validate_phoneno)
+
+
         self.phone_number_label = Label(self.sign_up_frame, text="Phone Number", bg=BGCOLOR, fg="#4f4e4d",
                                         font=("Ariel", 13, "bold"))
         self.phone_number_label.place(x=200, y=370)
 
         self.phone_number_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
-                                        font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
+                                        font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF",
+                                        validate="key", validatecommand=(validator, "%P"))
         self.phone_number_entry.place(x=235, y=393)
         self.phone_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.phone_number_line.place(x=200, y=420)
