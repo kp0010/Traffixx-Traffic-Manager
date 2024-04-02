@@ -2,11 +2,22 @@ import os
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 
-BGCOLOR = "#" + "15" * 3
+BGCOLOR = "#" + "10" * 3
+
 
 VIDEO_PATH = "Assets/Videos/"
 VIDEOS = os.listdir(VIDEO_PATH)
 VIDEOS = [VIDEO_PATH + vid for vid in VIDEOS]
+
+# Dimensions and Positions for Video Players
+
+REL_SIZE = .35
+
+COL1_x = .21
+COL2_x = .60
+
+ROW1_y = .27
+ROW2_y = .73
 
 
 class Dashboard(tk.Frame):
@@ -30,22 +41,16 @@ class Dashboard(tk.Frame):
         # Video
 
         pl_width, pl_height = 700, 390
-        rel_size = .35
 
-        col1_x = .21
-        col2_x = .60
 
-        row1_y = .27
-        row2_y = .73
-
-        rel_positions = [(col1_x, row1_y), (col2_x, row1_y), (col1_x, row2_y), (col2_x, row2_y)]
+        rel_positions = [(COL1_x, ROW1_y), (COL2_x, ROW1_y), (COL1_x, ROW2_y), (COL2_x, ROW2_y)]
 
         # Player 1
 
         p1pos = rel_positions[0]
 
         p1frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
-        p1frame.place(relx=p1pos[0], rely=p1pos[1], relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
+        p1frame.place(relx=p1pos[0], rely=p1pos[1], relwidth=REL_SIZE, relheight=REL_SIZE, anchor=tk.CENTER)
 
         player1 = TkinterVideo(master=p1frame, bg=BGCOLOR, height=800, width=390)
         player1.load(VIDEOS[0])
@@ -63,7 +68,7 @@ class Dashboard(tk.Frame):
         p2pos = rel_positions[1]
 
         p2frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
-        p2frame.place(relx=p2pos[0], rely=p2pos[1], relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
+        p2frame.place(relx=p2pos[0], rely=p2pos[1], relwidth=REL_SIZE, relheight=REL_SIZE, anchor=tk.CENTER)
 
         player2 = TkinterVideo(master=p2frame, bg=BGCOLOR, height=800, width=390)
         player2.load(VIDEOS[1])
@@ -76,7 +81,7 @@ class Dashboard(tk.Frame):
         p3pos = rel_positions[2]
 
         p3frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
-        p3frame.place(relx=p3pos[0], rely=p3pos[1], relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
+        p3frame.place(relx=p3pos[0], rely=p3pos[1], relwidth=REL_SIZE, relheight=REL_SIZE, anchor=tk.CENTER)
 
         player3 = TkinterVideo(master=p3frame, bg=BGCOLOR, height=800, width=390)
         player3.load(VIDEOS[3])
@@ -89,7 +94,7 @@ class Dashboard(tk.Frame):
         p4pos = rel_positions[3]
 
         p4frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
-        p4frame.place(relx=p4pos[0], rely=p4pos[1], relwidth=rel_size, relheight=rel_size, anchor=tk.CENTER)
+        p4frame.place(relx=p4pos[0], rely=p4pos[1], relwidth=REL_SIZE, relheight=REL_SIZE, anchor=tk.CENTER)
 
         player4 = TkinterVideo(master=p4frame, bg=BGCOLOR, height=800, width=390)
         player4.load(VIDEOS[2])
@@ -145,7 +150,7 @@ class Dashboard(tk.Frame):
 
 
         pause_selective_btn = tk.Button(text="Pause Selected", command=pause_selective)
-        pause_selective_btn.place(relx=0.793, rely=0.25, relwidth=0.19, relheight=0.05)
+        pause_selective_btn.place(relx=0.793, rely=0.305, relwidth=0.19, relheight=0.05)
 
         def play_selective():
             for var, player in zip(pause_vars, players):
@@ -153,7 +158,7 @@ class Dashboard(tk.Frame):
                     player.play()
 
         play_selective_btn = tk.Button(text="Play Selected", command=play_selective)
-        play_selective_btn.place(relx=0.793, rely=0.305, relwidth=0.19, relheight=0.05)
+        play_selective_btn.place(relx=0.793, rely=0.25, relwidth=0.19, relheight=0.05)
 
 
 if __name__ == "__main__":
