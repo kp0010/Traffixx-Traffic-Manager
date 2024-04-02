@@ -9,19 +9,24 @@ class login:
     def __init__(self, window):
         self.window = window
 
-        self.window.config(bg=BGCOLOR)
+        self.window.config(bg="red")
+
+        # Top Level Frame
+
+        self.top_lvl_frame = tk.Frame(self.window)
+        self.top_lvl_frame.pack(fill=tk.BOTH, expand=True)
 
         # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
         photo = ImageTk.PhotoImage(self.bg_frame)
-        self.bg_panel = Label(self.window, image=photo)
+        self.bg_panel = Label(self.top_lvl_frame, image=photo, bg=BGCOLOR)
         self.bg_panel.image = photo
-        self.bg_panel.pack(fill="both", expand=True)
+        self.bg_panel.pack(fill=tk.BOTH, expand=True)
 
         # Frame
 
-        self.lgn_frame = Frame(self.window, bg=BGCOLOR, width=1050, height=700)
+        self.lgn_frame = Frame(self.top_lvl_frame, bg=BGCOLOR, width=1050, height=700)
         self.lgn_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Title Text
@@ -94,8 +99,7 @@ class login:
         self.lgn_button_label.place(x=600, y=510)
 
         def login_to_dash():
-            self.lgn_frame.destroy()
-            self.bg_panel["image"] = ""
+            self.top_lvl_frame.destroy()
             import dashboard
             dashboard.Dashboard(self.window)
 

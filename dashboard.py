@@ -22,10 +22,12 @@ class Dashboard(tk.Frame):
         super().__init__(master=root)
         self.window = root
 
+        self.window["bg"] = BGCOLOR
+
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
         self.config(height=window_height, width=window_width, bg=BGCOLOR)
-        self.pack()
+        self.pack(expand=True, fill=tk.BOTH)
 
         # Video
 
