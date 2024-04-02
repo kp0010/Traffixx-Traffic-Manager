@@ -19,21 +19,13 @@ ROW2_y = .73
 
 class Dashboard(tk.Frame):
     def __init__(self, root):
-        super().__init__()
+        super().__init__(master=root)
         self.window = root
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
         self.config(height=window_height, width=window_width, bg=BGCOLOR)
         self.pack()
-
-        self.window.geometry(f"{window_width}x{window_height}")
-
-        self.window["bg"] = BGCOLOR
-
-        self.window.state("zoomed")
-        self.window.resizable(0, 0)
-        self.window.title("Traffic Light Management")
 
         # Video
 
@@ -56,6 +48,7 @@ class Dashboard(tk.Frame):
         player1 = TkinterVideo(master=p1frame, bg=BGCOLOR, height=800, width=390)
         player1.load(VIDEOS[0])
         player1.set_size((pl_width, pl_height))
+        tk.Misc.lift(player1)
         player1.play()
 
         def loop1(_):
@@ -74,6 +67,7 @@ class Dashboard(tk.Frame):
         player2 = TkinterVideo(master=p2frame, bg=BGCOLOR, height=800, width=390)
         player2.load(VIDEOS[1])
         player2.set_size((pl_width, pl_height))
+        tk.Misc.lift(player2)
         player2.play()
         player2.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -87,6 +81,7 @@ class Dashboard(tk.Frame):
         player3 = TkinterVideo(master=p3frame, bg=BGCOLOR, height=800, width=390)
         player3.load(VIDEOS[3])
         player3.set_size((pl_width, pl_height))
+        tk.Misc.lift(player3)
         player3.play()
         player3.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -100,13 +95,14 @@ class Dashboard(tk.Frame):
         player4 = TkinterVideo(master=p4frame, bg=BGCOLOR, height=800, width=390)
         player4.load(VIDEOS[2])
         player4.set_size((pl_width, pl_height))
+        tk.Misc.lift(player4)
         player4.play()
         player4.pack(expand=tk.YES, fill=tk.BOTH)
 
         self.window.update()
 
         players = [player1, player2, player3, player4]
-
+        print(players)
         # Buttons
 
         def play_all():
@@ -123,7 +119,7 @@ class Dashboard(tk.Frame):
         pause_all_btn = tk.Button(text="Pause All", command=pause_all)
         pause_all_btn.place(relx=0.793, rely=0.15, relheight=0.05, relwidth=0.19)
 
-        self.window.after(110, pause_all)
+        # self.window.after(110, pause_all)
 
         pause_vars = [tk.BooleanVar() for _ in range(4)]
 
@@ -164,5 +160,14 @@ class Dashboard(tk.Frame):
 
 if __name__ == "__main__":
     window = tk.Tk()
+
+    window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
+
+    window["bg"] = BGCOLOR
+
+    window.state("zoomed")
+    window.resizable(width=False, height=False)
+    window.title("Traffic Light Management")
+
     dash = Dashboard(window)
     window.mainloop()

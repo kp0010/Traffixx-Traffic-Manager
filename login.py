@@ -101,14 +101,15 @@ class login:
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
                             fg="white", command=login_to_dash)
 
-        self.login.place(x=20, y=15)
+        self.login.place(x=20, y=15)  # will check info in database
 
         # Forgot Button
 
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?", font=("Ariel", 13, "bold underline"),
                                     width=25, bd=0, bg=BGCOLOR, cursor="hand2", activebackground=BGCOLOR,
                                     activeforeground="lightblue", fg="white")
-        self.forgot_button.place(x=625, y=570)
+        self.forgot_button.place(x=625,
+                                 y=570)  # will allow to change password by verifying name,id,phoneno,email of user
 
         # Sign Up
 
@@ -119,8 +120,8 @@ class login:
         self.sign_up_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_up_button)
         self.sign_up_button_label = tk.Label(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,
-                                           activebackground=BGCOLOR, fg="white",
-                                           cursor="hand2", bd=0)
+                                             activebackground=BGCOLOR, fg="white",
+                                             cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
         self.sign_up_button_label.place(x=750, y=614)
 
