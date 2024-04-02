@@ -111,14 +111,14 @@ class login:
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
                             fg="white",command = login_to_dash )
 
-        self.login.place(x=20, y=15)
+        self.login.place(x=20, y=15)   #  will check info in database
 
         # Forgot Button
 
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?", font=("Ariel", 13, "bold underline"),
                                     width=25, bd=0, bg=BGCOLOR, cursor="hand2", activebackground=BGCOLOR,
                                     activeforeground="lightblue", fg="white")
-        self.forgot_button.place(x=625, y=570)
+        self.forgot_button.place(x=625, y=570)    # will allow to change password by verifying name,id,phoneno,email of user
 
         # Sign Up
 
@@ -135,7 +135,7 @@ class login:
 
         self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
                             bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
-                            fg="white")
+                            fg="white")    # will open signup page. need to write command.
         
         self.sign_up.place(x=15,y=5)
 
