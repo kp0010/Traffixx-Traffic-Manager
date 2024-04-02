@@ -22,8 +22,6 @@ class Dashboard(tk.Frame):
         super().__init__(master=root)
         self.window = root
 
-        self.window["bg"] = BGCOLOR
-
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
         self.config(height=window_height, width=window_width, bg=BGCOLOR)
@@ -120,7 +118,7 @@ class Dashboard(tk.Frame):
         pause_all_btn = tk.Button(text="Pause All", command=pause_all)
         pause_all_btn.place(relx=0.793, rely=0.15, relheight=0.05, relwidth=0.19)
 
-        self.window.after(200, pause_all)
+        play_all()
 
         pause_vars = [tk.BooleanVar() for _ in range(4)]
 
