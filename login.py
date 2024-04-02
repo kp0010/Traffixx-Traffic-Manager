@@ -5,28 +5,24 @@ from PIL import ImageTk, Image
 BGCOLOR = "#" + "03" * 3
 
 
-class login:
+class login(tk.Frame):
     def __init__(self, window):
+        super().__init__(window)
         self.window = window
 
-        self.window.config(bg="red")
-
-        # Top Level Frame
-
-        self.top_lvl_frame = tk.Frame(self.window)
-        self.top_lvl_frame.pack(fill=tk.BOTH, expand=True)
+        self.pack(fill=tk.BOTH, expand=True)
 
         # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
         photo = ImageTk.PhotoImage(self.bg_frame)
-        self.bg_panel = Label(self.top_lvl_frame, image=photo, bg=BGCOLOR)
+        self.bg_panel = Label(self, image=photo, bg=BGCOLOR)
         self.bg_panel.image = photo
         self.bg_panel.pack(fill=tk.BOTH, expand=True)
 
         # Frame
 
-        self.lgn_frame = Frame(self.top_lvl_frame, bg=BGCOLOR, width=1050, height=700)
+        self.lgn_frame = Frame(self, bg=BGCOLOR, width=1050, height=700)
         self.lgn_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Title Text
@@ -98,8 +94,11 @@ class login:
         self.lgn_button_label.image = photo
         self.lgn_button_label.place(x=600, y=510)
 
+        # Fn to go to Dashboard after loggin in
+        # TEMP
+
         def login_to_dash():
-            self.top_lvl_frame.destroy()
+            self.destroy()
             import dashboard
             dashboard.Dashboard(self.window)
 
@@ -119,6 +118,12 @@ class login:
 
         # Sign Up
 
+        def login_to_signup():
+            self.destroy()
+            import signup
+            signup.SignUp(self.window)
+
+
         self.sign_up_label = Label(self.lgn_frame, text="No account yet?", font=("Ariel", 13, "bold",), bg=BGCOLOR,
                                    fg="white")
         self.sign_up_label.place(x=600, y=620)
@@ -133,7 +138,7 @@ class login:
 
         self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
                               bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
-                              fg="white")
+                              fg="white", command=login_to_signup)
 
         self.sign_up.place(x=15, y=5)
 
@@ -152,20 +157,21 @@ class login:
 
     def show(self):
         hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white",
-                                  cursor="hand2", bd=0, command=self.hide)
+                             cursor="hand2", bd=0, command=self.hide)
         hide_button.image = self.photo
         hide_button.place(x=906, y=478)
         self.password_entry.config(show='')
 
     def hide(self):
         show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
-                                  cursor="hand2", bd=0, command=self.show)
+                             cursor="hand2", bd=0, command=self.show)
         show_button.image = self.photo1
         show_button.place(x=906, y=478)
         self.password_entry.config(show="*")
 
 
-def page():
+
+if __name__ == "__main__":
     window = Tk()
 
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
@@ -179,6 +185,3 @@ def page():
     login(window)
     window.mainloop()
 
-
-if __name__ == "__main__":
-    page()
