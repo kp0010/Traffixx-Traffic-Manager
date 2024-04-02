@@ -2,15 +2,14 @@ import os
 
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, select
 
-SQLURI = os.environ.get('engine_URL', "sqlite:///users")
-engine = sqlalchemy.create_engine(SQLURI, echo=True)
+SQLURI = "sqlite:///users"
 
-base = declarative_base()
+Base = declarative_base()
 
 
-class User(base):
+class User(Base):
     __tablename__ = "users"
 
     id = Column(String(16), primary_key=True)
@@ -19,13 +18,28 @@ class User(base):
     phone = Column(String(10), unique=True, nullable=False)
     email = Column(String(250), unique=True, nullable=True)
 
+    def __repr__(self):
 
-base.metadata.create_all(bind=engine)
+class Database:
+    def __init__(self, echo=False):
+        self.engine = sqlalchemy.create_engine(SQLURI, echo=echo)
+        self.Base = Base
+
+    def create_tables(self):
+        self.Base.metadata.create_all(self.engine)
+
 
 if __name__ == '__main__':
-    with Session(engine) as session:
-        kp = User(id="KP0010", name="Kartik Parab", password="kartikcrs", phone="987654321",
-                  email="kartikcr750@gmail.com")
+    db = Database(echo=False)
 
-        session.add(kp)
+    with Session(db.engine) as session:
+        # kp = User(id="KP0012", name="Kartik Parab", password="kartikcrs", phone="987654322",
+        #           email="kartikcr709@gmail.com")
+        #
+        # session.add(kp)
+
+        user = session.execute(select(User).filter_by(id="KP0010")).one_or_none()
+
+        print(user)
+
         session.commit()
