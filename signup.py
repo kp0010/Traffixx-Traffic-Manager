@@ -112,7 +112,7 @@ class SignUp(tk.Frame):
         self.phone_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.phone_number_line.place(x=200, y=420)
 
-        self.phone_icon = Image.open("Assets/Icons/phone_icon.png")
+        self.phone_icon = Image.open("Assets/Icons/phone_icon1.png")
         photo = ImageTk.PhotoImage(self.phone_icon)
         self.phone_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.phone_icon_label.image = photo
@@ -130,7 +130,7 @@ class SignUp(tk.Frame):
         self.email_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.email_line.place(x=200, y=500)
 
-        self.mail_icon = Image.open("Assets/Icons/mail_icon.png")
+        self.mail_icon = Image.open("Assets/Icons/mail_icon1.png")
         photo = ImageTk.PhotoImage(self.mail_icon)
         self.mail_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.mail_icon_label.image = photo
@@ -163,6 +163,10 @@ class SignUp(tk.Frame):
                              bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
                              fg="white", command=submit_register)
 
+        def signup_to_login():
+            self.destroy()
+            login.Login(self.window)
+
         self.submit.place(x=18, y=10)
 
         # Signin
@@ -180,15 +184,19 @@ class SignUp(tk.Frame):
         self.log_in_button_label.image = photo
         self.log_in_button_label.place(x=410, y=595)
 
-        def signup_to_login():
-            self.destroy()
-            login.Login(self.window)
-
         self.log_in = Button(self.log_in_button_label, text="LOG IN", font=("Ariel", 10, "bold"), width=10, bd=0,
                              bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
                              fg="white", command=signup_to_login)
 
         self.log_in.place(x=15, y=5)
+
+        # side image
+
+        self.side_image = Image.open("Assets/Images/main.png")
+        photo = ImageTk.PhotoImage(self.side_image)
+        self.side_image_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
+        self.side_image_label.image = photo
+        self.side_image_label.place(x=600, y=120)
 
 
 if __name__ == "__main__":
