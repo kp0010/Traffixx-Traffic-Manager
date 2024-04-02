@@ -44,9 +44,16 @@ class SignUp:
 
         self.id_number_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.id_number_entry.place(x=200, y=153)
+        self.id_number_entry.place(x=235, y=153)
         self.id_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.id_number_line.place(x=200, y=180)
+
+        self.id_icon = Image.open("Assets/Images/id_icon.png")
+        photo = ImageTk.PhotoImage(self.id_icon)
+        self.id_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
+        self.id_icon_label.image = photo
+        self.id_icon_label.place(x=200, y=157)
+
 
 
         #Username/Full Name
@@ -57,7 +64,7 @@ class SignUp:
 
         self.username_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.username_entry.place(x=200, y=233)
+        self.username_entry.place(x=235, y=233)
         self.username_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.username_line.place(x=200, y=260)
 
@@ -76,7 +83,7 @@ class SignUp:
 
         self.password_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.password_entry.place(x=200, y=313)
+        self.password_entry.place(x=235, y=313)
         self.password_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.password_line.place(x=200, y=340)
 
@@ -95,9 +102,15 @@ class SignUp:
 
         self.phone_number_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.phone_number_entry.place(x=200, y=393)
+        self.phone_number_entry.place(x=235, y=393)
         self.phone_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.phone_number_line.place(x=200, y=420)
+
+        self.phone_icon = Image.open("Assets/Images/phone_icon.png")
+        photo = ImageTk.PhotoImage(self.phone_icon)
+        self.phone_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
+        self.phone_icon_label.image = photo
+        self.phone_icon_label.place(x=200, y=392)
 
 
         #Email id
@@ -108,9 +121,16 @@ class SignUp:
 
         self.email_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.email_entry.place(x=200, y=473)
+        self.email_entry.place(x=235, y=473)
         self.email_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.email_line.place(x=200, y=500)
+
+        self.mail_icon = Image.open("Assets/Images/mail_icon.png")
+        photo = ImageTk.PhotoImage(self.mail_icon)
+        self.mail_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
+        self.mail_icon_label.image = photo
+        self.mail_icon_label.place(x=200, y=472)
+
 
 
         #Submit Button
@@ -136,7 +156,7 @@ class SignUp:
         
         self.sign_in_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_in_button)
-        self.sign_in_button_label = Button(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0,activebackground=BGCOLOR,
+        self.sign_in_button_label = tk.Label(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0,activebackground=BGCOLOR,
                                            cursor="hand2", bd=0)
         self.sign_in_button_label.image= photo
         self.sign_in_button_label.place(x=410, y=595)
