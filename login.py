@@ -87,7 +87,7 @@ class login:
         self.password_line.place(x=600, y=500)
 
         self.password_icon = Image.open("Assets/Images/PasswordIcon.png")
-        photo = ImageTk.PhotoImage(self.username_icon)
+        photo = ImageTk.PhotoImage(self.password_icon)
         self.password_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.password_icon_label.image = photo
         self.password_icon_label.place(x=600, y=472)
@@ -109,7 +109,7 @@ class login:
 
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=25, bd=0,
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
-                            fg="white", command=login_to_dash)
+                            fg="white",command = login_to_dash )
 
         self.login.place(x=20, y=15)
 
@@ -126,12 +126,18 @@ class login:
                                    fg="white")
         self.sign_up_label.place(x=600, y=620)
 
-        self.sign_up_button = Image.open("Assets/Images/SignUpNow.png")
+        self.sign_up_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_up_button)
-        self.sign_up_button_label = Button(self.lgn_frame, image=photo, bg=BGCOLOR, activebackground=BGCOLOR,
+        self.sign_up_button_label = Button(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,activebackground=BGCOLOR,
                                            cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
         self.sign_up_button_label.place(x=750, y=614)
+
+        self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
+                            bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
+                            fg="white")
+        
+        self.sign_up.place(x=15,y=5)
 
         # Show Hide Password
 
@@ -162,7 +168,7 @@ class login:
 
 
 def page():
-    window = Tk(className="LoginPage")
+    window = Tk()
     login(window)
     window.mainloop()
 
