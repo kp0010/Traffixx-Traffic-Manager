@@ -101,7 +101,6 @@ class SignUp(tk.Frame):
 
         validator = self.window.register(validate_phoneno)
 
-
         self.phone_number_label = Label(self.sign_up_frame, text="Phone Number", bg=BGCOLOR, fg="#4f4e4d",
                                         font=("Ariel", 13, "bold"))
         self.phone_number_label.place(x=200, y=370)
