@@ -54,7 +54,7 @@ class SignUp(tk.Frame):
 
         # Username/Full Name
 
-        self.username_label = Label(self.sign_up_frame, text="Username/Full Name", bg=BGCOLOR, fg="#4f4e4d",
+        self.username_label = Label(self.sign_up_frame, text="Full Name", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
         self.username_label.place(x=200, y=210)
 
