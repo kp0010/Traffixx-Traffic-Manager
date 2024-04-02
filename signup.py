@@ -48,7 +48,7 @@ class SignUp:
         self.id_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.id_number_line.place(x=200, y=180)
 
-        self.id_icon = Image.open("Assets/Images/id_icon.png")
+        self.id_icon = Image.open("Assets/Images/icons/id_icon.png")
         photo = ImageTk.PhotoImage(self.id_icon)
         self.id_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.id_icon_label.image = photo
@@ -68,7 +68,7 @@ class SignUp:
         self.username_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.username_line.place(x=200, y=260)
 
-        self.username_icon = Image.open("Assets/Images/UsernameIcon.png")
+        self.username_icon = Image.open("Assets/Images/icons/UsernameIcon.png")
         photo = ImageTk.PhotoImage(self.username_icon)
         self.username_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.username_icon_label.image = photo
@@ -87,7 +87,7 @@ class SignUp:
         self.password_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.password_line.place(x=200, y=340)
 
-        self.password_icon = Image.open("Assets/Images/PasswordIcon.png")
+        self.password_icon = Image.open("Assets/Images/icons/PasswordIcon.png")
         photo = ImageTk.PhotoImage(self.password_icon)
         self.password_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.password_icon_label.image = photo
@@ -106,7 +106,7 @@ class SignUp:
         self.phone_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.phone_number_line.place(x=200, y=420)
 
-        self.phone_icon = Image.open("Assets/Images/phone_icon.png")
+        self.phone_icon = Image.open("Assets/Images/icons/phone_icon.png")
         photo = ImageTk.PhotoImage(self.phone_icon)
         self.phone_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.phone_icon_label.image = photo
@@ -125,7 +125,7 @@ class SignUp:
         self.email_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.email_line.place(x=200, y=500)
 
-        self.mail_icon = Image.open("Assets/Images/mail_icon.png")
+        self.mail_icon = Image.open("Assets/Images/icons/mail_icon.png")
         photo = ImageTk.PhotoImage(self.mail_icon)
         self.mail_icon_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.mail_icon_label.image = photo

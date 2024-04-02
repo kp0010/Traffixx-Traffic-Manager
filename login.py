@@ -62,7 +62,7 @@ class login(tk.Frame):
         self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.username_line.place(x=600, y=420)
 
-        self.username_icon = Image.open("Assets/Images/UsernameIcon.png")
+        self.username_icon = Image.open("Assets/Images/icons/UsernameIcon.png")
         photo = ImageTk.PhotoImage(self.username_icon)
         self.username_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.username_icon_label.image = photo
@@ -80,7 +80,7 @@ class login(tk.Frame):
         self.password_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.password_line.place(x=600, y=500)
 
-        self.password_icon = Image.open("Assets/Images/PasswordIcon.png")
+        self.password_icon = Image.open("Assets/Images/icons/PasswordIcon.png")
         photo = ImageTk.PhotoImage(self.password_icon)
         self.password_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.password_icon_label.image = photo
@@ -144,7 +144,7 @@ class login(tk.Frame):
 
         # Show Hide Password
 
-        self.show_image = Image.open("Assets/Images/ShowIcon.png")
+        self.show_image = Image.open("Assets/Images/icons/ShowIcon.png")
         self.photo1 = ImageTk.PhotoImage(self.show_image)
         self.show_button = Button(self.lgn_frame, image=self.photo1, bg=BGCOLOR, activebackground="white",
                                   cursor="hand2", bd=0, command=self.show)
@@ -152,7 +152,7 @@ class login(tk.Frame):
         self.hide()
         self.show_button.place(x=906, y=478)
 
-        self.hide_image = Image.open("Assets/Images/HideIcon.png")
+        self.hide_image = Image.open("Assets/Images/icons/HideIcon.png")
         self.photo = ImageTk.PhotoImage(self.hide_image)
 
     def show(self):
