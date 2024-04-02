@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 
-BGCOLOR = "#2A2A2A"
+BGCOLOR = "#" + "15" * 3
 
 VIDEO_PATH = "Assets/Videos/"
 VIDEOS = os.listdir(VIDEO_PATH)
