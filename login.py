@@ -9,6 +9,8 @@ class login:
     def __init__(self, window):
         self.window = window
 
+        self.window.config(bg=BGCOLOR)
+
         # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
@@ -93,7 +95,7 @@ class login:
 
         def login_to_dash():
             self.lgn_frame.destroy()
-            self.bg_frame["image"] = None
+            self.bg_panel["image"] = ""
             import dashboard
             dashboard.Dashboard(self.window)
 
@@ -145,17 +147,17 @@ class login:
         self.photo = ImageTk.PhotoImage(self.hide_image)
 
     def show(self):
-        self.hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white",
+        hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white",
                                   cursor="hand2", bd=0, command=self.hide)
-        self.hide_button.image = self.photo
-        self.hide_button.place(x=906, y=478)
+        hide_button.image = self.photo
+        hide_button.place(x=906, y=478)
         self.password_entry.config(show='')
 
     def hide(self):
-        self.show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
+        show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
                                   cursor="hand2", bd=0, command=self.show)
-        self.show_button.image = self.photo1
-        self.show_button.place(x=906, y=478)
+        show_button.image = self.photo1
+        show_button.place(x=906, y=478)
         self.password_entry.config(show="*")
 
 
@@ -163,6 +165,8 @@ def page():
     window = Tk()
 
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
+
+    window["bg"] = BGCOLOR
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
