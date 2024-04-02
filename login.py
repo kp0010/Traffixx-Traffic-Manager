@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import *
 from PIL import ImageTk, Image
 
+import database
+
 BGCOLOR = "#" + "03" * 3
 
 
@@ -102,9 +104,26 @@ class Login(tk.Frame):
             import dashboard
             dashboard.Dashboard(self.window)
 
+        def check_user_cred():
+            userid = self.username_entry.get()
+            password = self.password_entry.get()
+
+            print(userid, password)
+
+            db = database.Database(echo=False)
+
+            req_user = db.check_user_cred(userid=userid, password=password)
+
+            if req_user is None:
+                print("User Not Present")
+            elif not req_user:
+                print("Password Invalid")
+            else:
+                print("Logged In Successfully")
+
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=25, bd=0,
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
-                            fg="white", command=login_to_dash)
+                            fg="white", command=check_user_cred)
 
         self.login.place(x=20, y=15)  # will check info in database
 

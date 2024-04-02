@@ -144,11 +144,26 @@ class SignUp(tk.Frame):
         self.submit_button_label.image = photo
         self.submit_button_label.place(x=220, y=530)
 
+        def submit_register():
+            userid = self.id_number_entry.get()
+            username = self.username_entry.get()
+            password = self.password_entry.get()
+            email = self.email_entry.get()
+            phone = self.phone_number_entry.get()
+
+            print(userid, username, password, email, phone)
+
+            import database
+
+            db = database.Database()
+
+            db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
+
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
-                             fg="white")
+                             fg="white", command=submit_register)
 
-        self.submit.place(x=18, y=10)  # info will be inserted in database
+        self.submit.place(x=18, y=10)
 
         # Signin
 

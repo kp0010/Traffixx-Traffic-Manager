@@ -2,3 +2,4 @@ av==11.0.0
 pillow==10.3.0
 tkvideoplayer==2.3
 SQLAlchemy~=2.0.29
+Werkzeug>=3.0.2
