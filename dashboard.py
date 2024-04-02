@@ -4,10 +4,7 @@ from tkVideoPlayer import TkinterVideo
 
 BGCOLOR = "#" + "10" * 3
 
-
 VIDEO_PATH = "Assets/Videos/"
-VIDEOS = os.listdir(VIDEO_PATH)
-VIDEOS = [VIDEO_PATH + vid for vid in VIDEOS]
 
 # Dimensions and Positions for Video Players
 
@@ -39,6 +36,10 @@ class Dashboard(tk.Frame):
         self.window.title("Traffic Light Management")
 
         # Video
+
+        VIDEOS = os.listdir(VIDEO_PATH)
+        VIDEOS = [VIDEO_PATH + vid for vid in VIDEOS]
+
 
         pl_width, pl_height = 700, 390
 

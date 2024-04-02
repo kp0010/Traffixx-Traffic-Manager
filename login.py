@@ -100,9 +100,16 @@ class login:
         self.lgn_button_label.image = photo
         self.lgn_button_label.place(x=600, y=510)
 
+
+        def login_to_dash():
+            self.lgn_frame.destroy()
+            import dashboard
+            dashboard.Dashboard(self.window)
+
+
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=25, bd=0,
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
-                            fg="white")
+                            fg="white", command=login_to_dash)
 
         self.login.place(x=20, y=15)
 
