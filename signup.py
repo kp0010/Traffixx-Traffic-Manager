@@ -54,7 +54,7 @@ class SignUp(tk.Frame):
 
         # Username/Full Name
 
-        self.username_label = Label(self.sign_up_frame, text="Username/Full Name", bg=BGCOLOR, fg="#4f4e4d",
+        self.username_label = Label(self.sign_up_frame, text="Full Name", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
         self.username_label.place(x=200, y=210)
 
@@ -156,25 +156,25 @@ class SignUp(tk.Frame):
 
         # Signin
 
-        self.sign_in_label = Label(self.sign_up_frame, text="Already have an account?", font=("Ariel", 13, "bold",),
-                                   bg=BGCOLOR,
-                                   fg="white")
-        self.sign_in_label.place(x=200, y=600)
+        self.log_in_label = Label(self.sign_up_frame, text="Already have an account?", font=("Ariel", 13, "bold",),
+                                  bg=BGCOLOR,
+                                  fg="white")
+        self.log_in_label.place(x=200, y=600)
 
-        self.sign_in_button = Image.open("Assets/Images/SignUp2.png")
-        photo = ImageTk.PhotoImage(self.sign_in_button)
-        self.sign_in_button_label = tk.Label(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0,
-                                             activebackground=BGCOLOR,
-                                             cursor="hand2", bd=0)
-        self.sign_in_button_label.image = photo
-        self.sign_in_button_label.place(x=410, y=595)
+        self.log_in_button = Image.open("Assets/Images/SignUp2.png")
+        photo = ImageTk.PhotoImage(self.log_in_button)
+        self.log_in_button_label = tk.Label(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0,
+                                            activebackground=BGCOLOR,
+                                            cursor="hand2", bd=0)
+        self.log_in_button_label.image = photo
+        self.log_in_button_label.place(x=410, y=595)
 
 
-        self.sign_in = Button(self.sign_in_button_label, text="LOG IN", font=("Ariel", 10, "bold"), width=10, bd=0,
-                              bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
-                              fg="white", command=signup_to_login)
+        self.log_in = Button(self.log_in_button_label, text="LOG IN", font=("Ariel", 10, "bold"), width=10, bd=0,
+                             bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
+                             fg="white", command=signup_to_login)
 
-        self.sign_in.place(x=15, y=5)
+        self.log_in.place(x=15, y=5)
 
 
         # side image
