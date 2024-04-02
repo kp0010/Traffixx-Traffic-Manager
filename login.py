@@ -9,15 +9,6 @@ class login:
     def __init__(self, window):
         self.window = window
 
-        window_height = self.window.winfo_screenheight()
-        window_width = self.window.winfo_screenwidth()
-
-        self.window.geometry(f"{window_width}x{window_height}")
-
-        self.window.state("zoomed")
-        self.window.resizable(0, 0)
-        self.window.title("Traffic Light Management")
-
         # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
@@ -100,16 +91,15 @@ class login:
         self.lgn_button_label.image = photo
         self.lgn_button_label.place(x=600, y=510)
 
-
         def login_to_dash():
             self.lgn_frame.destroy()
+            self.bg_frame["image"] = None
             import dashboard
             dashboard.Dashboard(self.window)
 
-
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=25, bd=0,
                             bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
-                            fg="white",command = login_to_dash )
+                            fg="white", command=login_to_dash)
 
         self.login.place(x=20, y=15)
 
@@ -128,16 +118,17 @@ class login:
 
         self.sign_up_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_up_button)
-        self.sign_up_button_label = Button(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,activebackground=BGCOLOR,
+        self.sign_up_button_label = tk.Label(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,
+                                           activebackground=BGCOLOR, fg="white",
                                            cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
         self.sign_up_button_label.place(x=750, y=614)
 
         self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
-                            bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
-                            fg="white")
-        
-        self.sign_up.place(x=15,y=5)
+                              bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
+                              fg="white")
+
+        self.sign_up.place(x=15, y=5)
 
         # Show Hide Password
 
@@ -169,6 +160,13 @@ class login:
 
 def page():
     window = Tk()
+
+    window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
+
+    window.state("zoomed")
+    window.resizable(width=False, height=False)
+    window.title("Traffic Light Management")
+
     login(window)
     window.mainloop()
 
