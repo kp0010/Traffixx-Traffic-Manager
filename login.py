@@ -5,28 +5,26 @@ from PIL import ImageTk, Image
 BGCOLOR = "#" + "03" * 3
 
 
-class login:
+class login(tk.Frame):
     def __init__(self, window):
+        super().__init__(window)
         self.window = window
 
         self.window.config(bg="red")
 
-        # Top Level Frame
-
-        self.top_lvl_frame = tk.Frame(self.window)
-        self.top_lvl_frame.pack(fill=tk.BOTH, expand=True)
+        self.pack(fill=tk.BOTH, expand=True)
 
         # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
         photo = ImageTk.PhotoImage(self.bg_frame)
-        self.bg_panel = Label(self.top_lvl_frame, image=photo, bg=BGCOLOR)
+        self.bg_panel = Label(self, image=photo, bg=BGCOLOR)
         self.bg_panel.image = photo
         self.bg_panel.pack(fill=tk.BOTH, expand=True)
 
         # Frame
 
-        self.lgn_frame = Frame(self.top_lvl_frame, bg=BGCOLOR, width=1050, height=700)
+        self.lgn_frame = Frame(self, bg=BGCOLOR, width=1050, height=700)
         self.lgn_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Title Text
@@ -99,7 +97,7 @@ class login:
         self.lgn_button_label.place(x=600, y=510)
 
         def login_to_dash():
-            self.top_lvl_frame.destroy()
+            self.destroy()
             import dashboard
             dashboard.Dashboard(self.window)
 
