@@ -1,8 +1,12 @@
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import *
 from PIL import ImageTk, Image
 
 import database
+
+from CTkMessagebox import CTkMessagebox
+import customtkinter
 
 BGCOLOR = "#" + "03" * 3
 
@@ -114,8 +118,13 @@ class Login(tk.Frame):
 
             req_user = db.check_user_cred(userid=userid, password=password)
 
+            def show_error():
+                # Show some error message
+                messagebox.showerror("ID Invalid", "ID you entered is not registered")
+
             if req_user is None:
-                print("User Not Present")
+                show_error()
+
             elif not req_user:
                 print("Password Invalid")
             else:
