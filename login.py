@@ -43,62 +43,62 @@ class Login(tk.Frame):
         photo = ImageTk.PhotoImage(self.side_image)
         self.side_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.side_image_label.image = photo
-        self.side_image_label.place(x=5, y=160)
+        self.side_image_label.place(x=45, y=150)
 
         self.sign_in_image = Image.open("Assets/Images/UserAvatar.png")
         photo = ImageTk.PhotoImage(self.sign_in_image)
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.sign_in_image_label.image = photo
-        self.sign_in_image_label.place(x=680, y=200)
+        self.sign_in_image_label.place(x=680, y=140)
 
         # Sign In Label
 
-        self.sign_in_label = Label(self.lgn_frame, text="Sign In", bg=BGCOLOR, fg="white", font=("Ariel", 17, "bold"))
-        self.sign_in_label.place(x=710, y=305)
+        self.sign_in_label = Label(self.lgn_frame, text="LOG IN", bg=BGCOLOR, fg="white", font=("Ariel", 18, "bold"))
+        self.sign_in_label.place(x=700, y=260)
 
         # Username
 
         self.username_label = Label(self.lgn_frame, text="Username", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
-        self.username_label.place(x=600, y=370)
+        self.username_label.place(x=600, y=340)
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.username_entry.place(x=635, y=393)
+        self.username_entry.place(x=635, y=363)
         self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
-        self.username_line.place(x=600, y=420)
+        self.username_line.place(x=600, y=390)
 
         self.username_icon = Image.open("Assets/Icons/UsernameIcon.png")
         photo = ImageTk.PhotoImage(self.username_icon)
         self.username_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.username_icon_label.image = photo
-        self.username_icon_label.place(x=600, y=392)
+        self.username_icon_label.place(x=600, y=362)
 
         # Password
 
         self.password_label = Label(self.lgn_frame, text="Password", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
-        self.password_label.place(x=600, y=450)
+        self.password_label.place(x=600, y=420)
 
         self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.password_entry.place(x=635, y=473)
+        self.password_entry.place(x=635, y=443)
         self.password_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
-        self.password_line.place(x=600, y=500)
+        self.password_line.place(x=600, y=470)
 
         self.password_icon = Image.open("Assets/Icons/PasswordIcon.png")
         photo = ImageTk.PhotoImage(self.password_icon)
         self.password_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
         self.password_icon_label.image = photo
-        self.password_icon_label.place(x=600, y=472)
+        self.password_icon_label.place(x=600, y=442)
 
         # Login Button
 
-        self.lgn_button = Image.open("Assets/Images/LoginBtnBg.png")
+        self.lgn_button = Image.open("Assets/Images/LoginBtnBg1.png")
         photo = ImageTk.PhotoImage(self.lgn_button)
         self.lgn_button_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0)
         self.lgn_button_label.image = photo
-        self.lgn_button_label.place(x=600, y=510)
+        self.lgn_button_label.place(x=625, y=495)
 
         # Fn to go to Dashboard after loggin in
         # TEMP
@@ -130,11 +130,11 @@ class Login(tk.Frame):
             else:
                 print("Logged In Successfully")
 
-        self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=25, bd=0,
-                            bg="#3047ff", cursor="hand2", activebackground="#3047ff", activeforeground="lightblue",
+        self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=20, bd=0,
+                            bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
                             fg="white", command=check_user_cred)
 
-        self.login.place(x=20, y=15)  # will check info in database
+        self.login.place(x=20, y=10)  # will check info in database
 
         # Forgot Button
 
@@ -167,7 +167,7 @@ class Login(tk.Frame):
                               bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
                               fg="white", command=login_to_signup)
 
-        self.sign_up.place(x=15, y=5)
+        self.sign_up.place(x=17, y=4)
 
         # Show Hide Password
 
@@ -177,7 +177,7 @@ class Login(tk.Frame):
                                   cursor="hand2", bd=0, command=self.show)
         self.show_button.image = self.photo1
         self.hide()
-        self.show_button.place(x=906, y=478)
+        self.show_button.place(x=906, y=448)
 
         self.hide_image = Image.open("Assets/Icons/HideIcon.png")
         self.photo = ImageTk.PhotoImage(self.hide_image)
@@ -186,14 +186,14 @@ class Login(tk.Frame):
         hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white",
                              cursor="hand2", bd=0, command=self.hide)
         hide_button.image = self.photo
-        hide_button.place(x=906, y=478)
+        hide_button.place(x=906, y=448)
         self.password_entry.config(show='')
 
     def hide(self):
         show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
                              cursor="hand2", bd=0, command=self.show)
         show_button.image = self.photo1
-        show_button.place(x=906, y=478)
+        show_button.place(x=906, y=448)
         self.password_entry.config(show="*")
 
 
