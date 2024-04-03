@@ -5,9 +5,6 @@ from PIL import ImageTk, Image
 
 import database
 
-from CTkMessagebox import CTkMessagebox
-import customtkinter
-
 BGCOLOR = "#" + "03" * 3
 
 

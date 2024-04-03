@@ -3,3 +3,6 @@ pillow==10.3.0
 tkvideoplayer==2.3
 SQLAlchemy~=2.0.29
 Werkzeug>=3.0.2
+opencv-python>=4.9.0.80
+cvzone>=1.6.1
+ultralytics>=8.1.42
