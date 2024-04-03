@@ -121,14 +121,18 @@ class Login(tk.Frame):
 
             if req_user is None:
                 #show_error()
-                self.error = Label(self.lgn_frame,text="Invalid id and password",font=("Areil",13,"bold"),bg=BGCOLOR,
+                self.error1 = Label(self.lgn_frame,text="ID not registered",font=("Ariel",13,"bold"),bg=BGCOLOR,
                                     fg="red")
-                self.error.place(x=650,y=550)
+                self.error1.place(x=690,y=550)
 
             elif not req_user:
-                print("Password Invalid")
+                self.error2 = Label(self.lgn_frame, text="Invalid Password", font=("Ariel", 13, "bold"), bg=BGCOLOR,
+                                    fg="red")
+                self.error2.place(x=690, y=550)
             else:
-                print("Logged In Successfully")
+                self.error3 = Label(self.lgn_frame, text="Logged In Successfully", font=("Ariel", 13, "bold"), bg=BGCOLOR,
+                                    fg="green")
+                self.error3.place(x=670, y=550)
 
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=20, bd=0,
                             bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
