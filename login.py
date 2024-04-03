@@ -115,12 +115,15 @@ class Login(tk.Frame):
 
             req_user = db.check_user_cred(userid=userid, password=password)
 
-            def show_error():
+            '''def show_error():
                 # Show some error message
-                messagebox.showerror("ID Invalid", "ID you entered is not registered")
+                messagebox.showerror("ID Invalid", "ID you entered is not registered")'''
 
             if req_user is None:
-                show_error()
+                #show_error()
+                self.error = Label(self.lgn_frame,text="Invalid id and password",font=("Areil",13,"bold"),bg=BGCOLOR,
+                                    fg="red")
+                self.error.place(x=650,y=550)
 
             elif not req_user:
                 print("Password Invalid")
@@ -139,7 +142,7 @@ class Login(tk.Frame):
                                     width=25, bd=0, bg=BGCOLOR, cursor="hand2", activebackground=BGCOLOR,
                                     activeforeground="lightblue", fg="white")
         self.forgot_button.place(x=625,
-                                 y=570)  # will allow to change password by verifying name,id,phoneno,email of user
+                                 y=600)  # will allow to change password by verifying name,id,phoneno,email of user
 
         # Sign Up
 
@@ -150,7 +153,7 @@ class Login(tk.Frame):
 
         self.sign_up_label = Label(self.lgn_frame, text="No account yet?", font=("Ariel", 13, "bold",), bg=BGCOLOR,
                                    fg="white")
-        self.sign_up_label.place(x=600, y=620)
+        self.sign_up_label.place(x=600, y=650)
 
         self.sign_up_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_up_button)
@@ -158,7 +161,7 @@ class Login(tk.Frame):
                                              activebackground=BGCOLOR, fg="white",
                                              cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
-        self.sign_up_button_label.place(x=750, y=614)
+        self.sign_up_button_label.place(x=750, y=644)
 
         self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
                               bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
