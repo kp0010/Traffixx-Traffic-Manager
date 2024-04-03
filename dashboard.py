@@ -50,11 +50,6 @@ class Dashboard(tk.Frame):
         player1.set_size((pl_width, pl_height))
         tk.Misc.lift(player1)
         player1.play()
-
-        def loop1(_):
-            player1.play()
-
-        player1.bind("<<Ended>>", loop1)
         player1.pack(expand=tk.YES, fill=tk.BOTH)
 
         # Player 2
@@ -104,12 +99,19 @@ class Dashboard(tk.Frame):
         players = [player1, player2, player3, player4]
         # Buttons
 
-        def play_all():
+        def play_all(self):
             for element in players:
                 element.play()
 
         play_all_btn = tk.Button(text="Play All", command=play_all)
         play_all_btn.place(relx=0.793, rely=0.095, relheight=0.05, relwidth=0.19)
+
+        def loop_all(e=None):
+            for element in players:
+                element.bind("<<Ended>>", loop_all)
+                element.play()
+
+        loop_all()
 
         def pause_all():
             for element in players:
@@ -117,8 +119,6 @@ class Dashboard(tk.Frame):
 
         pause_all_btn = tk.Button(text="Pause All", command=pause_all)
         pause_all_btn.place(relx=0.793, rely=0.15, relheight=0.05, relwidth=0.19)
-
-        play_all()
 
         pause_vars = [tk.BooleanVar() for _ in range(4)]
 

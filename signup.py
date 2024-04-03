@@ -144,6 +144,10 @@ class SignUp(tk.Frame):
         self.submit_button_label.image = photo
         self.submit_button_label.place(x=135, y=530)
 
+        def signup_to_login():
+            self.destroy()
+            login.Login(self.window)
+
         def submit_register():
             userid = self.id_number_entry.get()
             username = self.username_entry.get()
@@ -159,28 +163,24 @@ class SignUp(tk.Frame):
 
             db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
+            signup_to_login()
+
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
                              fg="white", command=submit_register)
-
-        def signup_to_login():
-            self.destroy()
-            login.Login(self.window)
 
         self.submit.place(x=24, y=10)
 
         # Signin
 
         self.log_in_label = Label(self.sign_up_frame, text="Already have an account?", font=("Ariel", 13, "bold",),
-                                  bg=BGCOLOR,
-                                  fg="white")
+                                  bg=BGCOLOR, fg="white")
         self.log_in_label.place(x=90, y=640)
 
         self.log_in_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.log_in_button)
         self.log_in_button_label = tk.Label(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0,
-                                            activebackground=BGCOLOR,
-                                            cursor="hand2", bd=0)
+                                            activebackground=BGCOLOR, cursor="hand2", bd=0)
         self.log_in_button_label.image = photo
         self.log_in_button_label.place(x=320, y=635)
 

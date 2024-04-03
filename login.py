@@ -98,7 +98,6 @@ class Login(tk.Frame):
         self.lgn_button_label.place(x=625, y=495)
 
         # Fn to go to Dashboard after loggin in
-        # TEMP
 
         def login_to_dash():
             self.destroy()
@@ -109,26 +108,24 @@ class Login(tk.Frame):
             userid = self.username_entry.get()
             password = self.password_entry.get()
 
-            print(userid, password)
-
             db = database.Database()
 
             req_user = db.check_user_cred(userid=userid, password=password)
 
-            '''def show_error():
-                # Show some error message
-                messagebox.showerror("ID Invalid", "ID you entered is not registered")'''
-
             if req_user is None:
-                #show_error()
-                self.error = Label(self.lgn_frame,text="Invalid id and password",font=("Areil",13,"bold"),bg=BGCOLOR,
-                                    fg="red")
-                self.error.place(x=650,y=550)
+                # show_error()
+                self.error["text"] = "Invalid ID"
 
             elif not req_user:
-                print("Password Invalid")
+                self.error["text"] = "Password Incorrect"
             else:
-                print("Logged In Successfully")
+                self.error["fg"] = "green"
+                self.error["text"] = "Logged In Successfully"
+
+                self.window.after(500, login_to_dash)
+
+        self.error = Label(self.lgn_frame, text="", font=("Areil", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=650, y=550)
 
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=20, bd=0,
                             bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
@@ -158,8 +155,7 @@ class Login(tk.Frame):
         self.sign_up_button = Image.open("Assets/Images/SignUp2.png")
         photo = ImageTk.PhotoImage(self.sign_up_button)
         self.sign_up_button_label = tk.Label(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,
-                                             activebackground=BGCOLOR, fg="white",
-                                             cursor="hand2", bd=0)
+                                             activebackground=BGCOLOR, fg="white", cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
         self.sign_up_button_label.place(x=750, y=644)
 
@@ -183,15 +179,15 @@ class Login(tk.Frame):
         self.photo = ImageTk.PhotoImage(self.hide_image)
 
     def show(self):
-        hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white",
-                             cursor="hand2", bd=0, command=self.hide)
+        hide_button = Button(self.lgn_frame, image=self.photo, bg="white", activebackground="white", cursor="hand2",
+                             bd=0, command=self.hide)
         hide_button.image = self.photo
         hide_button.place(x=906, y=448)
         self.password_entry.config(show='')
 
     def hide(self):
-        show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white",
-                             cursor="hand2", bd=0, command=self.show)
+        show_button = Button(self.lgn_frame, image=self.photo1, bg="white", activebackground="white", cursor="hand2",
+                             bd=0, command=self.show)
         show_button.image = self.photo1
         show_button.place(x=906, y=448)
         self.password_entry.config(show="*")
