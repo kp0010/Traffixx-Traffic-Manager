@@ -114,7 +114,7 @@ class Login(tk.Frame):
 
             print(userid, password)
 
-            db = database.Database(echo=False)
+            db = database.Database()
 
             req_user = db.check_user_cred(userid=userid, password=password)
 
