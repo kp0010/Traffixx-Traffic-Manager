@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("Traffic Light Management")
+    window.title("TrafficLights Management")
 
     Login(window)
     window.mainloop()
