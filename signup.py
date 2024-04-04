@@ -159,21 +159,13 @@ class SignUp(tk.Frame):
             import database
 
             db = database.Database()
-            if db.check_user_id(userid):
-                self.error["text"] = "User ID already exists"
-            elif db.check_ph_number(phone):
-                self.error["text"] = "This phone number is already taken"
-            elif db.check_user_email(email):
-                self.error["text"] = "This email address is already taken"
-            else:
-                db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
+
+            db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
 
 
             signup_to_login()
 
-        self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
-        self.error.place(x=250, y=600, anchor=tk.CENTER)
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
