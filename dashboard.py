@@ -1,6 +1,4 @@
-import math
 import os
-import time
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 from PIL import ImageTk, Image
@@ -19,8 +17,8 @@ plREL_SIZE = .30
 plCOL1_x = .17
 plCOL2_x = .55
 
-plROW1_y = .27
-plROW2_y = .73
+plROW1_y = .31
+plROW2_y = .69
 
 tlCOL1_x = .35
 tlCOL2_x = .73
@@ -39,7 +37,7 @@ class Dashboard(tk.Frame):
 
         # TL Image
 
-        self.tl_states = [0, 1, 1, 1]
+        self.tl_states = [4, 1, 2, 3]
         img_names = ["TlNone", "TlRed", "TlYellow", "TlGreen", "TlAll"]
 
         self.tl_img_paths = [TL_IMG_PATH + name + ".png" for name in img_names]
@@ -70,6 +68,7 @@ class Dashboard(tk.Frame):
         player1.load(VIDEOS[0])
         # player1.set_size((pl_width, pl_height))
         tk.Misc.lift(player1)
+        player1.bind("<<Ended>>", lambda _: player1.play())
         player1.play()
         player1.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -84,6 +83,7 @@ class Dashboard(tk.Frame):
         player2.load(VIDEOS[1])
         # player2.set_size((pl_width, pl_height))
         tk.Misc.lift(player2)
+        player2.bind("<<Ended>>", lambda _: player2.play())
         player2.play()
         player2.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -98,6 +98,7 @@ class Dashboard(tk.Frame):
         player3.load(VIDEOS[3])
         # player3.set_size((pl_width, pl_height))
         tk.Misc.lift(player3)
+        player3.bind("<<Ended>>", lambda _: player3.play())
         player3.play()
         player3.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -112,6 +113,7 @@ class Dashboard(tk.Frame):
         player4.load(VIDEOS[2])
         # player4.set_size((pl_width, pl_height))
         tk.Misc.lift(player4)
+        player4.bind("<<Ended>>", lambda _: player4.play())
         player4.play()
         player4.pack(expand=tk.YES, fill=tk.BOTH)
 
@@ -123,8 +125,6 @@ class Dashboard(tk.Frame):
 
         play_all_btn = tk.Button(text="Play All", command=self.play_all)
         play_all_btn.place(relx=0.793, rely=0.595, relheight=0.05, relwidth=0.19)
-
-        self.loop_all()
 
         pause_all_btn = tk.Button(text="Pause All", command=self.pause_all)
         pause_all_btn.place(relx=0.793, rely=0.65, relheight=0.05, relwidth=0.19)
@@ -181,11 +181,6 @@ class Dashboard(tk.Frame):
             self.tl_img.append(tl_img_lbl)
 
     # Commands
-
-    def loop_all(self, e=None):
-        for element in self.players:
-            if e is None: element.bind("<<Ended>>", self.loop_all)
-            element.play()
 
     def play_all(self):
         for element in self.players:
