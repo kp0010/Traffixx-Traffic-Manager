@@ -53,23 +53,23 @@ class Login(tk.Frame):
         self.sign_in_label = Label(self.lgn_frame, text="LOG IN", bg=BGCOLOR, fg="white", font=("Ariel", 18, "bold"))
         self.sign_in_label.place(x=700, y=260)
 
-        # Username
+        # UserID
 
-        self.username_label = Label(self.lgn_frame, text="Username", bg=BGCOLOR, fg="#4f4e4d",
+        self.userid_label = Label(self.lgn_frame, text="UserID", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
-        self.username_label.place(x=600, y=340)
+        self.userid_label.place(x=600, y=340)
 
-        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
+        self.userid_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.username_entry.place(x=635, y=363)
-        self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
-        self.username_line.place(x=600, y=390)
+        self.userid_entry.place(x=635, y=363)
+        self.userid_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
+        self.userid_line.place(x=600, y=390)
 
-        self.username_icon = Image.open("Assets/Icons/UsernameIcon.png")
-        photo = ImageTk.PhotoImage(self.username_icon)
-        self.username_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
-        self.username_icon_label.image = photo
-        self.username_icon_label.place(x=600, y=362)
+        self.userid_icon = Image.open("Assets/Icons/UsernameIcon.png")
+        photo = ImageTk.PhotoImage(self.userid_icon)
+        self.userid_icon_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
+        self.userid_icon_label.image = photo
+        self.userid_icon_label.place(x=600, y=362)
 
         # Password
 
@@ -105,7 +105,7 @@ class Login(tk.Frame):
             dashboard.Dashboard(self.window)
 
         def check_user_cred():
-            userid = self.username_entry.get()
+            userid = self.userid_entry.get()
             password = self.password_entry.get()
 
             db = database.Database()
@@ -125,7 +125,7 @@ class Login(tk.Frame):
                 self.window.after(500, login_to_dash)
 
         self.error = Label(self.lgn_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
-        self.error.place(x=750, y=553, anchor=tk.CENTER)
+        self.error.place(x=750, y=560, anchor=tk.CENTER)
 
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=20, bd=0,
                             bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
