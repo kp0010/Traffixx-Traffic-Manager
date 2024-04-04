@@ -32,6 +32,7 @@ class Dashboard(tk.Frame):
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
+
         self.config(height=window_height, width=window_width, bg=BGCOLOR)
         self.pack(expand=True, fill=tk.BOTH)
 
@@ -151,7 +152,7 @@ class Dashboard(tk.Frame):
         play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
         play_selective_btn.place(relx=0.793, rely=0.76, relwidth=0.19, relheight=0.05)
 
-        tl_width = 110
+        tl_width = 90
         tl_height = int(math.ceil(tl_width / 0.345))
 
         # Traffic Lights
@@ -165,14 +166,19 @@ class Dashboard(tk.Frame):
 
             self.tl_img_pil.append(img)
 
+        tl_width /= window_width
+        tl_height /= window_height
+
+        print(tl_width, tl_height)
+
         self.tl_state_to_img = {idx: img for img, idx in zip(self.tl_img_pil, range(0, 5))}
 
         tl_positions = [(tlCOL1_x, plROW1_y), (tlCOL2_x, plROW1_y), (tlCOL1_x, plROW2_y), (tlCOL2_x, plROW2_y)]
 
         self.tl_img = []
         for state, pos in zip(self.tl_states, tl_positions):
-            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[state], bg=BGCOLOR, height=tl_height, width=tl_width)
-            tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER)
+            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[state], bg=BGCOLOR)
+            tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=tl_height, relwidth=tl_width)
             self.tl_img.append(tl_img_lbl)
 
     # Commands
