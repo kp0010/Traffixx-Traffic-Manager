@@ -1,5 +1,6 @@
 import math
 import os
+import time
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 from PIL import ImageTk, Image
@@ -13,7 +14,7 @@ TL_IMG_PATH = "Assets/Images/TrafficLights/"
 
 # Vid Players
 
-plREL_SIZE = .3
+plREL_SIZE = .30
 
 plCOL1_x = .17
 plCOL2_x = .55
@@ -38,7 +39,7 @@ class Dashboard(tk.Frame):
 
         # TL Image
 
-        self.tl_states = [0, 1, 2, 3]
+        self.tl_states = [0, 1, 1, 1]
         img_names = ["TlNone", "TlRed", "TlYellow", "TlGreen", "TlAll"]
 
         self.tl_img_paths = [TL_IMG_PATH + name + ".png" for name in img_names]
@@ -159,7 +160,7 @@ class Dashboard(tk.Frame):
         self.tl_img_pil = []
         for tl in self.tl_img_paths:
             io = Image.open(tl)
-            # Width/Height ratio = 0.345
+            # Width/Height ratio for Images = 0.345
 
             io = io.resize(size=(tl_width, tl_height))
             img = ImageTk.PhotoImage(io)
@@ -168,8 +169,6 @@ class Dashboard(tk.Frame):
 
         tl_width /= window_width
         tl_height /= window_height
-
-        print(tl_width, tl_height)
 
         self.tl_state_to_img = {idx: img for img, idx in zip(self.tl_img_pil, range(0, 5))}
 
@@ -207,11 +206,12 @@ class Dashboard(tk.Frame):
                 player.pause()
 
     def update_lights(self, t1=None, t2=None, t3=None, t4=None):
-        for tl in [t1, t2, t3, t4]:
+        for idx, tl in enumerate([t1, t2, t3, t4]):
             if tl is None:
                 continue
             else:
-                pass
+                self.tl_states[idx] = tl
+                self.tl_img[idx]["image"] = self.tl_state_to_img[tl]
 
 
 if __name__ == "__main__":
