@@ -152,8 +152,8 @@ class Dashboard(tk.Frame):
         play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
         play_selective_btn.place(relx=0.793, rely=0.76, relwidth=0.19, relheight=0.05)
 
-        tl_width = 90
-        tl_height = int(math.ceil(tl_width / 0.345))
+        tl_height = int(window_height * (plREL_SIZE + 0.001))
+        tl_width = int(tl_height * .345)
 
         # Traffic Lights
         self.tl_img_pil = []
