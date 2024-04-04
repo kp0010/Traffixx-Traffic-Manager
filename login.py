@@ -124,8 +124,8 @@ class Login(tk.Frame):
 
                 self.window.after(500, login_to_dash)
 
-        self.error = Label(self.lgn_frame, text="", font=("Areil", 13, "normal"), bg=BGCOLOR, fg="red")
-        self.error.place(x=650, y=550)
+        self.error = Label(self.lgn_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=750, y=553, anchor=tk.CENTER)
 
         self.login = Button(self.lgn_button_label, text="LOGIN", font=("Ariel", 13, "bold"), width=20, bd=0,
                             bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
