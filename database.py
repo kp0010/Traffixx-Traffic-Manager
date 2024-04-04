@@ -52,7 +52,7 @@ class Database:
             else:
                 return False
 
-    def forgot_password(self, userid, oldpass, newpass):
+    def update_password(self, userid, oldpass, newpass):
 
         newpass_hashed = generate_password_hash(password=newpass, method="pbkdf2:sha256", salt_length=8)
 
@@ -72,6 +72,13 @@ class Database:
             else:
                 return False
 
+    def get_user(self, userid, name, mail, phone):
+        with Session(self.engine) as sesh:
+            sel_user = sesh.execute(select(User).filter_by(id=userid)).scalar_one_or_none()
+
+            if sel_user.email != mail or sel_user.phone != phone:
+                return "Information Invalid"
+
 
 if __name__ == '__main__':
     db = Database(echo=False)
@@ -83,4 +90,4 @@ if __name__ == '__main__':
         # print(user)
         session.commit()
 
-    db.forgot_password("KP001", "kartikcr7", "kartikcrs")
+    db.update_password("KP001", "kartikcr7", "kartikcrs")

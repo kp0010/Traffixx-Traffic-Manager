@@ -55,12 +55,11 @@ class Login(tk.Frame):
 
         # UserID
 
-        self.userid_label = Label(self.lgn_frame, text="UserID", bg=BGCOLOR, fg="#4f4e4d",
-                                    font=("Ariel", 13, "bold"))
+        self.userid_label = Label(self.lgn_frame, text="UserID", bg=BGCOLOR, fg="#4f4e4d", font=("Ariel", 13, "bold"))
         self.userid_label.place(x=600, y=340)
 
         self.userid_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
-                                    font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
+                                  font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
         self.userid_entry.place(x=635, y=363)
         self.userid_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.userid_line.place(x=600, y=390)
@@ -135,11 +134,15 @@ class Login(tk.Frame):
 
         # Forgot Button
 
+        def login_to_forgotpass():
+            self.destroy()
+            import forgotpass
+            forgotpass.ForgotPass(self.window)
+
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?", font=("Ariel", 13, "bold underline"),
                                     width=25, bd=0, bg=BGCOLOR, cursor="hand2", activebackground=BGCOLOR,
-                                    activeforeground="lightblue", fg="white")
-        self.forgot_button.place(x=625,
-                                 y=600)  # will allow to change password by verifying name,id,phoneno,email of user
+                                    activeforeground="lightblue", fg="white", command=login_to_forgotpass)
+        self.forgot_button.place(x=625, y=600)  # will allow to change password by verifying name,id,phoneno,email of user
 
         # Sign Up
 
@@ -202,7 +205,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("TrafficLights Management")
+    window.title("Traffic Lights Management")
 
     Login(window)
     window.mainloop()

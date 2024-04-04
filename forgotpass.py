@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import messagebox
 from tkinter import *
 from PIL import ImageTk, Image
 
 BGCOLOR = "#" + "03" * 3
+
 
 class ForgotPass(tk.Frame):
 
@@ -12,7 +12,7 @@ class ForgotPass(tk.Frame):
         self.window = root
         self.pack(fill=tk.BOTH, expand=True)
 
-        #Background
+        # Background
 
         self.bg_frame = Image.open("Assets/Images/Bg.png")
         photo = ImageTk.PhotoImage(self.bg_frame)
@@ -33,7 +33,7 @@ class ForgotPass(tk.Frame):
 
         # Text
 
-        self.txt = ("Provide your account details for which for which you want to reset your password")
+        self.txt = "Provide your account details for which for which you want to reset your password"
         self.heading1 = Label(self.fg_pass_frame, text=self.txt, font=("Ariel", 8), bg=BGCOLOR, fg="white")
         self.heading1.place(x=0, y=120, width=800, height=30)
 
@@ -72,9 +72,9 @@ class ForgotPass(tk.Frame):
         self.username_icon_label = Label(self.fg_pass_frame, image=photo, bg=BGCOLOR)
         self.username_icon_label.image = photo
         self.username_icon_label.place(x=250, y=312)
-        
+
         # Phone number
-        
+
         def validate_phoneno(inp):
             if len(str(inp)) > 10:
                 return False
@@ -131,12 +131,24 @@ class ForgotPass(tk.Frame):
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
-                             fg="white",command=self.switch_frame)   # command to new frame remaining
+                             fg="white", command=self.switch_frame)  # command to new frame remaining
 
         self.submit.place(x=24, y=10)
 
-        # Remaining to print the text that the info entered is valid or invalid in the database after
-        # clicking submit button
+        # Remaining to print the text that the info entered is valid or invalid in the database after  # clicking submit button
+
+    def auth_user_cred(self):
+        idnum = self.id_number_entry.get()
+        phone = self.phone_number_entry.get()
+        mail = self.email_entry.get()
+        name = self.username_entry.get()
+
+        if name and phone and mail and idnum:
+            import database
+
+            db = database.Database()
+            db.get_user(userid=idnum, phone=phone, mail=mail, name=name)
+
 
     def switch_frame(self):
         self.destroy()
@@ -170,24 +182,24 @@ class NewPass(tk.Frame):
 
         # Text
 
-        self.txt = ("Your identity has been verified!")
+        self.txt = "Your identity has been verified!"
         self.heading3 = Label(self.new_pass_frame, text=self.txt, font=("Ariel", 10), bg=BGCOLOR, fg="white")
         self.heading3.place(x=0, y=120, width=700, height=30)
 
         # Text
 
-        self.txt = ("Set your new password")
+        self.txt = "Set your new password"
         self.heading3 = Label(self.new_pass_frame, text=self.txt, font=("Ariel", 10), bg=BGCOLOR, fg="white")
         self.heading3.place(x=0, y=150, width=700, height=30)
 
         # New Password
 
         self.new_pass_label = Label(self.new_pass_frame, text="New Password", bg=BGCOLOR, fg="#4f4e4d",
-                                     font=("Ariel", 13, "bold"))
+                                    font=("Ariel", 13, "bold"))
         self.new_pass_label.place(x=200, y=250)
 
         self.new_pass_entry = Entry(self.new_pass_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
-                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
+                                    font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
         self.new_pass_entry.place(x=235, y=273)
         self.new_pass_line = Canvas(self.new_pass_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.new_pass_line.place(x=200, y=300)
@@ -203,7 +215,7 @@ class NewPass(tk.Frame):
         self.show_image1 = Image.open("Assets/Icons/ShowIcon.png")
         self.photo1 = ImageTk.PhotoImage(self.show_image1)
         self.show_button1 = Button(self.new_pass_frame, image=self.photo1, bg=BGCOLOR, activebackground="white",
-                                    cursor="hand2", bd=0, command=self.show)
+                                   cursor="hand2", bd=0, command=self.show)
         self.show_button1.image = self.photo1
         self.hide()
         self.show_button1.place(x=505, y=275)
@@ -245,15 +257,15 @@ class NewPass(tk.Frame):
         self.update.place(x=24, y=10)
 
     def show(self):
-        hide_button = Button(self.new_pass_frame, image=self.photo2, bg="white", activebackground="white", cursor="hand2",
-                             bd=0, command=self.hide)
+        hide_button = Button(self.new_pass_frame, image=self.photo2, bg="white", activebackground="white",
+                             cursor="hand2", bd=0, command=self.hide)
         hide_button.image = self.photo2
         hide_button.place(x=505, y=285)
         self.new_pass_entry.config(show='')
 
     def hide(self):
-        show_button = Button(self.new_pass_frame, image=self.photo1, bg="white", activebackground="white", cursor="hand2",
-                             bd=0, command=self.show)
+        show_button = Button(self.new_pass_frame, image=self.photo1, bg="white", activebackground="white",
+                             cursor="hand2", bd=0, command=self.show)
         show_button.image = self.photo1
         show_button.place(x=505, y=285)
         self.new_pass_entry.config(show="*")
@@ -267,7 +279,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("TrafficLights Management")
+    window.title("Traffic Lights Management")
 
     ForgotPass(window)
     window.mainloop()

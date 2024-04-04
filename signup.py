@@ -209,7 +209,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(0, 0)
-    window.title("TrafficLights Management")
+    window.title("Traffic Lights Management")
 
     SignUp(window)
 

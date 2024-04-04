@@ -218,7 +218,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("TrafficLights Management")
+    window.title("Traffic Lights Management")
 
     dash = Dashboard(window)
     window.mainloop()
