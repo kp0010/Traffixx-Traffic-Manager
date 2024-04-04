@@ -52,6 +52,21 @@ class Database:
             else:
                 return False
 
+    def check_ph_number(self, phone):
+        with Session(self.engine) as sesh:
+            existing_number = sesh.query(User).filter_by(phone=phone).first()
+            return existing_number is not None
+
+    def check_user_email(self, email):
+        with Session(self.engine) as sesh:
+            existing_mail = sesh.query(User).filter_by(email=email).first()
+            return existing_mail is not None
+
+    def check_user_id(self, userid):
+        with Session(self.engine) as sesh:
+            existing_user_id = sesh.query(User).filter_by(id=userid).first()
+            return existing_user_id is not None
+
     def forgot_password(self, userid, oldpass, newpass):
 
         newpass_hashed = generate_password_hash(password=newpass, method="pbkdf2:sha256", salt_length=8)

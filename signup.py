@@ -155,15 +155,24 @@ class SignUp(tk.Frame):
             email = self.email_entry.get()
             phone = self.phone_number_entry.get()
 
-            print(userid, username, password, email, phone)
 
             import database
 
             db = database.Database()
+            if db.check_user_id(userid):
+                self.error["text"] = "User ID already exists"
+            elif db.check_ph_number(phone):
+                self.error["text"] = "This phone number is already taken"
+            elif db.check_user_email(email):
+                self.error["text"] = "This email address is already taken"
+            else:
+                db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
-            db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
             signup_to_login()
+
+        self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=250, y=600, anchor=tk.CENTER)
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
@@ -197,6 +206,33 @@ class SignUp(tk.Frame):
         self.side_image_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.side_image_label.image = photo
         self.side_image_label.place(x=600, y=120)
+
+        # Show Hide Password
+
+        self.show_image = Image.open("Assets/Icons/ShowIcon.png")
+        self.photo1 = ImageTk.PhotoImage(self.show_image)
+        self.show_button = Button(self.sign_up_frame, image=self.photo1, bg=BGCOLOR, activebackground="white",
+                                  cursor="hand2", bd=0, command=self.show)
+        self.show_button.image = self.photo1
+        self.hide()
+        self.show_button.place(x=425, y=313)
+
+        self.hide_image = Image.open("Assets/Icons/HideIcon.png")
+        self.photo = ImageTk.PhotoImage(self.hide_image)
+
+    def show(self):
+        hide_button = Button(self.sign_up_frame, image=self.photo, bg="white", activebackground="white", cursor="hand2",
+                             bd=0, command=self.hide)
+        hide_button.image = self.photo
+        hide_button.place(x=425, y=313)
+        self.password_entry.config(show='')
+
+    def hide(self):
+        show_button = Button(self.sign_up_frame, image=self.photo1, bg="white", activebackground="white", cursor="hand2",
+                             bd=0, command=self.show)
+        show_button.image = self.photo1
+        show_button.place(x=425, y=313)
+        self.password_entry.config(show="*")
 
 
 if __name__ == "__main__":
