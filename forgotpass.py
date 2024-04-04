@@ -121,6 +121,20 @@ class ForgotPass(tk.Frame):
         self.mail_icon_label.image = photo
         self.mail_icon_label.place(x=250, y=472)
 
+        def fg_pass_to_login():
+            self.destroy()
+            import login
+            login.Login(self.window)
+
+        # Back Button
+
+        self.back_image = Image.open("Assets/Icons/backbtn1.png")  #  Need to change icon
+        self.photo = ImageTk.PhotoImage(self.back_image)
+        self.back_button = Button(self.fg_pass_frame, image=self.photo, bg=BGCOLOR, activebackground="white",
+                                   cursor="hand2", bd=0,command=fg_pass_to_login)
+        self.back_button.image = self.photo
+        self.back_button.place(x=50, y=50)
+
         # Submit
 
         self.submit_button = Image.open("Assets/Images/submit1.png")
@@ -241,6 +255,19 @@ class NewPass(tk.Frame):
         self.con_pass_icon_label = Label(self.new_pass_frame, image=photo, bg=BGCOLOR)
         self.con_pass_icon_label.image = photo
         self.con_pass_icon_label.place(x=200, y=353)
+
+        def new_pass_to_login():
+            self.destroy()
+            ForgotPass(self.window)
+
+        # Back Button
+
+        self.back_image = Image.open("Assets/Icons/backbtn1.png")  # Need to change icon
+        self.photo = ImageTk.PhotoImage(self.back_image)
+        self.back_button = Button(self.new_pass_frame, image=self.photo, bg=BGCOLOR, activebackground="white",
+                                  cursor="hand2", bd=0, command=new_pass_to_login)
+        self.back_button.image = self.photo
+        self.back_button.place(x=50, y=50)
 
         # Update Password Button
 
