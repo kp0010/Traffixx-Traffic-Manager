@@ -304,7 +304,7 @@ class NewPass(tk.Frame):
 
         self.update = Button(self.update_button_label, text="UPDATE", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
-                             fg="white")  # command to update new password in database REMAINING
+                             fg="white",command=update_password_db)  # command to update new password in database REMAINING
 
         self.update.place(x=24, y=10)
 
