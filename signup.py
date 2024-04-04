@@ -169,6 +169,7 @@ class SignUp(tk.Frame):
                 db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
 
+
             signup_to_login()
 
         self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
