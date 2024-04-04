@@ -145,7 +145,7 @@ class ForgotPass(tk.Frame):
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
-                             fg="white", command=self.switch_frame)  # command to new frame remaining
+                             fg="white", command=self.auth_user_cred)  # command to new frame remaining
 
         self.submit.place(x=24, y=10)
 
@@ -161,17 +161,29 @@ class ForgotPass(tk.Frame):
             import database
 
             db = database.Database()
-            db.get_user(userid=idnum, phone=phone, mail=mail, name=name)
+            result = db.get_user_from_info(userid=idnum, phone=phone, mail=mail, name=name)
+
+            if result is None:
+                print("ID not registered")
+            elif result == "mail":
+                print("Email Id is Invalid")
+            elif result == "phone":
+                print("Phone Number is Invalid")
+            elif result == "all":
+                print("Information is Invalid")
+            else:
+                self.switch_frame(result)
 
 
-    def switch_frame(self):
+    def switch_frame(self, user):
         self.destroy()
-        NewPass(self.window)
+        NewPass(self.window, sel_user=user)
 
 
 class NewPass(tk.Frame):
-    def __init__(self, root):
+    def __init__(self, root, sel_user):
         super().__init__(root)
+        self.user = sel_user
         self.window = root
         self.pack(fill=tk.BOTH, expand=True)
 
@@ -270,6 +282,19 @@ class NewPass(tk.Frame):
         self.back_button.place(x=50, y=50)
 
         # Update Password Button
+
+        def update_password_db():
+            password = self.new_pass_entry.get()
+            password_re = self.con_pass_entry.get()
+
+            if password != password_re:
+                print("Passwords do not match!")
+            else:
+                import database
+                db = database.Database()
+
+                db.update_password(sel_user=self.user, newpass=password)
+
 
         self.update_button = Image.open("Assets/Images/submit1.png")
         photo = ImageTk.PhotoImage(self.update_button)

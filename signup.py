@@ -155,17 +155,13 @@ class SignUp(tk.Frame):
             email = self.email_entry.get()
             phone = self.phone_number_entry.get()
 
-
             import database
 
             db = database.Database()
 
             db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
-
-
             signup_to_login()
-
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",

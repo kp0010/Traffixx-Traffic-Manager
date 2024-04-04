@@ -52,32 +52,27 @@ class Database:
             else:
                 return False
 
-    def update_password(self, userid, oldpass, newpass):
-
+    def update_password(self, sel_user, newpass):
         newpass_hashed = generate_password_hash(password=newpass, method="pbkdf2:sha256", salt_length=8)
 
         with Session(self.engine) as sesh:
-            sel_user = self.check_user_cred(userid, oldpass)
+            sesh.execute(update(User).where(User.id == sel_user.id).values(password=newpass_hashed))
+            sesh.commit()
 
-            if sel_user is None:
-                return None
-
-            elif sel_user:
-                sesh.execute(update(User).where(User.id == userid).values(password=newpass_hashed))
-
-                sesh.commit()
-
-                return True
-
-            else:
-                return False
-
-    def get_user(self, userid, name, mail, phone):
+    def get_user_from_info(self, userid, name, mail, phone):
         with Session(self.engine) as sesh:
             sel_user = sesh.execute(select(User).filter_by(id=userid)).scalar_one_or_none()
 
-            if sel_user.email != mail or sel_user.phone != phone:
-                return "Information Invalid"
+            if sel_user is None:
+                return None
+            if sel_user.email != mail and sel_user.phone != phone:
+                return "all"
+            if sel_user.phone != phone:
+                return "phone"
+            if sel_user.email != mail:
+                return "mail"
+
+            return sel_user
 
 
 if __name__ == '__main__':
@@ -86,8 +81,8 @@ if __name__ == '__main__':
     # db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
 
     with Session(db.engine) as session:
-        user = session.execute(select(User).filter_by(id="KP0011")).scalar_one_or_none()
+        user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
         # print(user)
         session.commit()
 
-    db.update_password("KP001", "kartikcr7", "kartikcrs")
+    db.update_password("admin", "1234")
