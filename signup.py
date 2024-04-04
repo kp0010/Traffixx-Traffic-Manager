@@ -155,8 +155,6 @@ class SignUp(tk.Frame):
             email = self.email_entry.get()
             phone = self.phone_number_entry.get()
 
-            print(userid, username, password, email, phone)
-
             import database
 
             db = database.Database()
