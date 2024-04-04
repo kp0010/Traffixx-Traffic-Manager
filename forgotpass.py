@@ -184,29 +184,29 @@ class NewPass(tk.Frame):
 
         self.new_pass_label = Label(self.new_pass_frame, text="New Password", bg=BGCOLOR, fg="#4f4e4d",
                                      font=("Ariel", 13, "bold"))
-        self.new_pass_label.place(x=200, y=230)
+        self.new_pass_label.place(x=200, y=250)
 
         self.new_pass_entry = Entry(self.new_pass_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                      font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.new_pass_entry.place(x=235, y=253)
+        self.new_pass_entry.place(x=235, y=273)
         self.new_pass_line = Canvas(self.new_pass_frame, width=300, height=2.0, bg="white", highlightthickness=0)
-        self.new_pass_line.place(x=200, y=280)
+        self.new_pass_line.place(x=200, y=300)
 
         self.new_pass_icon = Image.open("Assets/Icons/PasswordIcon.png")
         photo = ImageTk.PhotoImage(self.new_pass_icon)
         self.new_pass_icon_label = Label(self.new_pass_frame, image=photo, bg=BGCOLOR)
         self.new_pass_icon_label.image = photo
-        self.new_pass_icon_label.place(x=200, y=253)
+        self.new_pass_icon_label.place(x=200, y=273)
 
         # Show Hide Button for New Password
 
         self.show_image1 = Image.open("Assets/Icons/ShowIcon.png")
         self.photo1 = ImageTk.PhotoImage(self.show_image1)
         self.show_button1 = Button(self.new_pass_frame, image=self.photo1, bg=BGCOLOR, activebackground="white",
-                                  cursor="hand2", bd=0, command=self.show)
+                                    cursor="hand2", bd=0, command=self.show)
         self.show_button1.image = self.photo1
         self.hide()
-        self.show_button1.place(x=505, y=255)
+        self.show_button1.place(x=505, y=275)
 
         self.hide_image1 = Image.open("Assets/Icons/HideIcon.png")
         self.photo2 = ImageTk.PhotoImage(self.hide_image1)
@@ -215,19 +215,20 @@ class NewPass(tk.Frame):
 
         self.con_pass_label = Label(self.new_pass_frame, text="Confirm Password", bg=BGCOLOR, fg="#4f4e4d",
                                     font=("Ariel", 13, "bold"))
-        self.con_pass_label.place(x=200, y=310)
+        self.con_pass_label.place(x=200, y=330)
 
         self.con_pass_entry = Entry(self.new_pass_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
                                     font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
-        self.con_pass_entry.place(x=235, y=333)
+        self.con_pass_entry.place(x=235, y=353)
+        self.con_pass_entry.config(show="*")
         self.con_pass_line = Canvas(self.new_pass_frame, width=300, height=2.0, bg="white", highlightthickness=0)
-        self.con_pass_line.place(x=200, y=360)
+        self.con_pass_line.place(x=200, y=380)
 
         self.con_pass_icon = Image.open("Assets/Icons/PasswordIcon.png")
         photo = ImageTk.PhotoImage(self.new_pass_icon)
         self.con_pass_icon_label = Label(self.new_pass_frame, image=photo, bg=BGCOLOR)
         self.con_pass_icon_label.image = photo
-        self.con_pass_icon_label.place(x=200, y=333)
+        self.con_pass_icon_label.place(x=200, y=353)
 
         # Update Password Button
 
@@ -235,7 +236,7 @@ class NewPass(tk.Frame):
         photo = ImageTk.PhotoImage(self.update_button)
         self.update_button_label = Label(self.new_pass_frame, image=photo, bg=BGCOLOR, borderwidth=0)
         self.update_button_label.image = photo
-        self.update_button_label.place(x=210, y=450)
+        self.update_button_label.place(x=210, y=420)
 
         self.update = Button(self.update_button_label, text="UPDATE", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
@@ -247,14 +248,14 @@ class NewPass(tk.Frame):
         hide_button = Button(self.new_pass_frame, image=self.photo2, bg="white", activebackground="white", cursor="hand2",
                              bd=0, command=self.hide)
         hide_button.image = self.photo2
-        hide_button.place(x=505, y=255)
+        hide_button.place(x=505, y=285)
         self.new_pass_entry.config(show='')
 
     def hide(self):
         show_button = Button(self.new_pass_frame, image=self.photo1, bg="white", activebackground="white", cursor="hand2",
                              bd=0, command=self.show)
         show_button.image = self.photo1
-        show_button.place(x=505, y=255)
+        show_button.place(x=505, y=285)
         self.new_pass_entry.config(show="*")
 
 
