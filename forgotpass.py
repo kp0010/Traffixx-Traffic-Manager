@@ -33,7 +33,7 @@ class ForgotPass(tk.Frame):
 
         # Text
 
-        self.txt = "Provide your account details for which for which you want to reset your password"
+        self.txt = "Provide your account details for which you want to reset your password"
         self.heading1 = Label(self.fg_pass_frame, text=self.txt, font=("Ariel", 8), bg=BGCOLOR, fg="white")
         self.heading1.place(x=0, y=120, width=800, height=30)
 
@@ -110,7 +110,8 @@ class ForgotPass(tk.Frame):
         self.email_label.place(x=250, y=450)
 
         self.email_entry = Entry(self.fg_pass_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
-                                 font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
+                                 font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF",
+                                 width=27)
         self.email_entry.place(x=285, y=473)
         self.email_line = Canvas(self.fg_pass_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.email_line.place(x=250, y=500)
@@ -128,12 +129,12 @@ class ForgotPass(tk.Frame):
 
         # Back Button
 
-        self.back_image = Image.open("Assets/Icons/backbtn1.png")  #  Need to change icon
+        self.back_image = Image.open("Assets/Icons/backbtn.png")
         self.photo = ImageTk.PhotoImage(self.back_image)
-        self.back_button = Button(self.fg_pass_frame, image=self.photo, bg=BGCOLOR, activebackground="white",
-                                   cursor="hand2", bd=0,command=fg_pass_to_login)
+        self.back_button = Button(self.fg_pass_frame, image=self.photo, bg=BGCOLOR, activebackground=BGCOLOR,
+                                  cursor="hand2", bd=0, command=fg_pass_to_login)
         self.back_button.image = self.photo
-        self.back_button.place(x=50, y=50)
+        self.back_button.place(x=80, y=30)
 
         # Submit
 
@@ -145,9 +146,12 @@ class ForgotPass(tk.Frame):
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
-                             fg="white", command=self.auth_user_cred)  # command to new frame remaining
+                             fg="white", command=self.auth_user_cred)
 
         self.submit.place(x=24, y=10)
+
+        self.error = Label(self.fg_pass_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=390, y=620, anchor=tk.CENTER)
 
         # Remaining to print the text that the info entered is valid or invalid in the database after  # clicking submit button
 
@@ -164,16 +168,21 @@ class ForgotPass(tk.Frame):
             result = db.get_user_from_info(userid=idnum, phone=phone, mail=mail, name=name)
 
             if result is None:
-                print("ID not registered")
+                self.error["text"] = "UserID does not exist"
             elif result == "mail":
-                print("Email Id is Invalid")
+                self.error["text"] = "Email ID does not exist"
             elif result == "phone":
-                print("Phone Number is Invalid")
+                self.error["text"] = "Phone Number does not exist"
             elif result == "all":
-                print("Information is Invalid")
+                self.error["text"] = "Information Invalid"
             else:
-                self.switch_frame(result)
+                self.error["fg"] = "green"
+                self.error["text"] = "Information Verified"  # text not getting printed
+                # self.switch_frame(result)
+                self.window.after(500, self.switch_frame(result))
 
+        else:
+            self.error["text"] = "Information Invalid"
 
     def switch_frame(self, user):
         self.destroy()
@@ -268,18 +277,23 @@ class NewPass(tk.Frame):
         self.con_pass_icon_label.image = photo
         self.con_pass_icon_label.place(x=200, y=353)
 
-        def new_pass_to_login():
+        def new_pass_to_fg_pass():
             self.destroy()
             ForgotPass(self.window)
 
         # Back Button
 
-        self.back_image = Image.open("Assets/Icons/backbtn1.png")  # Need to change icon
+        self.back_image = Image.open("Assets/Icons/backbtn.png")
         self.photo = ImageTk.PhotoImage(self.back_image)
-        self.back_button = Button(self.new_pass_frame, image=self.photo, bg=BGCOLOR, activebackground="white",
-                                  cursor="hand2", bd=0, command=new_pass_to_login)
+        self.back_button = Button(self.new_pass_frame, image=self.photo, bg=BGCOLOR, activebackground=BGCOLOR,
+                                  cursor="hand2", bd=0, command=new_pass_to_fg_pass)
         self.back_button.image = self.photo
-        self.back_button.place(x=50, y=50)
+        self.back_button.place(x=50, y=40)
+
+        def new_pass_to_login():
+            self.destroy()
+            import login
+            login.Login(self.window)
 
         # Update Password Button
 
@@ -288,13 +302,20 @@ class NewPass(tk.Frame):
             password_re = self.con_pass_entry.get()
 
             if password != password_re:
-                print("Passwords do not match!")
+                self.error["text"] = "Passwords do not match"
             else:
                 import database
                 db = database.Database()
 
                 db.update_password(sel_user=self.user, newpass=password)
 
+                self.error["fg"] = "green"
+                self.error["text"] = "Password updated successfully"
+
+                self.window.after(500, new_pass_to_login)
+
+        self.error = Label(self.new_pass_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=350, y=500, anchor=tk.CENTER)
 
         self.update_button = Image.open("Assets/Images/submit1.png")
         photo = ImageTk.PhotoImage(self.update_button)
@@ -304,7 +325,7 @@ class NewPass(tk.Frame):
 
         self.update = Button(self.update_button_label, text="UPDATE", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",
-                             fg="white",command=update_password_db)  # command to update new password in database REMAINING
+                             fg="white", command=update_password_db)
 
         self.update.place(x=24, y=10)
 

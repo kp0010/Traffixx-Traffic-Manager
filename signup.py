@@ -125,7 +125,8 @@ class SignUp(tk.Frame):
         self.email_label.place(x=120, y=450)
 
         self.email_entry = Entry(self.sign_up_frame, highlightthickness=0, relief=FLAT, bg=BGCOLOR, fg="white",
-                                 font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF")
+                                 font=("Ariel", 13, "bold"), cursor="xterm #AFAFAF", insertbackground="#AFAFAF",
+                                 width=27)
         self.email_entry.place(x=155, y=473)
         self.email_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.email_line.place(x=120, y=500)
