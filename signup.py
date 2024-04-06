@@ -218,8 +218,8 @@ class SignUp(tk.Frame):
         self.password_entry.config(show='')
 
     def hide(self):
-        show_button = Button(self.sign_up_frame, image=self.photo1, bg="white", activebackground="white", cursor="hand2",
-                             bd=0, command=self.show)
+        show_button = Button(self.sign_up_frame, image=self.photo1, bg="white", activebackground="white",
+                             cursor="hand2", bd=0, command=self.show)
         show_button.image = self.photo1
         show_button.place(x=425, y=313)
         self.password_entry.config(show="*")
