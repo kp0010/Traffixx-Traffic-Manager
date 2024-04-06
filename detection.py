@@ -7,7 +7,7 @@ import cv2
 class Detection:
     def __init__(self, video="road.mp4"):
         self.video = cv2.VideoCapture("Assets/Videos/" + video)
-        self.model = YOLO("yolov8n.pt")
+        self.model = YOLO("yolov8s.pt")
 
         self.classnames = {2: "car", 3: "motorcycle", 5: "bus", 7: "truck"}
 
@@ -25,10 +25,12 @@ class Detection:
         return sel_frame if success else []
 
     def predict_for_frame(self, sel_frame):
-        return self.model.predict(source=sel_frame, verbose=False)
+        return self.model.predict(source=sel_frame, verbose=True)
 
     def get_count(self, sec, show=False):
         sel_frame = self.get_frame(sec)
+
+        sel_frame = cv2.resize(sel_frame, (1200, 600))
 
         count = {cls: 0 for cls in self.classnames.values()}
 
@@ -45,19 +47,27 @@ class Detection:
                 count[clsname] += 1
 
                 if show:
+                    x1, y1, x2, y2 = [int(x) for x in box.xyxy[0].tolist()]
+
+                    cv2.rectangle(sel_frame, (x1, y1), (x2, y2), (0, 255, 0))
                     cv2.imshow(str(sel_frame[0]), sel_frame)
                     cv2.waitKey(1)
 
-                x1, y1, x2, y2 = [int(i) for i in box.xyxy[0].tolist()]
-
-            print(count)
             return count
 
 
 if __name__ == "__main__":
-    detector = Detection("road.mp4")
-    detector.get_count(3.5, show=True)
-    detector.set_vid("surveillance.m4v")
-    detector.get_count(45.1, show=True)
+    import TLmanager
+
+    tlmanager = TLmanager.TLmanager()
+    detector = Detection("Road_vid_2.mp4")
+
+    for i in range(0, 20):
+        cnt2 = detector.get_count(i, show=1)
+        print(tlmanager.get_alloted_time(cnt2))
+    detector.set_vid("Road_vid.mp4")
+    for i in range(20, 30):
+        cnt = detector.get_count(i, show=0)
+        print(tlmanager.get_alloted_time(cnt))
 
     cv2.waitKey(0)

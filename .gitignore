@@ -122,6 +122,10 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+Assets/Videos/Road_vid.mp4
+Assets/Videos/Road_vid3.mp4
+Assets/Videos/Road_vid_2.mp4
+
 # Environments
 .env
 .venv
@@ -161,4 +165,4 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-/yolov8n.pt
+/yolov8[n, m, s, l, x].pt

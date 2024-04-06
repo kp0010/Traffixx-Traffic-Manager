@@ -177,10 +177,8 @@ class ForgotPass(tk.Frame):
                 self.error["text"] = "Information Invalid"
             else:
                 self.error["fg"] = "green"
-                self.error["text"] = "Information Verified"  # text not getting printed
-                # self.switch_frame(result)
-                self.window.after(500, self.switch_frame(result))
-
+                self.error["text"] = "Information Verified"
+                self.window.after(500, lambda: self.switch_frame(result))
         else:
             self.error["text"] = "Information Invalid"
 
