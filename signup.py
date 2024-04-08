@@ -191,7 +191,7 @@ class SignUp(tk.Frame):
 
         # side image
 
-        self.side_image = Image.open("Assets/Images/main.png")
+        self.side_image = Image.open("Assets/Images/main3.png")
         photo = ImageTk.PhotoImage(self.side_image)
         self.side_image_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR)
         self.side_image_label.image = photo
