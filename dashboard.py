@@ -1,7 +1,11 @@
 import os
+import random
 import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 from PIL import ImageTk, Image
+
+import detection
+import TLmanager
 
 BGCOLOR = "#" + "10" * 3
 
@@ -26,6 +30,10 @@ tlCOL2_x = .73
 
 class Dashboard(tk.Frame):
     def __init__(self, root):
+
+        self.tlmanager = TLmanager.TLmanager()
+        self.detector = detection.Detector()
+
         super().__init__(master=root)
         self.window = root
 
@@ -51,7 +59,9 @@ class Dashboard(tk.Frame):
         # Video
 
         VIDEOS = os.listdir(VIDEO_PATH)
-        VIDEOS = [VIDEO_PATH + vid for vid in VIDEOS]
+        VIDEOS = [vid for vid in VIDEOS if vid[-3:] in ["mp4", "m4a"]]
+
+        self.SELECTED_VIDEOS = random.sample(VIDEOS, k=4)
 
         pl_width, pl_height = 700, 390
 
@@ -65,11 +75,10 @@ class Dashboard(tk.Frame):
         p1frame.place(relx=p1pos[0], rely=p1pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
 
         player1 = TkinterVideo(master=p1frame, bg=BGCOLOR, height=800, width=390)
-        player1.load(VIDEOS[0])
+        player1.load(VIDEO_PATH + self.SELECTED_VIDEOS[0])
         # player1.set_size((pl_width, pl_height))
         tk.Misc.lift(player1)
         player1.bind("<<Ended>>", lambda _: player1.play())
-        player1.play()
         player1.pack(expand=tk.YES, fill=tk.BOTH)
 
         # Player 2
@@ -80,11 +89,10 @@ class Dashboard(tk.Frame):
         p2frame.place(relx=p2pos[0], rely=p2pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
 
         player2 = TkinterVideo(master=p2frame, bg=BGCOLOR, height=800, width=390)
-        player2.load(VIDEOS[1])
+        player2.load(VIDEO_PATH + self.SELECTED_VIDEOS[1])
         # player2.set_size((pl_width, pl_height))
         tk.Misc.lift(player2)
         player2.bind("<<Ended>>", lambda _: player2.play())
-        player2.play()
         player2.pack(expand=tk.YES, fill=tk.BOTH)
 
         # Player 3
@@ -95,11 +103,10 @@ class Dashboard(tk.Frame):
         p3frame.place(relx=p3pos[0], rely=p3pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
 
         player3 = TkinterVideo(master=p3frame, bg=BGCOLOR, height=800, width=390)
-        player3.load(VIDEOS[3])
+        player3.load(VIDEO_PATH + self.SELECTED_VIDEOS[2])
         # player3.set_size((pl_width, pl_height))
         tk.Misc.lift(player3)
         player3.bind("<<Ended>>", lambda _: player3.play())
-        player3.play()
         player3.pack(expand=tk.YES, fill=tk.BOTH)
 
         # Player 4
@@ -110,16 +117,17 @@ class Dashboard(tk.Frame):
         p4frame.place(relx=p4pos[0], rely=p4pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
 
         player4 = TkinterVideo(master=p4frame, bg=BGCOLOR, height=800, width=390)
-        player4.load(VIDEOS[2])
+        player4.load(VIDEO_PATH + self.SELECTED_VIDEOS[3])
         # player4.set_size((pl_width, pl_height))
         tk.Misc.lift(player4)
         player4.bind("<<Ended>>", lambda _: player4.play())
-        player4.play()
         player4.pack(expand=tk.YES, fill=tk.BOTH)
 
-        self.window.update()
-
         self.players = [player1, player2, player3, player4]
+
+        self.play_all()
+
+        self.window.update()
 
         # Buttons
 
@@ -180,6 +188,8 @@ class Dashboard(tk.Frame):
             tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=tl_height, relwidth=tl_width)
             self.tl_img.append(tl_img_lbl)
 
+        window.after(5000, self.get_allocated_time)
+
     # Commands
 
     def play_all(self):
@@ -207,6 +217,21 @@ class Dashboard(tk.Frame):
             else:
                 self.tl_states[idx] = tl
                 self.tl_img[idx]["image"] = self.tl_state_to_img[tl]
+
+    def get_duration(self):
+        durations = [player.current_duration() for player in self.players]
+        return durations
+
+    def get_allocated_time(self):
+        allt_times = []
+        for vid, dur in zip(self.SELECTED_VIDEOS, self.get_duration()):
+            self.detector.set_vid(vid)
+            count_vehicles = self.detector.get_count(dur, show=0)
+            allt_time = self.tlmanager.get_alloted_time(count_vehicles)
+
+            allt_times.append(allt_time)
+
+        print(allt_times)
 
 
 if __name__ == "__main__":

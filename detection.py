@@ -1,13 +1,17 @@
 import math
+import threading
 
 from ultralytics import YOLO
 import cv2
 
+VIDEO_PATH = "Assets/Videos/"
 
-class Detection:
-    def __init__(self, video="road.mp4"):
-        self.video = cv2.VideoCapture("Assets/Videos/" + video)
+
+class Detector:
+    def __init__(self, video="road.mp4", verbose=False):
+        self.video = cv2.VideoCapture(VIDEO_PATH + video)
         self.model = YOLO("yolov8s.pt")
+        self.verbose = verbose
 
         self.classnames = {2: "car", 3: "motorcycle", 5: "bus", 7: "truck"}
 
@@ -25,14 +29,14 @@ class Detection:
         return sel_frame if success else []
 
     def predict_for_frame(self, sel_frame):
-        return self.model.predict(source=sel_frame, verbose=True)
+        return self.model.predict(source=sel_frame, verbose=self.verbose)
 
     def get_count(self, sec, show=False):
+        count = {cls: 0 for cls in self.classnames.values()}
+
         sel_frame = self.get_frame(sec)
 
         sel_frame = cv2.resize(sel_frame, (1200, 600))
-
-        count = {cls: 0 for cls in self.classnames.values()}
 
         if len(sel_frame) > 0:
             prediction = self.predict_for_frame(sel_frame)[0]
@@ -53,21 +57,23 @@ class Detection:
                     cv2.imshow(str(sel_frame[0]), sel_frame)
                     cv2.waitKey(1)
 
-            return count
+        return count
+
 
 
 if __name__ == "__main__":
     import TLmanager
 
     tlmanager = TLmanager.TLmanager()
-    detector = Detection("Road_vid_2.mp4")
 
+    detector = Detector("Road_vid3.mp4")
     for i in range(0, 20):
-        cnt2 = detector.get_count(i, show=1)
+        cnt2 = detector.get_count(i, show=0)
         print(tlmanager.get_alloted_time(cnt2))
+
     detector.set_vid("Road_vid.mp4")
     for i in range(20, 30):
-        cnt = detector.get_count(i, show=0)
+        cnt = detector.get_count(i, show=1)
         print(tlmanager.get_alloted_time(cnt))
 
     cv2.waitKey(0)

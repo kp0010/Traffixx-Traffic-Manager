@@ -1,5 +1,7 @@
 import math
 
+import detection
+
 AVG_TIMES = {"car": 5, "bus": 9, "truck": 9, "motorcycle": 4}
 
 DENUM = 2
