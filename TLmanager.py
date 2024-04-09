@@ -11,7 +11,8 @@ EXTRA_TIME = 5
 class TLmanager:
     def __init__(self):
         self.avg_time = AVG_TIMES
-        self.allotment_queue = []
+        self.allotment_queue = [0, 0, 0, 0]
+        self.prev_alloted = None
 
     def get_alloted_time(self, vehicle_count: dict):
         # Vehicle_count should be in the format -
@@ -30,3 +31,14 @@ class TLmanager:
         alloted_time = math.ceil(alloted_time) + 5
 
         return alloted_time
+
+    def select_tl(self, allt_times: list):
+        max_allt = max(allt_times)
+        idx = allt_times.index(max_allt)
+
+        while idx == self.prev_alloted:
+            allt_times[idx] = 0
+            idx = allt_times.index(max(allt_times))
+
+        self.prev_alloted = idx
+        return idx, max_allt

@@ -12,6 +12,8 @@ BGCOLOR = "#" + "10" * 3
 VIDEO_PATH = "Assets/Videos/"
 TL_IMG_PATH = "Assets/Images/TrafficLights/"
 
+YELLOW_TIME = 5 #secs
+
 # Dimensions and Positions for Video Players and Traffic Lights
 
 # Vid Players
@@ -26,6 +28,8 @@ plROW2_y = .69
 
 tlCOL1_x = .35
 tlCOL2_x = .73
+
+RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
 
 
 class Dashboard(tk.Frame):
@@ -45,7 +49,7 @@ class Dashboard(tk.Frame):
 
         # TL Image
 
-        self.tl_states = [4, 1, 2, 3]
+        self.tl_states = [RED, RED, RED, RED]
         img_names = ["TlNone", "TlRed", "TlYellow", "TlGreen", "TlAll"]
 
         self.tl_img_paths = [TL_IMG_PATH + name + ".png" for name in img_names]
@@ -188,7 +192,7 @@ class Dashboard(tk.Frame):
             tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=tl_height, relwidth=tl_width)
             self.tl_img.append(tl_img_lbl)
 
-        window.after(5000, self.get_allocated_time)
+        window.after(1000, self.get_allocated_time)
 
     # Commands
 
@@ -223,7 +227,11 @@ class Dashboard(tk.Frame):
         return durations
 
     def get_allocated_time(self):
+        self.pause_all()
+        self.update_lights(t1=RED, t2=RED, t3=RED, t4=RED)
+
         allt_times = []
+
         for vid, dur in zip(self.SELECTED_VIDEOS, self.get_duration()):
             self.detector.set_vid(vid)
             count_vehicles = self.detector.get_count(dur, show=0)
@@ -231,7 +239,29 @@ class Dashboard(tk.Frame):
 
             allt_times.append(allt_time)
 
-        print(allt_times)
+        sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
+        print(sel_tl, green_time_alloted)
+        self.green_for_n(sel_tl, green_time_alloted)
+
+
+
+    def green_for_n(self, sel_tl, green_time_allt):
+        print("GREEN")
+        self.players[sel_tl].play()
+        self.tl_img[sel_tl]["image"] = self.tl_state_to_img[GREEN]
+
+        def yellow_after_n():
+            self.players[sel_tl].pause()
+            print("EYELLOW")
+            self.tl_states[sel_tl] = YELLOW
+
+            self.tl_img[sel_tl]["image"] = self.tl_state_to_img[YELLOW]
+
+            window.after(YELLOW_TIME * 1000, self.get_allocated_time)
+
+        window.after(green_time_allt * 1000, yellow_after_n)
+
+
 
 
 if __name__ == "__main__":
