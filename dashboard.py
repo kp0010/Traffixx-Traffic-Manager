@@ -135,7 +135,7 @@ class Dashboard(tk.Frame):
         # Buttons
 
         play_all_btn = tk.Button(text="Play All", command=self.play_all)
-        play_all_btn.place(relx=0.793, rely=0.595, relheight=0.05, relwidth=0.19)
+        play_all_btn.place(relx=0.793, rely=0.545, relheight=0.05, relwidth=0.19)
 
         pause_all_btn = tk.Button(text="Pause All", command=self.pause_all)
         pause_all_btn.place(relx=0.793, rely=0.65, relheight=0.05, relwidth=0.19)
@@ -221,7 +221,7 @@ class Dashboard(tk.Frame):
         durations = [player.current_duration() for player in self.players]
         return durations
 
-    def get_allocated_time(self, sel_tl=None):
+    def get_allocated_time(self):
 
         allt_times = []
 

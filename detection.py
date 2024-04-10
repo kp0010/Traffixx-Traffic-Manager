@@ -9,7 +9,7 @@ VIDEO_PATH = "Assets/Videos/"
 class Detector:
     def __init__(self, video="road.mp4", verbose=False):
         self.video = cv2.VideoCapture(VIDEO_PATH + video)
-        self.model = YOLO("yolov8s.pt")
+        self.model = YOLO("yolov8n.pt")
         self.verbose = verbose
 
         self.classnames = {2: "car", 3: "motorcycle", 5: "bus", 7: "truck"}
