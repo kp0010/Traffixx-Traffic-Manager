@@ -26,10 +26,16 @@ plCOL2_x = .55
 plROW1_y = .31
 plROW2_y = .69
 
+# TL Pos and Info
+
 tlCOL1_x = .35
 tlCOL2_x = .73
 
 RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
+
+REDon = "#f1592a"
+GREENon = "#37b44c"
+YELLOWon = "#fff44d"
 
 
 class Dashboard(tk.Frame):
@@ -37,6 +43,8 @@ class Dashboard(tk.Frame):
 
         self.tlmanager = TLmanager.TLmanager()
         self.detector = detection.Detector()
+
+        self.green_timer = tk.IntVar(root, 0)
 
         super().__init__(master=root)
         self.window = root
@@ -69,11 +77,11 @@ class Dashboard(tk.Frame):
 
         pl_width, pl_height = 700, 390
 
-        rel_positions = [(plCOL1_x, plROW1_y), (plCOL2_x, plROW1_y), (plCOL1_x, plROW2_y), (plCOL2_x, plROW2_y)]
+        self.rel_positions = [(plCOL1_x, plROW1_y), (plCOL2_x, plROW1_y), (plCOL1_x, plROW2_y), (plCOL2_x, plROW2_y)]
 
         # Player 1
 
-        p1pos = rel_positions[0]
+        p1pos = self.rel_positions[0]
 
         p1frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
         p1frame.place(relx=p1pos[0], rely=p1pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
@@ -87,7 +95,7 @@ class Dashboard(tk.Frame):
 
         # Player 2
 
-        p2pos = rel_positions[1]
+        p2pos = self.rel_positions[1]
 
         p2frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
         p2frame.place(relx=p2pos[0], rely=p2pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
@@ -101,7 +109,7 @@ class Dashboard(tk.Frame):
 
         # Player 3
 
-        p3pos = rel_positions[2]
+        p3pos = self.rel_positions[2]
 
         p3frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
         p3frame.place(relx=p3pos[0], rely=p3pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
@@ -115,7 +123,7 @@ class Dashboard(tk.Frame):
 
         # Player 4
 
-        p4pos = rel_positions[3]
+        p4pos = self.rel_positions[3]
 
         p4frame = tk.Frame(master=self, bg=BGCOLOR, height=pl_height, width=pl_width)
         p4frame.place(relx=p4pos[0], rely=p4pos[1], relwidth=plREL_SIZE, relheight=plREL_SIZE, anchor=tk.CENTER)
@@ -166,8 +174,8 @@ class Dashboard(tk.Frame):
         play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
         play_selective_btn.place(relx=0.793, rely=0.76, relwidth=0.19, relheight=0.05)
 
-        tl_height = int(window_height * (plREL_SIZE + 0.001))
-        tl_width = int(tl_height * .345)
+        self.tl_height = int(window_height * (plREL_SIZE + 0.001))
+        self.tl_width = int(self.tl_height * .345)
 
         # Traffic Lights
         self.tl_img_pil = []
@@ -175,13 +183,13 @@ class Dashboard(tk.Frame):
             io = Image.open(tl)
             # Width/Height ratio for Images = 0.345
 
-            io = io.resize(size=(tl_width, tl_height))
+            io = io.resize(size=(self.tl_width, self.tl_height))
             img = ImageTk.PhotoImage(io)
 
             self.tl_img_pil.append(img)
 
-        tl_width /= window_width
-        tl_height /= window_height
+        self.tl_width /= window_width
+        self.tl_height /= window_height
 
         self.tl_state_to_img = {idx: img for img, idx in zip(self.tl_img_pil, range(0, 5))}
 
@@ -190,31 +198,42 @@ class Dashboard(tk.Frame):
         self.tl_img = []
         for pos in tl_positions:
             tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR)
-            tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=tl_height, relwidth=tl_width)
+            tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=self.tl_height,
+                             relwidth=self.tl_width)
             self.tl_img.append(tl_img_lbl)
 
-        self.window.after(500, self.green_for_n)
+        self.window.after(2000, self.green_for_n)
 
         # UI
 
-        def create_rectange(x, y, idx):
-            line1 = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
-            line1.place(relx=x + tl_width / 2, rely=y + plREL_SIZE / 2, anchor=tk.CENTER, relwidth=plREL_SIZE + 0.058)
-            line2 = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
-            line2.place(relx=x + tl_width / 2, rely=y - plREL_SIZE / 2, anchor=tk.CENTER, relwidth=plREL_SIZE + 0.058)
-            line3 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
-            line3.place(relx=x - plREL_SIZE / 2, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
-            line4 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
-            line4.place(relx=x + plREL_SIZE / 2 + tl_width, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
-            line5 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
-            line5.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+        def create_player_ui(x, y, idx):
+            line_bottom = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
+            line_bottom.place(relx=x + self.tl_width / 2, rely=y + plREL_SIZE / 2, anchor=tk.CENTER,
+                              relwidth=plREL_SIZE + 0.058)
+            line_top = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
+            line_top.place(relx=x + self.tl_width / 2, rely=y - plREL_SIZE / 2, anchor=tk.CENTER,
+                           relwidth=plREL_SIZE + 0.058)
+            line_left = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line_left.place(relx=x - plREL_SIZE / 2, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+            line_right = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line_right.place(relx=x + plREL_SIZE / 2 + self.tl_width, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+            line_mid = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line_mid.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
 
-            label = tk.Label(self, text=f"CCTV 00{idx+1}", font=("LCDDot TR", 14, "bold"),
-                             bg="white", fg=BGCOLOR)
-            label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
+            input_label = tk.Label(self, text=f"CCTV 00{idx + 1}", font=("LCDDot TR", 14, "bold"),
+                                   bg="white", fg=BGCOLOR)
+            input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
-        for idx, pos in enumerate(rel_positions):
-            create_rectange(*pos, idx)
+        for idx, pos in enumerate(self.rel_positions):
+            create_player_ui(*pos, idx)
+
+        # Traffic Light Counter
+
+        self.counter_label = tk.Label(self, text="25", font=("LCDDOT TR", 24, "bold"), bg=GREENon, fg="white",
+                                      textvariable=self.green_timer)
+        self.counter_label.place(relx=plCOL1_x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001,
+                                 rely=plROW1_y + self.tl_height / 3,
+                                 anchor=tk.CENTER)
 
     # Commands
 
@@ -268,6 +287,11 @@ class Dashboard(tk.Frame):
             sel_tl, green_time_allt = self.get_allocated_time()
 
         self.players[sel_tl].play()
+
+        pos = self.rel_positions[sel_tl]
+        self.pos_counter_label(*pos)
+
+        self.green_counter(green_time_allt)
         self.update_lights({sel_tl: GREEN})
 
         def yellow_after_n():
@@ -279,6 +303,19 @@ class Dashboard(tk.Frame):
             self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
         self.window.after(green_time_allt * 1000, yellow_after_n)  # GREEN TIME IN AFTER
+
+    def green_counter(self, green_time=None):
+        if green_time is not None:
+            self.green_timer.set(green_time)
+        if self.green_timer.get() > 1:
+            self.green_timer.set(self.green_timer.get() - 1)
+            self.window.after(1000, self.green_counter)
+        else:
+            self.counter_label["text"] = ""
+
+    def pos_counter_label(self, x, y):
+        self.counter_label.place(relx=x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001, rely=y + self.tl_height / 3,
+                                 anchor=tk.CENTER)
 
 
 if __name__ == "__main__":
