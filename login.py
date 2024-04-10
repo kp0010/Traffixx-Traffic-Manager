@@ -120,7 +120,7 @@ class Login(tk.Frame):
                 self.error["fg"] = "green"
                 self.error["text"] = "Logged In Successfully"
 
-                self.window.after(500, login_to_dash)
+            self.window.after(100, login_to_dash)
 
         self.error = Label(self.lgn_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
         self.error.place(x=750, y=560, anchor=tk.CENTER)

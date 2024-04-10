@@ -12,7 +12,7 @@ BGCOLOR = "#" + "10" * 3
 VIDEO_PATH = "Assets/Videos/"
 TL_IMG_PATH = "Assets/Images/TrafficLights/"
 
-YELLOW_TIME = 5 #secs
+YELLOW_TIME = 5  # secs
 
 # Dimensions and Positions for Video Players and Traffic Lights
 
@@ -49,7 +49,6 @@ class Dashboard(tk.Frame):
 
         # TL Image
 
-        self.tl_states = [RED, RED, RED, RED]
         img_names = ["TlNone", "TlRed", "TlYellow", "TlGreen", "TlAll"]
 
         self.tl_img_paths = [TL_IMG_PATH + name + ".png" for name in img_names]
@@ -187,12 +186,12 @@ class Dashboard(tk.Frame):
         tl_positions = [(tlCOL1_x, plROW1_y), (tlCOL2_x, plROW1_y), (tlCOL1_x, plROW2_y), (tlCOL2_x, plROW2_y)]
 
         self.tl_img = []
-        for state, pos in zip(self.tl_states, tl_positions):
-            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[state], bg=BGCOLOR)
+        for pos in tl_positions:
+            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR)
             tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=tl_height, relwidth=tl_width)
             self.tl_img.append(tl_img_lbl)
 
-        window.after(1000, self.get_allocated_time)
+        self.window.after(500, self.green_for_n)
 
     # Commands
 
@@ -214,21 +213,15 @@ class Dashboard(tk.Frame):
             if var.get():
                 player.pause()
 
-    def update_lights(self, t1=None, t2=None, t3=None, t4=None):
-        for idx, tl in enumerate([t1, t2, t3, t4]):
-            if tl is None:
-                continue
-            else:
-                self.tl_states[idx] = tl
-                self.tl_img[idx]["image"] = self.tl_state_to_img[tl]
+    def update_lights(self, tl_dict):
+        for tl_num, state in tl_dict.items():
+            self.tl_img[tl_num]["image"] = self.tl_state_to_img[state]
 
     def get_duration(self):
         durations = [player.current_duration() for player in self.players]
         return durations
 
-    def get_allocated_time(self):
-        self.pause_all()
-        self.update_lights(t1=RED, t2=RED, t3=RED, t4=RED)
+    def get_allocated_time(self, sel_tl=None):
 
         allt_times = []
 
@@ -240,35 +233,36 @@ class Dashboard(tk.Frame):
             allt_times.append(allt_time)
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
+
         print(sel_tl, green_time_alloted)
-        self.green_for_n(sel_tl, green_time_alloted)
 
+        return sel_tl, green_time_alloted
 
+    def green_for_n(self, sel_tl=None, green_time_allt=None):
+        self.pause_all()
+        self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
+        if sel_tl is None and green_time_allt is None:
+            sel_tl, green_time_allt = self.get_allocated_time()
 
-    def green_for_n(self, sel_tl, green_time_allt):
-        print("GREEN")
         self.players[sel_tl].play()
-        self.tl_img[sel_tl]["image"] = self.tl_state_to_img[GREEN]
+        self.update_lights({sel_tl: GREEN})
 
         def yellow_after_n():
+            self.update_lights({sel_tl: YELLOW})
             self.players[sel_tl].pause()
-            print("EYELLOW")
-            self.tl_states[sel_tl] = YELLOW
 
-            self.tl_img[sel_tl]["image"] = self.tl_state_to_img[YELLOW]
+            new_tl, new_allt = self.get_allocated_time()
 
-            window.after(YELLOW_TIME * 1000, self.get_allocated_time)
+            self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
-        window.after(green_time_allt * 1000, yellow_after_n)
-
-
+        self.window.after(2 * 1000, yellow_after_n)  # GREEN TIME IN AFTER
 
 
 if __name__ == "__main__":
     window = tk.Tk()
 
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
-
+    
     window["bg"] = BGCOLOR
 
     window.state("zoomed")

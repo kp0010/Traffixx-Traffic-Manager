@@ -59,7 +59,6 @@ class Detector:
         return count
 
 
-
 if __name__ == "__main__":
     import TLmanager
 

@@ -6,12 +6,13 @@ AVG_TIMES = {"car": 5, "bus": 9, "truck": 9, "motorcycle": 4}
 
 DENUM = 2
 EXTRA_TIME = 5
+MULTIPLIER = 1
 
 
 class TLmanager:
     def __init__(self):
         self.avg_time = AVG_TIMES
-        self.allotment_queue = [0, 0, 0, 0]
+        self.allotment_queue = [1] * 4
         self.prev_alloted = None
 
     def get_alloted_time(self, vehicle_count: dict):
@@ -33,12 +34,17 @@ class TLmanager:
         return alloted_time
 
     def select_tl(self, allt_times: list):
-        max_allt = max(allt_times)
-        idx = allt_times.index(max_allt)
+        allt_wait_time = [allt * Qmul for allt, Qmul in zip(allt_times, self.allotment_queue)]
+        max_allt = max(allt_wait_time)
+        idx = allt_wait_time.index(max_allt)
 
         while idx == self.prev_alloted:
-            allt_times[idx] = 0
-            idx = allt_times.index(max(allt_times))
+            allt_wait_time[idx] = 0
+            idx = allt_wait_time.index(max(allt_wait_time))
 
+        self.allotment_queue = [1 if i == idx else x + MULTIPLIER for i, x in enumerate(self.allotment_queue)]
+
+        print(self.allotment_queue)
         self.prev_alloted = idx
-        return idx, max_allt
+
+        return idx, allt_times[idx]
