@@ -44,7 +44,7 @@ class Dashboard(tk.Frame):
         self.tlmanager = TLmanager.TLmanager()
         self.detector = detection.Detector()
 
-        self.green_timer = tk.IntVar(root, 0)
+        self.green_timer = tk.IntVar(root)
 
         super().__init__(master=root)
         self.window = root
@@ -71,7 +71,7 @@ class Dashboard(tk.Frame):
         # Video
 
         VIDEOS = os.listdir(VIDEO_PATH)
-        VIDEOS = [vid for vid in VIDEOS if vid[-3:] in ["mp4", "m4a"]]
+        VIDEOS = [vid for vid in VIDEOS if vid[-3:] in ["mp4", "m4v"]]
 
         self.SELECTED_VIDEOS = random.sample(VIDEOS, k=4)
 
@@ -197,7 +197,7 @@ class Dashboard(tk.Frame):
 
         self.tl_img = []
         for pos in tl_positions:
-            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR)
+            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR, text=str(pos))
             tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=self.tl_height,
                              relwidth=self.tl_width)
             self.tl_img.append(tl_img_lbl)
@@ -229,7 +229,7 @@ class Dashboard(tk.Frame):
 
         # Traffic Light Counter
 
-        self.counter_label = tk.Label(self, text="25", font=("LCDDOT TR", 24, "bold"), bg=GREENon, fg="white",
+        self.counter_label = tk.Label(self, text="", font=("LCDDOT TR", 18, "bold"), bg=GREENon, fg="white",
                                       textvariable=self.green_timer)
         self.counter_label.place(relx=plCOL1_x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001,
                                  rely=plROW1_y + self.tl_height / 3,
@@ -311,6 +311,7 @@ class Dashboard(tk.Frame):
             self.green_timer.set(self.green_timer.get() - 1)
             self.window.after(1000, self.green_counter)
         else:
+            self.pos_counter_label(10000,0)
             self.counter_label["text"] = ""
 
     def pos_counter_label(self, x, y):
