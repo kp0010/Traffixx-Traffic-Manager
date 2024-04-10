@@ -40,6 +40,7 @@ class Dashboard(tk.Frame):
 
         super().__init__(master=root)
         self.window = root
+        self.window.wm_attributes('-transparentcolor', 'yellow')
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
@@ -129,6 +130,7 @@ class Dashboard(tk.Frame):
         self.players = [player1, player2, player3, player4]
 
         self.play_all()
+        self.window.after(300, self.pause_all)
 
         self.window.update()
 
@@ -192,6 +194,27 @@ class Dashboard(tk.Frame):
             self.tl_img.append(tl_img_lbl)
 
         self.window.after(500, self.green_for_n)
+
+        # UI
+
+        def create_rectange(x, y, idx):
+            line1 = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
+            line1.place(relx=x + tl_width / 2, rely=y + plREL_SIZE / 2, anchor=tk.CENTER, relwidth=plREL_SIZE + 0.058)
+            line2 = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
+            line2.place(relx=x + tl_width / 2, rely=y - plREL_SIZE / 2, anchor=tk.CENTER, relwidth=plREL_SIZE + 0.058)
+            line3 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line3.place(relx=x - plREL_SIZE / 2, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+            line4 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line4.place(relx=x + plREL_SIZE / 2 + tl_width, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+            line5 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
+            line5.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+
+            label = tk.Label(self, text=f"CCTV 00{idx+1}", font=("Ariel", 10, tk.NORMAL),
+                             bg="white", fg=BGCOLOR)
+            label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
+
+        for idx, pos in enumerate(rel_positions):
+            create_rectange(*pos, idx)
 
     # Commands
 
@@ -262,7 +285,7 @@ if __name__ == "__main__":
     window = tk.Tk()
 
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
-    
+
     window["bg"] = BGCOLOR
 
     window.state("zoomed")
