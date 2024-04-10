@@ -130,7 +130,7 @@ class Dashboard(tk.Frame):
         self.players = [player1, player2, player3, player4]
 
         self.play_all()
-        self.window.after(300, self.pause_all)
+        self.window.after(500, self.pause_all)
 
         self.window.update()
 
@@ -209,7 +209,7 @@ class Dashboard(tk.Frame):
             line5 = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
             line5.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
 
-            label = tk.Label(self, text=f"CCTV 00{idx+1}", font=("Ariel", 10, tk.NORMAL),
+            label = tk.Label(self, text=f"CCTV 00{idx+1}", font=("LCDDot TR", 14, "bold"),
                              bg="white", fg=BGCOLOR)
             label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
@@ -278,7 +278,7 @@ class Dashboard(tk.Frame):
 
             self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
-        self.window.after(2 * 1000, yellow_after_n)  # GREEN TIME IN AFTER
+        self.window.after(green_time_allt * 1000, yellow_after_n)  # GREEN TIME IN AFTER
 
 
 if __name__ == "__main__":
