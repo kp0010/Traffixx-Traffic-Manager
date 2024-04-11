@@ -48,7 +48,6 @@ class Dashboard(tk.Frame):
 
         super().__init__(master=root)
         self.window = root
-        self.window.wm_attributes('-transparentcolor', 'yellow')
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
@@ -197,7 +196,7 @@ class Dashboard(tk.Frame):
 
         self.tl_img = []
         for pos in tl_positions:
-            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR, text=str(pos))
+            tl_img_lbl = tk.Label(self, image=self.tl_state_to_img[ALL], bg=BGCOLOR)
             tl_img_lbl.place(relx=pos[0], rely=pos[1], anchor=tk.CENTER, relheight=self.tl_height,
                              relwidth=self.tl_width)
             self.tl_img.append(tl_img_lbl)
@@ -220,8 +219,8 @@ class Dashboard(tk.Frame):
             line_mid = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
             line_mid.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
 
-            input_label = tk.Label(self, text=f"CCTV 00{idx + 1}", font=("LCDDot TR", 14, "bold"),
-                                   bg="white", fg=BGCOLOR)
+            input_label = tk.Label(self, text=f"CCTV 00{idx + 1}", font=("LCDDot TR", 14, "bold"), bg="white",
+                                   fg=BGCOLOR)
             input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
         for idx, pos in enumerate(self.rel_positions):
@@ -231,9 +230,7 @@ class Dashboard(tk.Frame):
 
         self.counter_label = tk.Label(self, text="", font=("LCDDOT TR", 18, "bold"), bg=GREENon, fg="white",
                                       textvariable=self.green_timer)
-        self.counter_label.place(relx=plCOL1_x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001,
-                                 rely=plROW1_y + self.tl_height / 3,
-                                 anchor=tk.CENTER)
+        self.counter_label.place(relx=1.5, rely=1, anchor=tk.CENTER)
 
     # Commands
 
@@ -311,7 +308,7 @@ class Dashboard(tk.Frame):
             self.green_timer.set(self.green_timer.get() - 1)
             self.window.after(1000, self.green_counter)
         else:
-            self.pos_counter_label(10000,0)
+            self.pos_counter_label(10000, 0)
             self.counter_label["text"] = ""
 
     def pos_counter_label(self, x, y):
