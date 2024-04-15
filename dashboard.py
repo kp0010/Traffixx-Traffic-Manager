@@ -304,7 +304,7 @@ class Dashboard(tk.Frame):
     def green_counter(self, green_time=None):
         if green_time is not None:
             self.green_timer.set(green_time)
-        if self.green_timer.get() > 1:
+        if self.green_timer.get() > 0:
             self.green_timer.set(self.green_timer.get() - 1)
             self.window.after(1000, self.green_counter)
         else:
