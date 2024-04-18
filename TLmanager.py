@@ -48,3 +48,8 @@ class TLmanager:
         self.prev_alloted = idx
 
         return idx, allt_times[idx]
+
+#
+# class CreateGraph:
+#     def __init__(self):
+

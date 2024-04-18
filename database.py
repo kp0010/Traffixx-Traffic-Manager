@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import Column, String, select, update
+from sqlalchemy import Column, String, select, update, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
 
 SQLURI = "sqlite:///users"
@@ -20,6 +20,15 @@ class User(Base):
     def __repr__(self):
         rep = f"{self.id =}, {self.name =}"
         return rep
+
+
+class AllotmentInfo(Base):
+    __tablename__ = "allotment_info"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    lane_num = Column(String(8), nullable=False)
+    allotment_time = Column(Integer, )
+
 
 
 class Database:

@@ -223,6 +223,9 @@ class Dashboard(tk.Frame):
                                    fg=BGCOLOR)
             input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
+            count_label = tk.Label(self, text="COUNT", font=("LCDDot TR", 14, "normal"), bg=BGCOLOR, fg="white")
+            count_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.01, anchor=tk.W)
+
         for idx, pos in enumerate(self.rel_positions):
             create_player_ui(*pos, idx)
 
@@ -267,6 +270,8 @@ class Dashboard(tk.Frame):
         for vid, dur in zip(self.SELECTED_VIDEOS, self.get_duration()):
             self.detector.set_vid(vid)
             count_vehicles = self.detector.get_count(dur, show=0)
+
+            print(count_vehicles)
             allt_time = self.tlmanager.get_alloted_time(count_vehicles)
 
             allt_times.append(allt_time)
