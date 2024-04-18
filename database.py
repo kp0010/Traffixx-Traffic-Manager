@@ -108,18 +108,18 @@ class Database:
         now = datetime.datetime.now()
         with smtplib.SMTP('smtp.gmail.com', 587) as connection:
             message = MIMEMultipart("alt")
-            message["Subject"] = f"Password Update On Traffixx on {now.strftime("%d")}"
+            message["Subject"] = f"Password Update On Traffixx on {now.strftime("%d %b, %y")}"
             message["From"] = "traffix95@gmail.com"
             message["To"] = dest_email
 
             msg = f"""
-            <h1>Your Traffixx Account - Successful Password Updated </h1>
+            <h1>Your Traffixx Account - Password Updated Updated </h1>
 
             <br>
             <h3> Dear User {userid}, </h3>
 
-            <p> This email was generated because new password was updated on Traffixx account with user id <b>{userid}</b> on {now.strftime("%B %d, %Y")}
-            If you did not request this change, please contact our support team immediately at {dest_email} to secure your account.</p>
+            <p>This email was generated because new password was updated on Traffixx account with user id <b>{userid}</b> on {now.strftime("%B %d, %Y")}.<br>
+            If you did not request this change, please contact our support team immediately at traffix95@gmail.com to secure your account.</p>
             
 
             <p>We recommend keeping your password confidential and avoiding the use of the same password across multiple accounts. Additionally, using a mix of letters, numbers, and symbols can help improve the security of your password.</p>
@@ -128,11 +128,9 @@ class Database:
             
             <p>Best regards,</p>
             
-            <p>Omkar Jadhav</p>
-            
-            <p>Customer Support Representative</p>
-            
-            <p>Traffixx</p>
+            <p>Omkar Jadhav<br>
+            Customer Support Representative<br>
+            Traffixx</p>
             """
 
             message.attach(MIMEText(msg, "html"))
@@ -156,6 +154,8 @@ if __name__ == '__main__':
         # session.add(alt)
 
         session.commit()
+
+    db.send_mail("kartikcr750@gmail.com", "KP0010")
 
     # print(db.get_current_instance_id())
     # print(db.get_current_instance_id())
