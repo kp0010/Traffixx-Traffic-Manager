@@ -10,13 +10,13 @@ import datetime
 
 PASSWORD = "rcsn hkmg iqsr qdyy"
 
-SQLURI = "sqlite:///users"
+SQLURI = "sqlite:///traffix_db"
 
 Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "traffix_db"
 
     id = Column(String(16), primary_key=True)
     name = Column(String(250), nullable=False)
@@ -41,22 +41,29 @@ class AllotmentInfo(Base):
         rep = f"{self.id =}, {self.lane_num =}, {self.allotment_time =}"
         return rep
 
+
 class Database:
     def __init__(self, echo=False):
         self.engine = sqlalchemy.create_engine(SQLURI, echo=echo)
         self.Base = Base
 
+        self.curr_instance_id = self.get_current_instance_id()
+        self.curr_cycle_id = 0
+
+        self.source_mail = "traffix95@gmail.com"
+
         self.create_tables()
 
     def get_current_instance_id(self):
         with Session(self.engine) as sesh:
-            result = sesh.execute(
-                select(AllotmentInfo.instance_id).order_by(AllotmentInfo.instance_id.desc())).scalar()
+            result = sesh.execute(select(AllotmentInfo.instance_id).order_by(AllotmentInfo.instance_id.desc())).scalar()
 
             if result is None:
                 return 0
             else:
                 return result + 1
+
+    # def insert
 
     def create_tables(self):
         self.Base.metadata.create_all(self.engine)
@@ -110,7 +117,7 @@ class Database:
             message = MIMEMultipart("alt")
             message["Subject"] = f"Password Update On Traffixx on {now.strftime("%d %b, %y")}"
             message["From"] = "traffix95@gmail.com"
-            message["To"] = dest_email
+            message["To"] = self.source_mail
 
             msg = f"""
             <h1>Your Traffixx Account - Password Updated Updated </h1>
@@ -119,7 +126,7 @@ class Database:
             <h3> Dear User {userid}, </h3>
 
             <p>This email was generated because new password was updated on Traffixx account with user id <b>{userid}</b> on {now.strftime("%B %d, %Y")}.<br>
-            If you did not request this change, please contact our support team immediately at traffix95@gmail.com to secure your account.</p>
+            If you did not request this change, please contact our support team immediately at {self.source_mail} to secure your account.</p>
             
 
             <p>We recommend keeping your password confidential and avoiding the use of the same password across multiple accounts. Additionally, using a mix of letters, numbers, and symbols can help improve the security of your password.</p>
@@ -148,16 +155,15 @@ if __name__ == '__main__':
     with Session(db.engine) as session:
         # user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
         # # print(user)
-        # i_id = db.get_current_instance_id()
-        # alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
+        i_id = db.get_current_instance_id()
+        alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
 
         # session.add(alt)
 
         session.commit()
 
-    db.send_mail("kartikcr750@gmail.com", "KP0010")
+    # db.send_mail("kartikcr750@gmail.com", "KP0010")
 
-    # print(db.get_current_instance_id())
-    # print(db.get_current_instance_id())
+    # print(db.get_current_instance_id())  # print(db.get_current_instance_id())
 
     # db.update_password("admin", "1234")
