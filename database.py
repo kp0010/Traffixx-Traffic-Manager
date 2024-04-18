@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import Column, String, select, update, Integer
+from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import smtplib
@@ -12,10 +12,10 @@ PASSWORD = "rcsn hkmg iqsr qdyy"
 
 SQLURI = "sqlite:///traffix_db"
 
-Base = declarative_base()
+base = declarative_base()
 
 
-class User(Base):
+class User(base):
     __tablename__ = "users"
 
     id = Column(String(16), primary_key=True)
@@ -29,30 +29,37 @@ class User(Base):
         return rep
 
 
-class AllotmentInfo(Base):
+class AllotmentInfo(base):
     __tablename__ = "allotment_info"
 
-    instance_id = Column(Integer, nullable=False, primary_key=True, autoincrement=True)
-    id = Column(Integer, nullable=False)
-    lane_num = Column(String(8), nullable=False)
+    instance_id = Column(Integer, nullable=False)
+    cycle_id = Column(Integer, nullable=False)
+    lane_num = Column(Integer, nullable=False)
     allotment_time = Column(Integer, nullable=False)
 
+    __table_args__ = (
+        PrimaryKeyConstraint(
+            instance_id, cycle_id, lane_num), {})
+
     def __repr__(self):
-        rep = f"{self.id =}, {self.lane_num =}, {self.allotment_time =}"
+        rep = f"{self.cycle_id =}, {self.lane_num =}, {self.allotment_time =}"
         return rep
 
 
 class Database:
     def __init__(self, echo=False):
         self.engine = sqlalchemy.create_engine(SQLURI, echo=echo)
-        self.Base = Base
+        self.Base = base
+        self.create_tables()
 
         self.curr_instance_id = self.get_current_instance_id()
         self.curr_cycle_id = 0
 
         self.source_mail = "traffix95@gmail.com"
 
-        self.create_tables()
+
+    def create_tables(self):
+        self.Base.metadata.create_all(self.engine)
 
     def get_current_instance_id(self):
         with Session(self.engine) as sesh:
@@ -63,10 +70,24 @@ class Database:
             else:
                 return result + 1
 
-    # def insert
+    def insert_current_cycle_info(self, cycle_allotment_info):
+        with Session(self.engine) as sesh:
+            for ind, info in enumerate(cycle_allotment_info):
+                cur_allt_info = AllotmentInfo(instance_id=self.curr_instance_id, cycle_id=self.curr_cycle_id,
+                                              lane_num=ind, allotment_time=info)
 
-    def create_tables(self):
-        self.Base.metadata.create_all(self.engine)
+                sesh.add(cur_allt_info)
+
+            self.curr_cycle_id += 1
+
+            self.current_instance_info()
+            sesh.commit()
+
+    def current_instance_info(self):
+        with Session(self.engine) as sesh:
+            result = sesh.execute(select(AllotmentInfo).filter_by(instance_id=self.curr_instance_id)).scalars()
+
+            print(list(result))
 
     def add_new_user(self, userid, name, password, phone, email):
         with Session(self.engine) as sesh:
@@ -149,14 +170,15 @@ class Database:
 
 if __name__ == '__main__':
     db = Database(echo=False)
+    db.create_tables()
 
-    db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
+    # db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
 
     with Session(db.engine) as session:
         # user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
         # # print(user)
-        i_id = db.get_current_instance_id()
-        alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
+        # i_id = db.get_current_instance_id()
+        # alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
 
         # session.add(alt)
 

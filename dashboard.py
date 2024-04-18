@@ -4,6 +4,9 @@ import tkinter as tk
 from tkVideoPlayer import TkinterVideo
 from PIL import ImageTk, Image
 
+import seaborn as sns
+
+import database
 import detection
 import TLmanager
 
@@ -43,6 +46,7 @@ class Dashboard(tk.Frame):
 
         self.tlmanager = TLmanager.TLmanager()
         self.detector = detection.Detector()
+        self.db = database.Database()
 
         self.green_timer = tk.IntVar(root)
 
@@ -201,7 +205,7 @@ class Dashboard(tk.Frame):
                              relwidth=self.tl_width)
             self.tl_img.append(tl_img_lbl)
 
-        self.window.after(2000, self.green_for_n)
+        self.window.after(1000, self.green_for_n)
 
         # UI
 
@@ -271,10 +275,11 @@ class Dashboard(tk.Frame):
             self.detector.set_vid(vid)
             count_vehicles = self.detector.get_count(dur, show=0)
 
-            print(count_vehicles)
             allt_time = self.tlmanager.get_alloted_time(count_vehicles)
 
             allt_times.append(allt_time)
+
+        self.db.insert_current_cycle_info(allt_times)
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
 
