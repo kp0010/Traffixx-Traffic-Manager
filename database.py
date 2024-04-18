@@ -3,6 +3,13 @@ from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import Column, String, select, update, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import datetime
+
+PASSWORD = "rcsn hkmg iqsr qdyy"
+
 SQLURI = "sqlite:///users"
 
 Base = declarative_base()
@@ -28,7 +35,6 @@ class AllotmentInfo(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     lane_num = Column(String(8), nullable=False)
     allotment_time = Column(Integer, )
-
 
 
 class Database:
@@ -82,6 +88,43 @@ class Database:
                 return "mail"
 
             return sel_user
+
+    def send_mail(self, dest_email, userid):
+        now = datetime.datetime.now()
+        with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+            message = MIMEMultipart("alt")
+            message["Subject"] = f"Password Update On Traffixx on {now.strftime("%d")}"
+            message["From"] = "traffix95@gmail.com"
+            message["To"] = dest_email
+
+            msg = f"""
+            <h1>Your Traffixx Account - Successful Password Updated </h1>
+
+            <br>
+            <h3> Dear User {userid}, </h3>
+
+            <p> This email was generated because new password was updated on Traffixx account with user id <b>{userid}</b> on {now.strftime("%B %d, %Y")}
+            If you did not request this change, please contact our support team immediately at {dest_email} to secure your account.</p>
+            
+
+            <p>We recommend keeping your password confidential and avoiding the use of the same password across multiple accounts. Additionally, using a mix of letters, numbers, and symbols can help improve the security of your password.</p>
+            
+            <p>Thank you for your attention to this matter. If you have any questions or concerns, please do not hesitate to reach out.</p>
+            
+            <p>Best regards,</p>
+            
+            <p>Omkar Jadhav</p>
+            
+            <p>Customer Support Representative</p>
+            
+            <p>Traffixx</p>
+            """
+
+            message.attach(MIMEText(msg, "html"))
+
+            connection.starttls()
+            connection.login(user="traffixx95@gmail.com", password=PASSWORD)
+            connection.sendmail("traffix95@gmail.com", dest_email, message.as_string())
 
 
 if __name__ == '__main__':

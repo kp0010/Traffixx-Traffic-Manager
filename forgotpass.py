@@ -8,6 +8,9 @@ BGCOLOR = "#" + "03" * 3
 class ForgotPass(tk.Frame):
 
     def __init__(self, root):
+        self.email = None
+        self.userid = None
+
         super().__init__(root)
         self.window = root
         self.pack(fill=tk.BOTH, expand=True)
@@ -156,16 +159,16 @@ class ForgotPass(tk.Frame):
         # Remaining to print the text that the info entered is valid or invalid in the database after  # clicking submit button
 
     def auth_user_cred(self):
-        idnum = self.id_number_entry.get()
+        self.userid = self.id_number_entry.get()
+        self.email = self.email_entry.get()
         phone = self.phone_number_entry.get()
-        mail = self.email_entry.get()
         name = self.username_entry.get()
 
-        if name and phone and mail and idnum:
+        if name and phone and self.email and self.userid:
             import database
 
             db = database.Database()
-            result = db.get_user_from_info(userid=idnum, phone=phone, mail=mail, name=name)
+            result = db.get_user_from_info(userid=self.userid, phone=phone, mail=self.email, name=name)
 
             if result is None:
                 self.error["text"] = "UserID does not exist"
@@ -184,12 +187,14 @@ class ForgotPass(tk.Frame):
 
     def switch_frame(self, user):
         self.destroy()
-        NewPass(self.window, sel_user=user)
+        NewPass(self.window, sel_user=user, username=self.userid, email=self.email)
 
 
 class NewPass(tk.Frame):
-    def __init__(self, root, sel_user):
+    def __init__(self, root, sel_user, username, email):
         super().__init__(root)
+        self.username, self.email = username, email
+
         self.user = sel_user
         self.window = root
         self.pack(fill=tk.BOTH, expand=True)
@@ -306,6 +311,8 @@ class NewPass(tk.Frame):
                 db = database.Database()
 
                 db.update_password(sel_user=self.user, newpass=password)
+
+                db.send_mail(dest_email=self.email, userid=self.username)
 
                 self.error["fg"] = "green"
                 self.error["text"] = "Password updated successfully"

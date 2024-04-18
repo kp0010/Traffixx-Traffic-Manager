@@ -6,7 +6,7 @@ AVG_TIMES = {"car": 5, "bus": 9, "truck": 9, "motorcycle": 4}
 
 DENUM = 2
 EXTRA_TIME = 5
-MULTIPLIER = 1
+MULTIPLIER = .5
 
 
 class TLmanager:
@@ -44,9 +44,8 @@ class TLmanager:
 
         self.allotment_queue = [1 if i == idx else x + MULTIPLIER for i, x in enumerate(self.allotment_queue)]
 
-        print(self.allotment_queue)
+        # print(self.allotment_queue)
         self.prev_alloted = idx
-
         return idx, allt_times[idx]
 
 #

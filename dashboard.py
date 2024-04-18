@@ -278,7 +278,7 @@ class Dashboard(tk.Frame):
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
 
-        print(sel_tl, green_time_alloted)
+        # print(sel_tl, green_time_alloted)
 
         return sel_tl, green_time_alloted
 
