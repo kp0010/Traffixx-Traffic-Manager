@@ -147,31 +147,31 @@ class Dashboard(tk.Frame):
         play_all_btn.place(relx=0.793, rely=0.545, relheight=0.05, relwidth=0.19)
 
         pause_all_btn = tk.Button(text="Pause All", command=self.pause_all)
-        pause_all_btn.place(relx=0.793, rely=0.65, relheight=0.05, relwidth=0.19)
+        pause_all_btn.place(relx=0.793, rely=0.6, relheight=0.05, relwidth=0.19)
 
         self.pause_vars = [tk.BooleanVar() for _ in range(4)]
 
         pause_1_chkbtn = tk.Checkbutton(root, text="Pause 1", onvalue=True, offvalue=False, height=2, width=10,
                                         variable=self.pause_vars[0])
-        pause_1_chkbtn.place(relx=0.793, rely=0.705, relwidth=0.045, relheight=0.05)
+        pause_1_chkbtn.place(relx=0.793, rely=0.655, relwidth=0.045, relheight=0.05)
 
         pause_2_chkbtn = tk.Checkbutton(root, text="Pause 2", onvalue=True, offvalue=False, height=2, width=10,
                                         variable=self.pause_vars[1])
-        pause_2_chkbtn.place(relx=0.8415, rely=0.705, relwidth=0.045, relheight=0.05)
+        pause_2_chkbtn.place(relx=0.8415, rely=0.655, relwidth=0.045, relheight=0.05)
 
         pause_3_chkbtn = tk.Checkbutton(root, text="Pause 3", onvalue=True, offvalue=False, height=2, width=10,
                                         variable=self.pause_vars[2])
-        pause_3_chkbtn.place(relx=0.89, rely=0.705, relwidth=0.045, relheight=0.05)
+        pause_3_chkbtn.place(relx=0.89, rely=0.655, relwidth=0.045, relheight=0.05)
 
         pause_4_chkbtn = tk.Checkbutton(root, text="Pause 4", onvalue=True, offvalue=False, height=2, width=10,
                                         variable=self.pause_vars[3])
-        pause_4_chkbtn.place(relx=0.9385, rely=0.705, relwidth=0.044, relheight=0.05)
+        pause_4_chkbtn.place(relx=0.9385, rely=0.655, relwidth=0.044, relheight=0.05)
 
         pause_selective_btn = tk.Button(text="Pause Selected", command=self.pause_selective)
-        pause_selective_btn.place(relx=0.793, rely=0.815, relwidth=0.19, relheight=0.05)
+        pause_selective_btn.place(relx=0.793, rely=0.765, relwidth=0.19, relheight=0.05)
 
         play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
-        play_selective_btn.place(relx=0.793, rely=0.76, relwidth=0.19, relheight=0.05)
+        play_selective_btn.place(relx=0.793, rely=0.71, relwidth=0.19, relheight=0.05)
 
         self.tl_height = int(window_height * (plREL_SIZE + 0.001))
         self.tl_width = int(self.tl_height * .345)

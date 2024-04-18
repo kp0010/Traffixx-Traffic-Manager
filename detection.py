@@ -44,7 +44,7 @@ class Detector:
                 conf = math.ceil(box.conf[0] * 100) / 100
                 clsname = self.classnames.get(int(box.cls[0]), None)
 
-                if clsname is None or conf < .5:
+                if clsname is None or conf < .3:
                     continue
 
                 count[clsname] += 1
