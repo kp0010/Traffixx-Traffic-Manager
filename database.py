@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import Column, String, select, update, Integer
+from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import smtplib
@@ -32,16 +32,31 @@ class User(Base):
 class AllotmentInfo(Base):
     __tablename__ = "allotment_info"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    instance_id = Column(Integer, nullable=False, primary_key=True, autoincrement=True)
+    id = Column(Integer, nullable=False)
     lane_num = Column(String(8), nullable=False)
-    allotment_time = Column(Integer, )
+    allotment_time = Column(Integer, nullable=False)
 
+    def __repr__(self):
+        rep = f"{self.id =}, {self.lane_num =}, {self.allotment_time =}"
+        return rep
 
 class Database:
     def __init__(self, echo=False):
         self.engine = sqlalchemy.create_engine(SQLURI, echo=echo)
         self.Base = Base
+
         self.create_tables()
+
+    def get_current_instance_id(self):
+        with Session(self.engine) as sesh:
+            result = sesh.execute(
+                select(AllotmentInfo.instance_id).order_by(AllotmentInfo.instance_id.desc())).scalar()
+
+            if result is None:
+                return 0
+            else:
+                return result + 1
 
     def create_tables(self):
         self.Base.metadata.create_all(self.engine)
@@ -133,8 +148,16 @@ if __name__ == '__main__':
     # db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
 
     with Session(db.engine) as session:
-        user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
-        # print(user)
+        # user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
+        # # print(user)
+        # i_id = db.get_current_instance_id()
+        # alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
+
+        # session.add(alt)
+
         session.commit()
 
-    db.update_password("admin", "1234")
+    # print(db.get_current_instance_id())
+    # print(db.get_current_instance_id())
+
+    # db.update_password("admin", "1234")
