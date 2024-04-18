@@ -201,6 +201,9 @@ class Dashboard(tk.Frame):
                              relwidth=self.tl_width)
             self.tl_img.append(tl_img_lbl)
 
+        # List for counting each type of vehicles
+        self.count_vehicles_list = []
+
         self.window.after(2000, self.green_for_n)
 
         # UI
@@ -223,8 +226,9 @@ class Dashboard(tk.Frame):
                                    fg=BGCOLOR)
             input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
-            count_label = tk.Label(self, text="COUNT", font=("LCDDot TR", 14, "normal"), bg=BGCOLOR, fg="white")
-            count_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.01, anchor=tk.W)
+            # count_label = tk.Label(self, text="COUNT", font=("LCDDot TR", 14, "normal"), bg=BGCOLOR, fg="white")
+            # count_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.01, anchor=tk.W)
+
 
         for idx, pos in enumerate(self.rel_positions):
             create_player_ui(*pos, idx)
@@ -266,10 +270,14 @@ class Dashboard(tk.Frame):
     def get_allocated_time(self):
 
         allt_times = []
+        self.count_vehicles_list = []
 
         for vid, dur in zip(self.SELECTED_VIDEOS, self.get_duration()):
             self.detector.set_vid(vid)
             count_vehicles = self.detector.get_count(dur, show=0)
+
+            count_veh_string = ','.join(f" {key} : {value} " for key, value in count_vehicles.items())
+            self.count_vehicles_list.append(count_veh_string)
 
             print(count_vehicles)
             allt_time = self.tlmanager.get_alloted_time(count_vehicles)
@@ -277,7 +285,8 @@ class Dashboard(tk.Frame):
             allt_times.append(allt_time)
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
-
+        # print(self.count_vehicles_list)
+        self.vehicle_count_display()
         # print(sel_tl, green_time_alloted)
 
         return sel_tl, green_time_alloted
@@ -319,6 +328,30 @@ class Dashboard(tk.Frame):
     def pos_counter_label(self, x, y):
         self.counter_label.place(relx=x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001, rely=y + self.tl_height / 3,
                                  anchor=tk.CENTER)
+
+    def vehicle_count_display(self):
+        for index, count_vehicles_string in enumerate(self.count_vehicles_list):
+            if index == 0:
+                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                                fg="white")
+                count_vehicles_label.place(x=50, y=400, anchor=tk.W)
+
+            elif index == 1:
+                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
+                                                bg=BGCOLOR, fg="white")
+                count_vehicles_label.place(x=650, y=400, anchor=tk.W)
+
+            elif index == 2:
+                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
+                                                bg=BGCOLOR, fg="white")
+                count_vehicles_label.place(x=50, y=720, anchor=tk.W)
+
+            elif index == 3:
+                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
+                                                bg=BGCOLOR, fg="white")
+                count_vehicles_label.place(x=650, y=720, anchor=tk.W)
+
+        print(self.count_vehicles_list)
 
 
 if __name__ == "__main__":
