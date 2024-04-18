@@ -142,7 +142,7 @@ class Login(tk.Frame):
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?", font=("Ariel", 13, "bold underline"),
                                     width=25, bd=0, bg=BGCOLOR, cursor="hand2", activebackground=BGCOLOR,
                                     activeforeground="lightblue", fg="white", command=login_to_forgotpass)
-        self.forgot_button.place(x=625, y=600)  # will allow to change password by verifying name,id,phoneno,email of user
+        self.forgot_button.place(x=625, y=600)
 
         # Sign Up
 
