@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
+from sqlalchemy import Column, String, select, update, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import smtplib
@@ -16,7 +16,7 @@ Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = "traffix_db"
+    __tablename__ = "users"
 
     id = Column(String(16), primary_key=True)
     name = Column(String(250), nullable=False)
@@ -150,7 +150,7 @@ class Database:
 if __name__ == '__main__':
     db = Database(echo=False)
 
-    # db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
+    db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
 
     with Session(db.engine) as session:
         # user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
