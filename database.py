@@ -141,7 +141,9 @@ class Database:
             message["To"] = self.source_mail
 
             msg = f"""
-            <h1>Your Traffixx Account - Password Updated Updated </h1>
+            <img src="Assets/Images/FinalLogo4.jpg">
+            <br>
+            <h1>Your Traffixx Account - Password Updated </h1>
 
             <br>
             <h3> Dear User {userid}, </h3>

@@ -29,7 +29,7 @@ class Login(tk.Frame):
 
         # Title Text
 
-        self.txt = "WELCOME TO SMART TRAFFIC MANAGEMENT SYSTEM"
+        self.txt = "WELCOME TO TRAFFIXX"
         self.heading = Label(self.lgn_frame, text=self.txt, font=("Ariel", 25, "bold"), bg=BGCOLOR, fg="white")
         self.heading.place(x=70, y=45, width=900, height=30)
 
@@ -41,16 +41,22 @@ class Login(tk.Frame):
         self.side_image_label.image = photo
         self.side_image_label.place(x=45, y=150)
 
-        self.sign_in_image = Image.open("Assets/Images/UserAvatar.png")
-        photo = ImageTk.PhotoImage(self.sign_in_image)
-        self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
-        self.sign_in_image_label.image = photo
-        self.sign_in_image_label.place(x=680, y=140)
+        # self.sign_in_image = Image.open("Assets/Images/UserAvatar.png")
+        # photo = ImageTk.PhotoImage(self.sign_in_image)
+        # self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
+        # self.sign_in_image_label.image = photo
+        # self.sign_in_image_label.place(x=680, y=140)
+
+        self.logo_image = Image.open("Assets/Images/FinalLogo3.png")
+        photo = ImageTk.PhotoImage(self.logo_image)
+        self.logo_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
+        self.logo_image_label.image = photo
+        self.logo_image_label.place(x=665, y=130)
 
         # Sign In Label
 
         self.sign_in_label = Label(self.lgn_frame, text="LOG IN", bg=BGCOLOR, fg="white", font=("Ariel", 18, "bold"))
-        self.sign_in_label.place(x=700, y=260)
+        self.sign_in_label.place(x=700, y=290)
 
         # UserID
 
