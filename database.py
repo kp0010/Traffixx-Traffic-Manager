@@ -2,6 +2,7 @@ import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
 from werkzeug.security import generate_password_hash, check_password_hash
+import pandas
 
 import smtplib
 from email.mime.text import MIMEText
@@ -87,7 +88,15 @@ class Database:
         with Session(self.engine) as sesh:
             result = sesh.execute(select(AllotmentInfo).filter_by(instance_id=self.curr_instance_id)).scalars()
 
-            print(list(result))
+            result_formatted = [(element.cycle_id, element.lane_num, element.allotment_time) for element in result]
+
+            result_df = pandas.DataFrame(result_formatted, columns=["cycle_num", "lane_num", "time_alloted"])
+
+            df_lane_1_2 = result_df[result_df["lane_num"] < 2]
+            df_lane_3_4 = result_df[result_df["lane_num"] > 1]
+
+            return df_lane_1_2, df_lane_3_4
+
 
     def add_new_user(self, userid, name, password, phone, email):
         with Session(self.engine) as sesh:

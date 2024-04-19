@@ -5,6 +5,8 @@ from tkVideoPlayer import TkinterVideo
 from PIL import ImageTk, Image
 
 import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 import database
 import detection
@@ -23,16 +25,16 @@ YELLOW_TIME = 5  # secs
 
 plREL_SIZE = .30
 
-plCOL1_x = .17
-plCOL2_x = .55
+plCOL1_x = .16
+plCOL2_x = .54
 
 plROW1_y = .31
 plROW2_y = .69
 
 # TL Pos and Info
 
-tlCOL1_x = .35
-tlCOL2_x = .73
+tlCOL1_x = .34
+tlCOL2_x = .72
 
 RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
 
@@ -147,52 +149,65 @@ class Dashboard(tk.Frame):
 
         # Buttons
 
-        play_all_btn = tk.Button(text="Play All", command=self.play_all)
-        play_all_btn.place(relx=0.793, rely=0.545, relheight=0.05, relwidth=0.19)
+        # play_all_btn = tk.Button(text="Play All", command=self.play_all)
+        # play_all_btn.place(relx=0.793, rely=0.545, relheight=0.05, relwidth=0.19)
+        #
+        # pause_all_btn = tk.Button(text="Pause All", command=self.pause_all)
+        # pause_all_btn.place(relx=0.793, rely=0.6, relheight=0.05, relwidth=0.19)
+        #
+        # self.pause_vars = [tk.BooleanVar() for _ in range(4)]
+        #
+        # pause_1_chkbtn = tk.Checkbutton(root, text="Pause 1", onvalue=True, offvalue=False, height=2, width=10,
+        #                                 variable=self.pause_vars[0])
+        # pause_1_chkbtn.place(relx=0.793, rely=0.655, relwidth=0.045, relheight=0.05)
+        #
+        # pause_2_chkbtn = tk.Checkbutton(root, text="Pause 2", onvalue=True, offvalue=False, height=2, width=10,
+        #                                 variable=self.pause_vars[1])
+        # pause_2_chkbtn.place(relx=0.8415, rely=0.655, relwidth=0.045, relheight=0.05)
+        #
+        # pause_3_chkbtn = tk.Checkbutton(root, text="Pause 3", onvalue=True, offvalue=False, height=2, width=10,
+        #                                 variable=self.pause_vars[2])
+        # pause_3_chkbtn.place(relx=0.89, rely=0.655, relwidth=0.045, relheight=0.05)
+        #
+        # pause_4_chkbtn = tk.Checkbutton(root, text="Pause 4", onvalue=True, offvalue=False, height=2, width=10,
+        #                                 variable=self.pause_vars[3])
+        # pause_4_chkbtn.place(relx=0.9385, rely=0.655, relwidth=0.044, relheight=0.05)
+        #
+        # pause_selective_btn = tk.Button(text="Pause Selected", command=self.pause_selective)
+        # pause_selective_btn.place(relx=0.793, rely=0.765, relwidth=0.19, relheight=0.05)
+        #
+        # play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
+        # play_selective_btn.place(relx=0.793, rely=0.71, relwidth=0.19, relheight=0.05)
 
-        pause_all_btn = tk.Button(text="Pause All", command=self.pause_all)
-        pause_all_btn.place(relx=0.793, rely=0.6, relheight=0.05, relwidth=0.19)
+        self.tl_height_abs = int(window_height * (plREL_SIZE + 0.001))
+        self.tl_width_abs = int(self.tl_height_abs * .345)
 
-        self.pause_vars = [tk.BooleanVar() for _ in range(4)]
+        # Graphs
 
-        pause_1_chkbtn = tk.Checkbutton(root, text="Pause 1", onvalue=True, offvalue=False, height=2, width=10,
-                                        variable=self.pause_vars[0])
-        pause_1_chkbtn.place(relx=0.793, rely=0.655, relwidth=0.045, relheight=0.05)
+        self.graph_1_2 = tk.Label(bg=BGCOLOR)
+        self.graph_1_2.place(relx=0.88, rely=plROW1_y, anchor=tk.CENTER,
+                             relwidth=self.tl_height_abs / window_width * 1.37,
+                             relheight=self.tl_height_abs / window_height)
 
-        pause_2_chkbtn = tk.Checkbutton(root, text="Pause 2", onvalue=True, offvalue=False, height=2, width=10,
-                                        variable=self.pause_vars[1])
-        pause_2_chkbtn.place(relx=0.8415, rely=0.655, relwidth=0.045, relheight=0.05)
-
-        pause_3_chkbtn = tk.Checkbutton(root, text="Pause 3", onvalue=True, offvalue=False, height=2, width=10,
-                                        variable=self.pause_vars[2])
-        pause_3_chkbtn.place(relx=0.89, rely=0.655, relwidth=0.045, relheight=0.05)
-
-        pause_4_chkbtn = tk.Checkbutton(root, text="Pause 4", onvalue=True, offvalue=False, height=2, width=10,
-                                        variable=self.pause_vars[3])
-        pause_4_chkbtn.place(relx=0.9385, rely=0.655, relwidth=0.044, relheight=0.05)
-
-        pause_selective_btn = tk.Button(text="Pause Selected", command=self.pause_selective)
-        pause_selective_btn.place(relx=0.793, rely=0.765, relwidth=0.19, relheight=0.05)
-
-        play_selective_btn = tk.Button(text="Play Selected", command=self.play_selective)
-        play_selective_btn.place(relx=0.793, rely=0.71, relwidth=0.19, relheight=0.05)
-
-        self.tl_height = int(window_height * (plREL_SIZE + 0.001))
-        self.tl_width = int(self.tl_height * .345)
+        self.graph_3_4 = tk.Label(bg=BGCOLOR)
+        self.graph_3_4.place(relx=0.88, rely=plROW2_y, anchor=tk.CENTER,
+                             relwidth=self.tl_height_abs / window_width * 1.37,
+                             relheight=self.tl_height_abs / window_height)
 
         # Traffic Lights
+
         self.tl_img_pil = []
         for tl in self.tl_img_paths:
             io = Image.open(tl)
             # Width/Height ratio for Images = 0.345
 
-            io = io.resize(size=(self.tl_width, self.tl_height))
+            io = io.resize(size=(self.tl_width_abs, self.tl_height_abs))
             img = ImageTk.PhotoImage(io)
 
             self.tl_img_pil.append(img)
 
-        self.tl_width /= window_width
-        self.tl_height /= window_height
+        self.tl_width = self.tl_width_abs / window_width
+        self.tl_height = self.tl_height_abs / window_height
 
         self.tl_state_to_img = {idx: img for img, idx in zip(self.tl_img_pil, range(0, 5))}
 
@@ -233,7 +248,6 @@ class Dashboard(tk.Frame):
             # count_label = tk.Label(self, text="COUNT", font=("LCDDot TR", 14, "normal"), bg=BGCOLOR, fg="white")
             # count_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.01, anchor=tk.W)
 
-
         for idx, pos in enumerate(self.rel_positions):
             create_player_ui(*pos, idx)
 
@@ -253,15 +267,15 @@ class Dashboard(tk.Frame):
         for element in self.players:
             element.pause()
 
-    def play_selective(self):
-        for var, player in zip(self.pause_vars, self.players):
-            if var.get():
-                player.play()
-
-    def pause_selective(self):
-        for var, player in zip(self.pause_vars, self.players):
-            if var.get():
-                player.pause()
+    # def play_selective(self):
+    #     for var, player in zip(self.pause_vars, self.players):
+    #         if var.get():
+    #             player.play()
+    #
+    # def pause_selective(self):
+    #     for var, player in zip(self.pause_vars, self.players):
+    #         if var.get():
+    #             player.pause()
 
     def update_lights(self, tl_dict):
         for tl_num, state in tl_dict.items():
@@ -283,12 +297,12 @@ class Dashboard(tk.Frame):
             count_veh_string = ','.join(f" {key} : {value} " for key, value in count_vehicles.items())
             self.count_vehicles_list.append(count_veh_string)
 
-            print(count_vehicles)
             allt_time = self.tlmanager.get_alloted_time(count_vehicles)
 
             allt_times.append(allt_time)
 
         self.db.insert_current_cycle_info(allt_times)
+        self.graph_update()
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
         # print(self.count_vehicles_list)
@@ -319,7 +333,7 @@ class Dashboard(tk.Frame):
 
             self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
-        self.window.after(green_time_allt * 1000, yellow_after_n)  # GREEN TIME IN AFTER
+        self.window.after(green_time_allt * 100, yellow_after_n)  # GREEN TIME IN AFTER
 
     def green_counter(self, green_time=None):
         if green_time is not None:
@@ -338,7 +352,8 @@ class Dashboard(tk.Frame):
     def vehicle_count_display(self):
         for index, count_vehicles_string in enumerate(self.count_vehicles_list):
             if index == 0:
-                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
+                                                bg=BGCOLOR,
                                                 fg="white")
                 count_vehicles_label.place(x=50, y=400, anchor=tk.W)
 
@@ -357,7 +372,43 @@ class Dashboard(tk.Frame):
                                                 bg=BGCOLOR, fg="white")
                 count_vehicles_label.place(x=650, y=720, anchor=tk.W)
 
-        print(self.count_vehicles_list)
+    def graph_update(self):
+        plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
+        plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
+        sns.set(style="darkgrid")
+
+        graph_1_2, graph_3_4 = self.db.current_instance_info()
+
+        g_1_2 = sns.lineplot(graph_1_2, x="cycle_num", y="time_alloted", hue="lane_num")
+
+        handle, lables = g_1_2.get_legend_handles_labels()
+        g_1_2.legend(handle[:2], ["Lane 1", "Lane 2"])
+
+        plt.savefig("Assets/Graphs/graph_1_2.jpg")
+
+        img = Image.open("Assets/Graphs/graph_1_2.jpg").resize((int(self.tl_height_abs * 1.37), self.tl_height_abs))
+        img = ImageTk.PhotoImage(img)
+
+        self.graph_1_2["image"] = img
+        self.graph_1_2.image = img
+
+        plt.cla()
+
+        g_3_4 = sns.lineplot(graph_3_4, x="cycle_num", y="time_alloted", hue="lane_num")
+
+        handle, lables = g_3_4.get_legend_handles_labels()
+        g_3_4.legend(handle[:2], ["Lane 3", "Lane 4"])
+
+        plt.savefig("Assets/Graphs/graph_3_4.jpg")
+
+        img = Image.open("Assets/Graphs/graph_3_4.jpg").resize((int(self.tl_height_abs * 1.37), self.tl_height_abs))
+        img = ImageTk.PhotoImage(img)
+
+        self.graph_3_4["image"] = img
+        self.graph_3_4.image = img
+
+        plt.cla()
+
 
 
 if __name__ == "__main__":
@@ -372,4 +423,5 @@ if __name__ == "__main__":
     window.title("Traffic Lights Management")
 
     dash = Dashboard(window)
+
     window.mainloop()
