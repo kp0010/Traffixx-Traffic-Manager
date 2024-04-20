@@ -73,13 +73,13 @@ class Database:
 
     def insert_current_cycle_info(self, cycle_allotment_info):
         with Session(self.engine) as sesh:
-            for ind, info in enumerate(cycle_allotment_info):
+            for idx, info in enumerate(cycle_allotment_info):
                 cur_allt_info = AllotmentInfo(instance_id=self.curr_instance_id, cycle_id=self.curr_cycle_id,
-                                              lane_num=ind, allotment_time=info)
+                                              lane_num=idx, allotment_time=info)
 
                 sesh.add(cur_allt_info)
 
-            self.curr_cycle_id += 1
+            self.curr_cycle_id = self.curr_cycle_id + 1
 
             self.current_instance_info()
             sesh.commit()
@@ -92,9 +92,12 @@ class Database:
 
             result_df = pandas.DataFrame(result_formatted, columns=["cycle_num", "lane_num", "time_alloted"])
 
-            df_lane_1_2 = result_df[result_df["lane_num"] < 2]
-            df_lane_3_4 = result_df[result_df["lane_num"] > 1]
+            # print(result_df, self.curr_instance_id)
 
+            df_lane_1_2 = result_df[(result_df["lane_num"] == 0) | (result_df["lane_num"] == 1)]
+            df_lane_3_4 = result_df[(result_df["lane_num"] == 2) | (result_df["lane_num"] == 3)]
+
+            # print(df_lane_1_2, df_lane_3_4, sep="\n")
             return df_lane_1_2, df_lane_3_4
 
 
