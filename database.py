@@ -153,7 +153,6 @@ class Database:
             <img src="Assets/Images/FinalLogo4.jpg">
             <br>
             <h1>Your Traffixx Account - Password Updated </h1>
-
             <br>
             <h3> Dear User {userid}, </h3>
 
