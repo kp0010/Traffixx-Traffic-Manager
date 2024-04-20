@@ -223,6 +223,9 @@ class Dashboard(tk.Frame):
         # List for counting each type of vehicles
         self.count_vehicles_list = []
 
+        # List for storing alloted time
+        self.allt_times = []
+
         self.window.after(1000, self.green_for_n)
 
         # UI
@@ -287,7 +290,7 @@ class Dashboard(tk.Frame):
 
     def get_allocated_time(self):
 
-        allt_times = []
+        self.allt_times = []
         self.count_vehicles_list = []
 
         for vid, dur in zip(self.SELECTED_VIDEOS, self.get_duration()):
@@ -299,14 +302,15 @@ class Dashboard(tk.Frame):
 
             allt_time = self.tlmanager.get_alloted_time(count_vehicles)
 
-            allt_times.append(allt_time)
+            self.allt_times.append(allt_time)
 
-        self.db.insert_current_cycle_info(allt_times)
+        self.db.insert_current_cycle_info(self.allt_times)
         self.graph_update()
-
-        sel_tl, green_time_alloted = self.tlmanager.select_tl(allt_times)
+        print(self.allt_times)
+        sel_tl, green_time_alloted = self.tlmanager.select_tl(self.allt_times)
         # print(self.count_vehicles_list)
         self.vehicle_count_display()
+        self.allotted_time_display()
         # print(sel_tl, green_time_alloted)
 
         return sel_tl, green_time_alloted
@@ -355,22 +359,54 @@ class Dashboard(tk.Frame):
                 count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
                                                 bg=BGCOLOR,
                                                 fg="white")
-                count_vehicles_label.place(x=50, y=400, anchor=tk.W)
+                count_vehicles_label.place(x=40, y=400, anchor=tk.W)
 
             elif index == 1:
                 count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
                                                 bg=BGCOLOR, fg="white")
-                count_vehicles_label.place(x=650, y=400, anchor=tk.W)
+                count_vehicles_label.place(x=630, y=400, anchor=tk.W)
 
             elif index == 2:
                 count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
                                                 bg=BGCOLOR, fg="white")
-                count_vehicles_label.place(x=50, y=720, anchor=tk.W)
+                count_vehicles_label.place(x=40, y=720, anchor=tk.W)
 
             elif index == 3:
                 count_vehicles_label = tk.Label(self, text=count_vehicles_string, font=("Ariel", 11, "normal"),
                                                 bg=BGCOLOR, fg="white")
-                count_vehicles_label.place(x=650, y=720, anchor=tk.W)
+                count_vehicles_label.place(x=630, y=720, anchor=tk.W)
+
+    def allotted_time_display(self):
+        for index,allotted_time in enumerate(self.allt_times):
+            if index == 0:
+                allotted_time_label = tk.Label(self, text="Allotted Time :", font=("Ariel", 11, "normal"),bg=BGCOLOR,
+                                               fg="white")
+                allotted_time_label.place(x=350, y=400, anchor=tk.W)
+                allt_time_label = tk.Label(self, text=allotted_time, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                           fg="white")
+                allt_time_label.place(x=445, y=400, anchor=tk.W)
+            elif index == 1:
+                allotted_time_label = tk.Label(self, text="Allotted Time :", font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                               fg="white")
+                allotted_time_label.place(x=940, y=400, anchor=tk.W)
+                allt_time_label = tk.Label(self, text=allotted_time, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                           fg="white")
+                allt_time_label.place(x=1035, y=400, anchor=tk.W)
+            elif index == 2:
+                allotted_time_label = tk.Label(self, text="Allotted Time :", font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                               fg="white")
+                allotted_time_label.place(x=350, y=720, anchor=tk.W)
+                allt_time_label = tk.Label(self, text=allotted_time, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                           fg="white")
+                allt_time_label.place(x=445, y=720, anchor=tk.W)
+            elif index == 3:
+                allotted_time_label = tk.Label(self, text="Allotted Time :", font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                               fg="white")
+                allotted_time_label.place(x=940, y=720, anchor=tk.W)
+                allt_time_label = tk.Label(self, text=allotted_time, font=("Ariel", 11, "normal"), bg=BGCOLOR,
+                                           fg="white")
+                allt_time_label.place(x=1035, y=720, anchor=tk.W)
+
 
     def graph_update(self):
         plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
