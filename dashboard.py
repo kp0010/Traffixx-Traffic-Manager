@@ -16,7 +16,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-SEC_UNIT = 1000
+SEC_UNIT = 100
 
 BGCOLOR = "#" + "10" * 3
 
@@ -162,11 +162,13 @@ class Dashboard(tk.Frame):
 
         # Graphs Labels
 
-        self.graph_1_2_label = tk.Label(self, text="Alloted time vs. Cycle id (Lane 1 & 2)", bg=BGCOLOR, fg="white")
-        self.graph_1_2_label.place(relx=.89, rely=plROW1_y + plREL_SIZE / 2 + .017, anchor=tk.CENTER)
+        self.graph_1_2_label = tk.Label(self, text="Alloted time vs. Cycle id\n(Lane 1 & 2)", bg=BGCOLOR, fg="white",
+                                        font=("SF Pro Display", 11, "normal"))
+        self.graph_1_2_label.place(relx=.89, rely=plROW1_y + plREL_SIZE / 2 + .025, anchor=tk.CENTER)
 
-        self.graph_3_4_label = tk.Label(self, text="Alloted time vs. Cycle id (Lane 3 & 4)", bg=BGCOLOR, fg="white")
-        self.graph_3_4_label.place(relx=.89, rely=plROW2_y + plREL_SIZE / 2 + .017, anchor=tk.CENTER)
+        self.graph_3_4_label = tk.Label(self, text="Alloted time vs. Cycle id\n(Lane 3 & 4)", bg=BGCOLOR, fg="white",
+                                        font=("SF Pro Display", 11, "normal"))
+        self.graph_3_4_label.place(relx=.89, rely=plROW2_y + plREL_SIZE / 2 + .025, anchor=tk.CENTER)
 
         # Traffic Lights
 
@@ -222,15 +224,14 @@ class Dashboard(tk.Frame):
             input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
             # Labes for Vehicle count and Alloted time
-            count_label = tk.Label(self, text=f"Vehicle Count: Calculating", font=("Ariel", 11, "normal"), bg=BGCOLOR,
-                                   fg="white")
+            count_label = tk.Label(self, text=f"Vehicle Count: Calculating", font=("SF Pro Display", 11, "normal"),
+                                   bg=BGCOLOR, fg="white")
             count_label.place(relx=x - plREL_SIZE / 2 - .001, rely=y + plREL_SIZE / 2 + .017, anchor=tk.W)
             self.count_label_list.append(count_label)
 
-            alloted_label = tk.Label(self, text=f"Alloted Time: Calculating", font=("Ariel", 11, "normal"), bg=BGCOLOR,
-                                     fg="white")
-            alloted_label.place(relx=x - plREL_SIZE / 2 - .001, rely=y + plREL_SIZE / 2 + .045,
-                                anchor=tk.W)
+            alloted_label = tk.Label(self, text=f"Alloted Time: Calculating", font=("SF Pro Display", 11, "normal"),
+                                     bg=BGCOLOR, fg="white")
+            alloted_label.place(relx=x - plREL_SIZE / 2 - .001, rely=y + plREL_SIZE / 2 + .045, anchor=tk.W)
             self.alloted_label_list.append(alloted_label)
 
         for idx, pos in enumerate(self.rel_positions):
@@ -244,22 +245,33 @@ class Dashboard(tk.Frame):
 
         # Username and UserId UI
 
-        USER_CANV_BGC = "#584D49"
+        USER_CANV_BGC = "#69aafa"
 
         user_canv = tk.Canvas(self, bg=USER_CANV_BGC, highlightthickness=0)
         user_canv.place(y=0, x=0, anchor=tk.NW, relwidth=1, relheight=.1)
+
+        user_canv_border = tk.Canvas(self, bg="white", highlightthickness=0)
+        user_canv_border.place(relx=0, rely=0.1, anchor=tk.NW, relwidth=1, relheight=.002)
 
         logo = ImageTk.PhotoImage(Image.open("Assets/Images/logo.png").resize(
             (int(self.window.winfo_screenheight() * .07), int(self.winfo_screenheight() * .07))))
         logo_img = tk.Label(self, image=logo, bg=USER_CANV_BGC)
         logo_img.image = logo
-        logo_img.place(relx=.025, rely=.05, anchor=tk.CENTER, relheight=.07)
+        logo_img.place(relx=.028, rely=.05, anchor=tk.CENTER, relheight=.07)
 
-        userid_label = tk.Label(self, text=self.userid, bg=USER_CANV_BGC, fg="white")
-        userid_label.place(relx=.08, rely=.018)
+        logo_txt = ImageTk.PhotoImage(Image.open("Assets/Images/traffixxDark.png").resize(
+            (int(self.window.winfo_screenheight() * .17), int(self.winfo_screenheight() * .035))))
+        logo_txt_img = tk.Label(self, image=logo_txt, bg=USER_CANV_BGC)
+        logo_txt_img.image = logo_txt
+        logo_txt_img.place(relx=.105, rely=.05, anchor=tk.CENTER, relheight=.035, relwidth=.1)
 
-        username_label = tk.Label(self, text=self.username, bg=USER_CANV_BGC, fg="white")
-        username_label.place(relx=.08, rely=.036)
+        username_label = tk.Label(self, text=self.username, bg=USER_CANV_BGC, fg="black",
+                                  font=("SF Pro Display", 12, tk.NORMAL))
+        username_label.place(relx=.996, rely=.02, relheight=0.024, anchor=tk.NE)
+
+        userid_label = tk.Label(self, text=f"Logged in as : {self.userid}", bg=USER_CANV_BGC, fg="black",
+                                font=("SF Pro Display", 12, tk.NORMAL))
+        userid_label.place(relx=.996, rely=.04, relheight=0.024, anchor=tk.NE)
 
         self.window.after(1000, self.green_for_n)  # Start calculating after 1 sec
 
@@ -388,8 +400,8 @@ class Dashboard(tk.Frame):
         plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
         sns.set(style="darkgrid")
 
-        g_3_4 = sns.lineplot(graph_3_4, x="cycle_num", y="time_alloted", linewidth=3,
-                             palette=["#104b51", "#03989e"], hue="lane_num")
+        g_3_4 = sns.lineplot(graph_3_4, x="cycle_num", y="time_alloted", linewidth=3, palette=["#104b51", "#03989e"],
+                             hue="lane_num")
 
         handle, lables = g_3_4.get_legend_handles_labels()
         g_3_4.legend(handle[:2], ["Lane 3", "Lane 4"])
