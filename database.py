@@ -197,7 +197,7 @@ if __name__ == '__main__':
 
         session.commit()
 
-    # db.send_mail("kartikcr750@gmail.com", "KP0010")
+    # db.send_mail("magarprathamesh112005@gmail.com", "KP0010")
 
     # print(db.get_current_instance_id())  # print(db.get_current_instance_id())
 

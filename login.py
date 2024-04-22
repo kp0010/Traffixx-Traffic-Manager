@@ -205,6 +205,9 @@ class Login(tk.Frame):
 if __name__ == "__main__":
     window = Tk()
 
+    icon = tk.PhotoImage(file="Assets/Images/FinalLogo3.png")
+    window.wm_iconphoto(False, icon)
+
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
 
     window["bg"] = BGCOLOR

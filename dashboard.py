@@ -16,7 +16,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-SEC_UNIT = 100
+SEC_UNIT = 1000
 
 BGCOLOR = "#" + "10" * 3
 
@@ -34,29 +34,28 @@ plREL_SIZE = .30
 plCOL1_x = .16
 plCOL2_x = .54
 
-plROW1_y = .31
-plROW2_y = .69
+plROW1_y = .33
+plROW2_y = .71
 
 # TL Pos and Info
 
 tlCOL1_x = .34
 tlCOL2_x = .72
 
-RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
-
-REDon = "#f1592a"
 GREENon = "#37b44c"
-YELLOWon = "#fff44d"
+RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
 
 
 class Dashboard(tk.Frame):
-    def __init__(self, root):
+    def __init__(self, root, userid="ADMIN123", username="ADMIN"):
+
+        self.userid = userid
+        self.username = username
+        self.green_timer = tk.IntVar(root)
 
         self.tlmanager = TLmanager.TLmanager()
         self.detector = detection.Detector()
         self.db = database.Database()
-
-        self.green_timer = tk.IntVar(root)
 
         super().__init__(master=root)
         self.window = root
@@ -68,27 +67,19 @@ class Dashboard(tk.Frame):
         self.pack(expand=True, fill=tk.BOTH)
 
         # TL Image
+        # 0 = None , 1 = Red , 2 = Yellow , 3 = Green , 4 = All
 
         img_names = ["TlNone", "TlRed", "TlYellow", "TlGreen", "TlAll"]
-
         self.tl_img_paths = [TL_IMG_PATH + name + ".png" for name in img_names]
-
-        # 0 = None
-        # 1 = Red
-        # 2 = Yellow
-        # 3 = Green
-        # 4 = All
 
         # Video
 
+        pl_width, pl_height = 700, 390
+        self.rel_positions = [(plCOL1_x, plROW1_y), (plCOL2_x, plROW1_y), (plCOL1_x, plROW2_y), (plCOL2_x, plROW2_y)]
+
         VIDEOS = os.listdir(VIDEO_PATH)
         VIDEOS = [vid for vid in VIDEOS if vid[-3:] in ["mp4", "m4v"]]
-
         self.SELECTED_VIDEOS = random.sample(VIDEOS, k=4)
-
-        pl_width, pl_height = 700, 390
-
-        self.rel_positions = [(plCOL1_x, plROW1_y), (plCOL2_x, plROW1_y), (plCOL1_x, plROW2_y), (plCOL2_x, plROW2_y)]
 
         # Player 1
 
@@ -150,33 +141,41 @@ class Dashboard(tk.Frame):
 
         self.play_all()
         self.window.after(500, self.pause_all)
-
         self.window.update()
 
         # Buttons
 
-        self.tl_height_abs = int(window_height * (plREL_SIZE + 0.001))
+        self.tl_height_abs = int(window_height * (plREL_SIZE + .001))
         self.tl_width_abs = int(self.tl_height_abs * .345)
 
         # Graphs
 
         self.graph_1_2 = tk.Label(bg=BGCOLOR)
-        self.graph_1_2.place(relx=0.88, rely=plROW1_y, anchor=tk.CENTER,
+        self.graph_1_2.place(relx=.88, rely=plROW1_y, anchor=tk.CENTER,
                              relwidth=self.tl_height_abs / window_width * 1.37,
                              relheight=self.tl_height_abs / window_height + .002)
 
         self.graph_3_4 = tk.Label(bg=BGCOLOR)
-        self.graph_3_4.place(relx=0.88, rely=plROW2_y, anchor=tk.CENTER,
+        self.graph_3_4.place(relx=.88, rely=plROW2_y, anchor=tk.CENTER,
                              relwidth=self.tl_height_abs / window_width * 1.37,
                              relheight=self.tl_height_abs / window_height + .002)
+
+        # Graphs Labels
+
+        self.graph_1_2_label = tk.Label(self, text="Alloted time vs. Cycle id (Lane 1 & 2)", bg=BGCOLOR, fg="white")
+        self.graph_1_2_label.place(relx=.89, rely=plROW1_y + plREL_SIZE / 2 + .017, anchor=tk.CENTER)
+
+        self.graph_3_4_label = tk.Label(self, text="Alloted time vs. Cycle id (Lane 3 & 4)", bg=BGCOLOR, fg="white")
+        self.graph_3_4_label.place(relx=.89, rely=plROW2_y + plREL_SIZE / 2 + .017, anchor=tk.CENTER)
 
         # Traffic Lights
 
         self.tl_img_pil = []
+
         for tl in self.tl_img_paths:
             io = Image.open(tl)
-            # Width/Height ratio for Images = 0.345
 
+            # Width/Height ratio for Images = .345
             io = io.resize(size=(self.tl_width_abs, self.tl_height_abs))
             img = ImageTk.PhotoImage(io)
 
@@ -200,36 +199,37 @@ class Dashboard(tk.Frame):
         self.count_label_list = []  # Store Labels displaying Count
         self.alloted_label_list = []  # Store Labels displaying Alloted Time
 
-        self.window.after(1000, self.green_for_n)
-
         # UI
 
         def create_player_ui(x, y, idx):
+            # Top, Bottom, Right, Left Lines around players
             line_bottom = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
             line_bottom.place(relx=x + self.tl_width / 2, rely=y + plREL_SIZE / 2, anchor=tk.CENTER,
-                              relwidth=plREL_SIZE + 0.058)
+                              relwidth=plREL_SIZE + .058)
             line_top = tk.Canvas(self, height=2, bg="white", highlightthickness=0)
             line_top.place(relx=x + self.tl_width / 2, rely=y - plREL_SIZE / 2, anchor=tk.CENTER,
-                           relwidth=plREL_SIZE + 0.058)
+                           relwidth=plREL_SIZE + .058)
             line_left = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
             line_left.place(relx=x - plREL_SIZE / 2, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
             line_right = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
             line_right.place(relx=x + plREL_SIZE / 2 + self.tl_width, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
             line_mid = tk.Canvas(self, width=2, bg="white", highlightthickness=0)
-            line_mid.place(relx=x + plREL_SIZE / 2 + 0.002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
+            line_mid.place(relx=x + plREL_SIZE / 2 + .002, rely=y, anchor=tk.CENTER, relheight=plREL_SIZE)
 
+            # Labels for CCTV id
             input_label = tk.Label(self, text=f"CCTV 00{idx + 1}", font=("LCDDot TR", 14, "bold"), bg="white",
                                    fg=BGCOLOR)
             input_label.place(relx=x - plREL_SIZE / 2, rely=y - plREL_SIZE / 2, anchor=tk.NW)
 
+            # Labes for Vehicle count and Alloted time
             count_label = tk.Label(self, text=f"Vehicle Count: Calculating", font=("Ariel", 11, "normal"), bg=BGCOLOR,
                                    fg="white")
-            count_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.017, anchor=tk.W)
+            count_label.place(relx=x - plREL_SIZE / 2 - .001, rely=y + plREL_SIZE / 2 + .017, anchor=tk.W)
             self.count_label_list.append(count_label)
 
             alloted_label = tk.Label(self, text=f"Alloted Time: Calculating", font=("Ariel", 11, "normal"), bg=BGCOLOR,
                                      fg="white")
-            alloted_label.place(relx=x - plREL_SIZE / 2 - 0.001, rely=y + plREL_SIZE / 2 + 0.045,
+            alloted_label.place(relx=x - plREL_SIZE / 2 - .001, rely=y + plREL_SIZE / 2 + .045,
                                 anchor=tk.W)
             self.alloted_label_list.append(alloted_label)
 
@@ -241,6 +241,27 @@ class Dashboard(tk.Frame):
         self.counter_label = tk.Label(self, text="", font=("LCDDOT TR", 18, "bold"), bg=GREENon, fg="white",
                                       textvariable=self.green_timer)
         self.counter_label.place(relx=1.5, rely=1, anchor=tk.CENTER)
+
+        # Username and UserId UI
+
+        USER_CANV_BGC = "#584D49"
+
+        user_canv = tk.Canvas(self, bg=USER_CANV_BGC, highlightthickness=0)
+        user_canv.place(y=0, x=0, anchor=tk.NW, relwidth=1, relheight=.1)
+
+        logo = ImageTk.PhotoImage(Image.open("Assets/Images/logo.png").resize(
+            (int(self.window.winfo_screenheight() * .07), int(self.winfo_screenheight() * .07))))
+        logo_img = tk.Label(self, image=logo, bg=USER_CANV_BGC)
+        logo_img.image = logo
+        logo_img.place(relx=.025, rely=.05, anchor=tk.CENTER, relheight=.07)
+
+        userid_label = tk.Label(self, text=self.userid, bg=USER_CANV_BGC, fg="white")
+        userid_label.place(relx=.08, rely=.018)
+
+        username_label = tk.Label(self, text=self.username, bg=USER_CANV_BGC, fg="white")
+        username_label.place(relx=.08, rely=.036)
+
+        self.window.after(1000, self.green_for_n)  # Start calculating after 1 sec
 
     # Commands
 
@@ -260,7 +281,7 @@ class Dashboard(tk.Frame):
         durations = [player.current_duration() for player in self.players]
         return durations
 
-    def get_allocated_time(self):
+    def get_tl_allocatedtime(self):
         count_vehicles_list = []
         self.allt_times = []  # Clear Prev Alloted Times
 
@@ -274,10 +295,10 @@ class Dashboard(tk.Frame):
 
         sel_tl, green_time_alloted = self.tlmanager.select_tl(self.allt_times)
 
-        self.graph_update()
+        self.graph_updater()
         self.db.insert_current_cycle_info(self.allt_times)
         self.vehicle_count_display(count_vehicles_list)
-        self.allotted_time_display(self.allt_times)
+        self.alloted_time_display(self.allt_times)
 
         return sel_tl, green_time_alloted
 
@@ -285,38 +306,38 @@ class Dashboard(tk.Frame):
         self.pause_all()
         self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
         if sel_tl is None and green_time_allt is None:
-            sel_tl, green_time_allt = self.get_allocated_time()
+            sel_tl, green_time_allt = self.get_tl_allocatedtime()
 
         self.players[sel_tl].play()
 
         pos = self.rel_positions[sel_tl]
-        self.pos_counter_label(*pos)
+        self.move_green_counter_label(*pos)
 
-        self.green_counter(green_time_allt)
+        self.green_count_ticker(green_time_allt)
         self.update_lights({sel_tl: GREEN})
 
         def yellow_after_n():
             self.update_lights({sel_tl: YELLOW})
             self.players[sel_tl].pause()
 
-            new_tl, new_allt = self.get_allocated_time()
+            new_tl, new_allt = self.get_tl_allocatedtime()
 
             self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
         self.window.after(green_time_allt * SEC_UNIT, yellow_after_n)  # GREEN TIME IN AFTER
 
-    def green_counter(self, green_time=None):
+    def green_count_ticker(self, green_time=None):
         if green_time is not None:
             self.green_timer.set(green_time)
         if self.green_timer.get() > 0:
             self.green_timer.set(self.green_timer.get() - 1)
-            self.window.after(SEC_UNIT, self.green_counter)
+            self.window.after(SEC_UNIT, self.green_count_ticker)
         else:
-            self.pos_counter_label(10000, 0)
+            self.move_green_counter_label(10000, 0)
             self.counter_label["text"] = ""
 
-    def pos_counter_label(self, x, y):
-        self.counter_label.place(relx=x + plREL_SIZE / 2 + self.tl_width / 2 + 0.001, rely=y + self.tl_height / 3,
+    def move_green_counter_label(self, x, y):
+        self.counter_label.place(relx=x + plREL_SIZE / 2 + self.tl_width / 2 + .001, rely=y + self.tl_height / 3,
                                  anchor=tk.CENTER)
 
     def vehicle_count_display(self, count_vehicles_list):
@@ -329,13 +350,12 @@ class Dashboard(tk.Frame):
 
             label["text"] = count_str
 
-    def allotted_time_display(self, alloted_time_list):
+    def alloted_time_display(self, alloted_time_list):
         for time, label in zip(alloted_time_list, self.alloted_label_list):
             time_str = f"Allotted Time: {time} secs"
             label["text"] = time_str
 
-    def graph_update(self):
-        import numpy as np
+    def graph_updater(self):
 
         plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
@@ -391,13 +411,13 @@ class Dashboard(tk.Frame):
 if __name__ == "__main__":
     window = tk.Tk()
 
-    window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
-
+    window.title("Traffic Lights Management")
     window["bg"] = BGCOLOR
+    window.iconbitmap("Assets/Icons/logo.ico")
 
+    window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("Traffic Lights Management")
 
     dash = Dashboard(window)
 
