@@ -60,7 +60,6 @@ class Database:
 
         self.source_mail = "traffix95@gmail.com"
 
-
     def create_tables(self):
         self.Base.metadata.create_all(self.engine)
 
@@ -102,7 +101,6 @@ class Database:
             # print(df_lane_1_2, df_lane_3_4, sep="\n")
             return df_lane_1_2, df_lane_3_4
 
-
     def add_new_user(self, userid, name, password, phone, email):
         with Session(self.engine) as sesh:
             hashed_pass = generate_password_hash(password, method="pbkdf2:sha256", salt_length=8)
@@ -111,8 +109,8 @@ class Database:
                 sesh.add(new_user)
                 sesh.commit()
             except Exception as e:
-                print(type(e.args[0]))
-                return False
+                error = e.args[0].split(" ")[-1][6:]
+                return error
             else:
                 return True
 
@@ -122,10 +120,8 @@ class Database:
 
             if sel_user is None:
                 return None
-
             elif check_password_hash(sel_user.password, password):
                 return sel_user
-
             else:
                 return False
 
@@ -183,9 +179,12 @@ class Database:
 
             message.attach(MIMEText(msg, "html"))
 
-            connection.starttls()
-            connection.login(user="traffixx95@gmail.com", password=PASSWORD)
-            connection.sendmail("traffix95@gmail.com", dest_email, message.as_string())
+            try:
+                connection.starttls()
+                connection.login(user="traffixx95@gmail.com", password=PASSWORD)
+                connection.sendmail("traffix95@gmail.com", dest_email, message.as_string())
+            except Exception as e:
+                print(e.args[0])
 
 
 if __name__ == '__main__':

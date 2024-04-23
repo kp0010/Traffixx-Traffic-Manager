@@ -304,15 +304,20 @@ class NewPass(tk.Frame):
             password = self.new_pass_entry.get()
             password_re = self.con_pass_entry.get()
 
+            if not len(password) >= 8:
+                self.error["text"] = "Please enter a Password with 8 or more characters."
+                return
             if password != password_re:
                 self.error["text"] = "Passwords do not match"
+                return
             else:
                 import database
                 db = database.Database()
 
                 db.update_password(sel_user=self.user, newpass=password)
 
-                db.send_mail(dest_email=self.email, userid=self.username)
+                import threading
+                threading.Thread(db.send_mail(dest_email=self.email, userid=self.username)).start()
 
                 self.error["fg"] = "green"
                 self.error["text"] = "Password updated successfully"
