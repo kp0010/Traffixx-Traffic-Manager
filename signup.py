@@ -120,7 +120,7 @@ class SignUp(tk.Frame):
         self.phone_number_line.place(x=120, y=420)
 
         self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
-        self.error.place(x=270, y=600, anchor=tk.CENTER)
+        self.error.place(x=260, y=590, anchor=tk.CENTER)
 
         self.phone_icon = Image.open("Assets/Icons/phone_icon.png")
         photo = ImageTk.PhotoImage(self.phone_icon)
@@ -169,9 +169,17 @@ class SignUp(tk.Frame):
 
             import database
 
+            if "" in [userid, username, password, email, phone]:
+                self.error["text"] = "Please fill out all the Information."
+                return
+
             db = database.Database()
 
-            db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
+            success = db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
+
+            if not success:
+                self.error["text"] = "Information already registered."
+                return
 
             signup_to_login()
 

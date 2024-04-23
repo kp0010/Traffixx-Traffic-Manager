@@ -1,3 +1,5 @@
+import sqlite3
+
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
@@ -104,10 +106,15 @@ class Database:
     def add_new_user(self, userid, name, password, phone, email):
         with Session(self.engine) as sesh:
             hashed_pass = generate_password_hash(password, method="pbkdf2:sha256", salt_length=8)
-            new_user = User(id=userid, name=name, password=hashed_pass, phone=phone, email=email)
-
-            sesh.add(new_user)
-            sesh.commit()
+            try:
+                new_user = User(id=userid, name=name, password=hashed_pass, phone=phone, email=email)
+                sesh.add(new_user)
+                sesh.commit()
+            except Exception as e:
+                print(type(e.args[0]))
+                return False
+            else:
+                return True
 
     def check_user_cred(self, userid, password):
         with Session(self.engine) as sesh:
