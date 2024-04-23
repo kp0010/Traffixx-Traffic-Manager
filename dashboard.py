@@ -273,11 +273,11 @@ class Dashboard(tk.Frame):
         logo_txt_img.place(relx=.105, rely=.05, anchor=tk.CENTER, relheight=.035, relwidth=.1)
 
         username_label = tk.Label(self, text=self.username, bg=USER_CANV_BGC, fg="black",
-                                  font=("SF Pro Display", 15, tk.NORMAL))
+                                  font=("SF Pro Display", 12, tk.NORMAL))
         username_label.place(relx=.996, rely=.02, relheight=0.024, anchor=tk.E)
 
         userid_label = tk.Label(self, text=f"Logged in as : {self.userid}", bg=USER_CANV_BGC, fg="black",
-                                font=("SF Pro Display", 15, tk.NORMAL))
+                                font=("SF Pro Display", 12, tk.NORMAL))
         userid_label.place(relx=.996, rely=.04, relheight=0.024, anchor=tk.E)
 
         def exit_app():
