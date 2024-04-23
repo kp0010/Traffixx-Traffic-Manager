@@ -171,7 +171,7 @@ class SignUp(tk.Frame):
                 return
 
             if not len(password) >= 8:
-                self.error["text"] = "Please Enter a Password with 8 or more characters"
+                self.error["text"] = "Please enter a Password with 8 or more characters"
                 return
 
             if len(phone) != 10:
@@ -182,7 +182,7 @@ class SignUp(tk.Frame):
             regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
             if not re.fullmatch(regex, email):
-                self.error["text"] = "Email address is invalid"
+                self.error["text"] = "Email Address is invalid"
                 return
 
             import database
@@ -196,11 +196,11 @@ class SignUp(tk.Frame):
                 self.error["text"] = "This Phone number has been registered already"
                 return
             elif result == "email":
-                self.error["text"] = "This Email address has been registered already"
+                self.error["text"] = "This Email Address has been registered already"
                 return
 
             self.error["fg"] = "green"
-            self.error["text"] = "Account Created succesfully"
+            self.error["text"] = "Account Created successfully"
             self.after(500, signup_to_login)
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
