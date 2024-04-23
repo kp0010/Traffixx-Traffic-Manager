@@ -106,10 +106,7 @@ class Login(tk.Frame):
         def login_to_dash(user):
             self.destroy()
             import dashboard
-            try:
-                dashboard.Dashboard(self.window, userid=user.id, username=user.name)
-            except Exception:
-                pass
+            dashboard.Dashboard(self.window, userid=user.id, username=user.name)
 
         def check_user_cred():
             userid = self.userid_entry.get()

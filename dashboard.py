@@ -147,7 +147,7 @@ class Dashboard(tk.Frame):
         self.players = [player1, player2, player3, player4]
 
         self.play_all()
-        self.window.after(500, self.pause_all)
+        self.after(500, self.pause_all)
         self.window.update()
 
         # Buttons
@@ -302,7 +302,7 @@ class Dashboard(tk.Frame):
         logout_button.image = logout_img
         logout_button.place(relx=.91, rely=0.08, anchor=tk.CENTER)
 
-        self.window.after(1000, self.green_for_n)  # Start calculating after 1 sec
+        self.after(1000, self.green_for_n)  # Start calculating after 1 sec
 
     # Commands
 
@@ -345,41 +345,32 @@ class Dashboard(tk.Frame):
 
     def green_for_n(self, sel_tl=None, green_time_allt=None):
         self.pause_all()
-        try:
-            self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
-        except Exception:
-            pass
+        self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
         if sel_tl is None and green_time_allt is None:
             sel_tl, green_time_allt = self.get_tl_allocatedtime()
 
         self.players[sel_tl].play()
 
         pos = self.rel_positions[sel_tl]
-        try:
-            self.move_green_counter_label(*pos)
+        self.move_green_counter_label(*pos)
 
-            self.green_count_ticker(green_time_allt, sel_tl, green_time_allt)
-            self.update_lights({sel_tl: GREEN})
-        except Exception:
-            pass
+        self.green_count_ticker(green_time_allt, sel_tl, green_time_allt)
+        self.update_lights({sel_tl: GREEN})
 
     def yellow_after_n(self, sel_tl):
-        try:
-            self.update_lights({sel_tl: YELLOW})
-        except Exception:
-            pass
+        self.update_lights({sel_tl: YELLOW})
         self.players[sel_tl].pause()
 
         new_tl, new_allt = self.get_tl_allocatedtime()
 
-        self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
+        self.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
     def green_count_ticker(self, green_time=None, sel_tl=None, green_time_allt=None):
         if green_time is not None:
             self.green_timer.set(green_time)
         if self.green_timer.get() > 0:
             self.green_timer.set(self.green_timer.get() - 1)
-            self.window.after(self.SEC_UNIT, self.green_count_ticker, None, sel_tl,
+            self.after(self.SEC_UNIT, self.green_count_ticker, None, sel_tl,
                               green_time_allt)
         else:
             self.yellow_after_n(sel_tl)
@@ -468,8 +459,7 @@ if __name__ == "__main__":
     window.geometry(f"{window.winfo_screenwidth()}x{window.winfo_screenheight()}")
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    try:
-        dash = Dashboard(window)
-    except Exception:
-        pass
+
+    dash = Dashboard(window)
+
     window.mainloop()
