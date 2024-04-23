@@ -48,10 +48,11 @@ RED, YELLOW, GREEN, ALL, NONE = 1, 2, 3, 4, 0
 
 class Dashboard(tk.Frame):
     def __init__(self, root, userid="ADMIN123", username="ADMIN"):
-
         self.userid = userid
         self.username = username
         self.green_timer = tk.IntVar(root)
+
+        self.SEC_UNIT = SEC_UNIT
 
         self.tlmanager = TLmanager.TLmanager()
         self.detector = detection.Detector()
@@ -60,7 +61,11 @@ class Dashboard(tk.Frame):
         super().__init__(master=root)
         self.window = root
 
-        self.after_cancel_var = [None, None]
+        def toggle_speed(key=None):
+            if key.state == 9 and key.keysym.lower() == "s":
+                self.SEC_UNIT = 100 if self.SEC_UNIT == 1000 else 1000
+
+        self.window.bind(sequence='<Key>', func=toggle_speed)
 
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
@@ -142,7 +147,7 @@ class Dashboard(tk.Frame):
         self.players = [player1, player2, player3, player4]
 
         self.play_all()
-        self.window.after(500, self.pause_all)
+        self.after(500, self.pause_all)
         self.window.update()
 
         # Buttons
@@ -286,7 +291,6 @@ class Dashboard(tk.Frame):
         exit_button.place(relx=.97, rely=0.08, anchor=tk.CENTER)
 
         def logout_to_dash():
-            for i in self.after_cancel_var: self.window.after_cancel(i)
             self.destroy()
             from login import Login
             Login(self.window)
@@ -298,7 +302,7 @@ class Dashboard(tk.Frame):
         logout_button.image = logout_img
         logout_button.place(relx=.91, rely=0.08, anchor=tk.CENTER)
 
-        self.window.after(1000, self.green_for_n)  # Start calculating after 1 sec
+        self.after(1000, self.green_for_n)  # Start calculating after 1 sec
 
     # Commands
 
@@ -341,44 +345,35 @@ class Dashboard(tk.Frame):
 
     def green_for_n(self, sel_tl=None, green_time_allt=None):
         self.pause_all()
-        try:
-            self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
-        except Exception:
-            pass
+        self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
         if sel_tl is None and green_time_allt is None:
             sel_tl, green_time_allt = self.get_tl_allocatedtime()
 
         self.players[sel_tl].play()
 
         pos = self.rel_positions[sel_tl]
-        try:
-            self.move_green_counter_label(*pos)
+        self.move_green_counter_label(*pos)
 
-            self.green_count_ticker(green_time_allt)
-            self.update_lights({sel_tl: GREEN})
-        except Exception:
-            pass
+        self.green_count_ticker(green_time_allt, sel_tl, green_time_allt)
+        self.update_lights({sel_tl: GREEN})
 
-        def yellow_after_n():
-            try:
-               self.update_lights({sel_tl: YELLOW})
-            except Exception:
-                pass
-            self.players[sel_tl].pause()
+    def yellow_after_n(self, sel_tl):
+        self.update_lights({sel_tl: YELLOW})
+        self.players[sel_tl].pause()
 
-            new_tl, new_allt = self.get_tl_allocatedtime()
+        new_tl, new_allt = self.get_tl_allocatedtime()
 
-            self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
+        self.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
-        self.after_cancel_var[0] = self.window.after(green_time_allt * SEC_UNIT, yellow_after_n)  # GREEN TIME IN AFTER
-
-    def green_count_ticker(self, green_time=None):
+    def green_count_ticker(self, green_time=None, sel_tl=None, green_time_allt=None):
         if green_time is not None:
             self.green_timer.set(green_time)
         if self.green_timer.get() > 0:
             self.green_timer.set(self.green_timer.get() - 1)
-            self.after_cancel_var[1] = self.window.after(SEC_UNIT, self.green_count_ticker)
+            self.after(self.SEC_UNIT, self.green_count_ticker, None, sel_tl,
+                              green_time_allt)
         else:
+            self.yellow_after_n(sel_tl)
             self.move_green_counter_label(10000, 0)
             self.counter_label["text"] = ""
 

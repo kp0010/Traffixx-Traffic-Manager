@@ -9,6 +9,9 @@ __pycache__/
 traffix_db
 .Assets/Graphs/
 
+.idea/
+
+Assets/Graphs/.
 
 # Distribution / packaging
 .Python
