@@ -103,10 +103,10 @@ class Login(tk.Frame):
 
         # Fn to go to Dashboard after loggin in
 
-        def login_to_dash():
+        def login_to_dash(user):
             self.destroy()
             import dashboard
-            dashboard.Dashboard(self.window)
+            dashboard.Dashboard(self.window, userid=user.id, username=user.name)
 
         def check_user_cred():
             userid = self.userid_entry.get()
@@ -126,7 +126,7 @@ class Login(tk.Frame):
                 self.error["fg"] = "green"
                 self.error["text"] = "Logged In Successfully"
 
-                self.window.after(100, login_to_dash)
+                self.window.after(100, login_to_dash, req_user)
 
 
         self.error = Label(self.lgn_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")

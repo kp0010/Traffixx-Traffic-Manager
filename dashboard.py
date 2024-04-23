@@ -60,6 +60,8 @@ class Dashboard(tk.Frame):
         super().__init__(master=root)
         self.window = root
 
+        self.after_cancel_var = [None, None]
+
         window_height = self.window.winfo_screenheight()
         window_width = self.window.winfo_screenwidth()
 
@@ -267,11 +269,34 @@ class Dashboard(tk.Frame):
 
         username_label = tk.Label(self, text=self.username, bg=USER_CANV_BGC, fg="black",
                                   font=("SF Pro Display", 15, tk.NORMAL))
-        username_label.place(relx=.996, rely=.04, relheight=0.024, anchor=tk.E)
+        username_label.place(relx=.996, rely=.02, relheight=0.024, anchor=tk.E)
 
         userid_label = tk.Label(self, text=f"Logged in as : {self.userid}", bg=USER_CANV_BGC, fg="black",
                                 font=("SF Pro Display", 15, tk.NORMAL))
-        userid_label.place(relx=.996, rely=.06, relheight=0.024, anchor=tk.E)
+        userid_label.place(relx=.996, rely=.04, relheight=0.024, anchor=tk.E)
+
+        def exit_app():
+            self.window.destroy()
+
+        exit_img = ImageTk.PhotoImage(Image.open("Assets/Images/Exit.png").resize(
+            (int(self.window.winfo_screenheight() * .08), int(self.winfo_screenheight() * .03))))
+        exit_button = tk.Button(self, image=exit_img, bg=USER_CANV_BGC, highlightthickness=0, borderwidth=0,
+                                activebackground=USER_CANV_BGC, command=exit_app)
+        exit_button.image = exit_img
+        exit_button.place(relx=.97, rely=0.08, anchor=tk.CENTER)
+
+        def logout_to_dash():
+            for i in self.after_cancel_var: self.window.after_cancel(i)
+            self.destroy()
+            from login import Login
+            Login(self.window)
+
+        logout_img = ImageTk.PhotoImage(Image.open("Assets/Images/LogOut.png").resize(
+            (int(self.window.winfo_screenheight() * .08), int(self.winfo_screenheight() * .03))))
+        logout_button = tk.Button(self, image=logout_img, bg=USER_CANV_BGC, highlightthickness=0, borderwidth=0,
+                                  activebackground=USER_CANV_BGC, command=logout_to_dash)
+        logout_button.image = logout_img
+        logout_button.place(relx=.91, rely=0.08, anchor=tk.CENTER)
 
         self.window.after(1000, self.green_for_n)  # Start calculating after 1 sec
 
@@ -316,34 +341,43 @@ class Dashboard(tk.Frame):
 
     def green_for_n(self, sel_tl=None, green_time_allt=None):
         self.pause_all()
-        self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
+        try:
+            self.update_lights({0: RED, 1: RED, 2: RED, 3: RED})
+        except Exception:
+            pass
         if sel_tl is None and green_time_allt is None:
             sel_tl, green_time_allt = self.get_tl_allocatedtime()
 
         self.players[sel_tl].play()
 
         pos = self.rel_positions[sel_tl]
-        self.move_green_counter_label(*pos)
+        try:
+            self.move_green_counter_label(*pos)
 
-        self.green_count_ticker(green_time_allt)
-        self.update_lights({sel_tl: GREEN})
+            self.green_count_ticker(green_time_allt)
+            self.update_lights({sel_tl: GREEN})
+        except Exception:
+            pass
 
         def yellow_after_n():
-            self.update_lights({sel_tl: YELLOW})
+            try:
+               self.update_lights({sel_tl: YELLOW})
+            except Exception:
+                pass
             self.players[sel_tl].pause()
 
             new_tl, new_allt = self.get_tl_allocatedtime()
 
             self.window.after((YELLOW_TIME - 2) * 1000, self.green_for_n, new_tl, new_allt)  # YELLOW TIME IN AFTER
 
-        self.window.after(green_time_allt * SEC_UNIT, yellow_after_n)  # GREEN TIME IN AFTER
+        self.after_cancel_var[0] = self.window.after(green_time_allt * SEC_UNIT, yellow_after_n)  # GREEN TIME IN AFTER
 
     def green_count_ticker(self, green_time=None):
         if green_time is not None:
             self.green_timer.set(green_time)
         if self.green_timer.get() > 0:
             self.green_timer.set(self.green_timer.get() - 1)
-            self.window.after(SEC_UNIT, self.green_count_ticker)
+            self.after_cancel_var[1] = self.window.after(SEC_UNIT, self.green_count_ticker)
         else:
             self.move_green_counter_label(10000, 0)
             self.counter_label["text"] = ""
