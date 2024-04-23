@@ -89,6 +89,13 @@ class SignUp(tk.Frame):
         self.password_icon_label.place(x=120, y=312)
 
         # Phone Number
+        # def check_phone_number():
+        #     phone = self.phone_number_entry.get()
+        #
+        #     if len(phone) == 10:
+        #         return True
+        #     else:
+        #         self.error["text"] = "Invalid phone number"
 
         def validate_phoneno(inp):
             if len(str(inp)) > 10:
@@ -111,6 +118,9 @@ class SignUp(tk.Frame):
         self.phone_number_entry.place(x=155, y=393)
         self.phone_number_line = Canvas(self.sign_up_frame, width=300, height=2.0, bg="white", highlightthickness=0)
         self.phone_number_line.place(x=120, y=420)
+
+        self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
+        self.error.place(x=270, y=600, anchor=tk.CENTER)
 
         self.phone_icon = Image.open("Assets/Icons/phone_icon.png")
         photo = ImageTk.PhotoImage(self.phone_icon)
@@ -144,6 +154,7 @@ class SignUp(tk.Frame):
         self.submit_button_label = Label(self.sign_up_frame, image=photo, bg=BGCOLOR, borderwidth=0)
         self.submit_button_label.image = photo
         self.submit_button_label.place(x=135, y=530)
+
 
         def signup_to_login():
             self.destroy()
