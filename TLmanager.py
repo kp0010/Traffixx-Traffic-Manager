@@ -1,7 +1,5 @@
 import math
 
-import detection
-
 AVG_TIMES = {"car": 5, "bus": 9, "truck": 9, "motorcycle": 4}
 
 DENUM = 2
@@ -24,10 +22,8 @@ class TLmanager:
         truck_count, truck_time = self.avg_time["truck"], vehicle_count["truck"]
         motorcycle_count, motorcycle_time = self.avg_time["motorcycle"], vehicle_count["motorcycle"]
 
-        alloted_time = (car_count * car_time +
-                        bus_count * bus_time +
-                        truck_count * truck_time +
-                        motorcycle_time * motorcycle_count) / DENUM
+        alloted_time = (
+                                   car_count * car_time + bus_count * bus_time + truck_count * truck_time + motorcycle_time * motorcycle_count) / DENUM
 
         alloted_time = math.ceil(alloted_time) + 5
 
@@ -47,8 +43,3 @@ class TLmanager:
         # print(self.allotment_queue)
         self.prev_alloted = idx
         return idx, allt_times[idx]
-
-
-# class CreateGraph:
-#     def __init__(self):
-
