@@ -41,12 +41,6 @@ class Login(tk.Frame):
         self.side_image_label.image = photo
         self.side_image_label.place(x=45, y=150)
 
-        # self.sign_in_image = Image.open("Assets/Images/UserAvatar.png")
-        # photo = ImageTk.PhotoImage(self.sign_in_image)
-        # self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
-        # self.sign_in_image_label.image = photo
-        # self.sign_in_image_label.place(x=680, y=140)
-
         self.logo_image = Image.open("Assets/Images/FinalLogo3.png")
         photo = ImageTk.PhotoImage(self.logo_image)
         self.logo_image_label = Label(self.lgn_frame, image=photo, bg=BGCOLOR)
@@ -101,7 +95,7 @@ class Login(tk.Frame):
         self.lgn_button_label.image = photo
         self.lgn_button_label.place(x=625, y=495)
 
-        # Fn to go to Dashboard after loggin in
+        # Fn to go to Dashboard after login in
 
         def login_to_dash(user):
             self.destroy()

@@ -88,15 +88,6 @@ class SignUp(tk.Frame):
         self.password_icon_label.image = photo
         self.password_icon_label.place(x=120, y=312)
 
-        # Phone Number
-        # def check_phone_number():
-        #     phone = self.phone_number_entry.get()
-        #
-        #     if len(phone) == 10:
-        #         return True
-        #     else:
-        #         self.error["text"] = "Invalid phone number"
-
         def validate_phoneno(inp):
             if len(str(inp)) > 10:
                 return False

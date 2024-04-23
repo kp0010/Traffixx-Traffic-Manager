@@ -156,7 +156,6 @@ class ForgotPass(tk.Frame):
         self.error = Label(self.fg_pass_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
         self.error.place(x=390, y=620, anchor=tk.CENTER)
 
-        # Remaining to print the text that the info entered is valid or invalid in the database after  # clicking submit button
 
     def auth_user_cred(self):
         self.userid = self.id_number_entry.get()

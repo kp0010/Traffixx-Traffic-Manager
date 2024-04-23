@@ -67,11 +67,9 @@ if __name__ == "__main__":
     detector = Detector("Road_vid3.mp4")
     for i in range(0, 20):
         cnt2 = detector.get_count(i, show=0)
-        # print(tlmanager.get_alloted_time(cnt2))
 
     detector.set_vid("Road_vid.mp4")
     for i in range(20, 30):
         cnt = detector.get_count(i, show=1)
-        # print(tlmanager.get_alloted_time(cnt))
 
     cv2.waitKey(0)
