@@ -357,7 +357,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("Traffic Lights Management")
+    window.title("Traffixx")
 
     ForgotPass(window)
     window.mainloop()

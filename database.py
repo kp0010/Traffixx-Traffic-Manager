@@ -111,7 +111,7 @@ class Database:
                 sesh.add(new_user)
                 sesh.commit()
             except Exception as e:
-                print(type(e.args[0]))
+                print(e.args[0])
                 return False
             else:
                 return True

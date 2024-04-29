@@ -16,7 +16,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-SEC_UNIT = 100
+SEC_UNIT = 1000
 
 BGCOLOR = "#" + "10" * 3
 
@@ -452,7 +452,7 @@ class Dashboard(tk.Frame):
 if __name__ == "__main__":
     window = tk.Tk()
 
-    window.title("Traffic Lights Management")
+    window.title("Traffixx")
     window["bg"] = BGCOLOR
     window.iconbitmap("Assets/Icons/logo.ico")
 

@@ -166,7 +166,7 @@ class Login(tk.Frame):
         self.sign_up_button_label = tk.Label(self.lgn_frame, image=photo, bg=BGCOLOR, borderwidth=0,
                                              activebackground=BGCOLOR, fg="white", cursor="hand2", bd=0)
         self.sign_up_button_label.image = photo
-        self.sign_up_button_label.place(x=750, y=644)
+        self.sign_up_button_label.place(x=780, y=644)
 
         self.sign_up = Button(self.sign_up_button_label, text="SIGN UP", font=("Ariel", 10, "bold"), width=10, bd=0,
                               bg="#3abee1", cursor="hand2", activebackground="#3abee1", activeforeground="lightblue",
@@ -214,7 +214,7 @@ if __name__ == "__main__":
 
     window.state("zoomed")
     window.resizable(width=False, height=False)
-    window.title("Traffic Lights Management")
+    window.title("Traffixx")
 
     Login(window)
     window.mainloop()
