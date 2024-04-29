@@ -22,8 +22,7 @@ class TLmanager:
         truck_count, truck_time = self.avg_time["truck"], vehicle_count["truck"]
         motorcycle_count, motorcycle_time = self.avg_time["motorcycle"], vehicle_count["motorcycle"]
 
-        alloted_time = (
-                                   car_count * car_time + bus_count * bus_time + truck_count * truck_time + motorcycle_time * motorcycle_count) / DENUM
+        alloted_time = (car_count * car_time + bus_count * bus_time + truck_count * truck_time + motorcycle_time * motorcycle_count) / DENUM
 
         alloted_time = math.ceil(alloted_time) + 5
 
@@ -40,6 +39,5 @@ class TLmanager:
 
         self.allotment_queue = [1 if i == idx else x + MULTIPLIER for i, x in enumerate(self.allotment_queue)]
 
-        # print(self.allotment_queue)
         self.prev_alloted = idx
         return idx, allt_times[idx]

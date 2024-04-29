@@ -88,15 +88,6 @@ class SignUp(tk.Frame):
         self.password_icon_label.image = photo
         self.password_icon_label.place(x=120, y=312)
 
-        # Phone Number
-        # def check_phone_number():
-        #     phone = self.phone_number_entry.get()
-        #
-        #     if len(phone) == 10:
-        #         return True
-        #     else:
-        #         self.error["text"] = "Invalid phone number"
-
         def validate_phoneno(inp):
             if len(str(inp)) > 10:
                 return False
@@ -120,7 +111,7 @@ class SignUp(tk.Frame):
         self.phone_number_line.place(x=120, y=420)
 
         self.error = Label(self.sign_up_frame, text="", font=("Ariel", 13, "normal"), bg=BGCOLOR, fg="red")
-        self.error.place(x=260, y=590, anchor=tk.CENTER)
+        self.error.place(x=270, y=590, anchor=tk.CENTER)
 
         self.phone_icon = Image.open("Assets/Icons/phone_icon.png")
         photo = ImageTk.PhotoImage(self.phone_icon)
@@ -155,7 +146,6 @@ class SignUp(tk.Frame):
         self.submit_button_label.image = photo
         self.submit_button_label.place(x=135, y=530)
 
-
         def signup_to_login():
             self.destroy()
             login.Login(self.window)
@@ -167,21 +157,42 @@ class SignUp(tk.Frame):
             email = self.email_entry.get()
             phone = self.phone_number_entry.get()
 
-            import database
-
             if "" in [userid, username, password, email, phone]:
-                self.error["text"] = "Please fill out all the Information."
+                self.error["text"] = "Please fill out all the Information"
                 return
 
+            if not len(password) >= 8:
+                self.error["text"] = "Please enter a Password with 8 or more characters"
+                return
+
+            if len(phone) != 10:
+                self.error["text"] = "Phone number is invalid"
+                return
+
+            import re
+            regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+            if not re.fullmatch(regex, email):
+                self.error["text"] = "Email Address is invalid"
+                return
+
+            import database
             db = database.Database()
+            result = db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
 
-            success = db.add_new_user(userid=userid, name=username, password=password, email=email, phone=phone)
-
-            if not success:
-                self.error["text"] = "Information already registered."
+            if result == "id":
+                self.error["text"] = "This Id has been registered already"
+                return
+            elif result == "phone":
+                self.error["text"] = "This Phone number has been registered already"
+                return
+            elif result == "email":
+                self.error["text"] = "This Email Address has been registered already"
                 return
 
-            signup_to_login()
+            self.error["fg"] = "green"
+            self.error["text"] = "Account Created successfully"
+            self.after(500, signup_to_login)
 
         self.submit = Button(self.submit_button_label, text="SUBMIT", font=("Ariel", 13, "bold"), width=20, bd=0,
                              bg="#5271ff", cursor="hand2", activebackground="#5271ff", activeforeground="lightblue",

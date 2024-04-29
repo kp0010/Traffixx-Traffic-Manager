@@ -1,5 +1,3 @@
-import sqlite3
-
 import sqlalchemy
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import Column, String, select, update, Integer, PrimaryKeyConstraint
@@ -60,7 +58,6 @@ class Database:
 
         self.source_mail = "traffix95@gmail.com"
 
-
     def create_tables(self):
         self.Base.metadata.create_all(self.engine)
 
@@ -94,14 +91,10 @@ class Database:
 
             result_df = pandas.DataFrame(result_formatted, columns=["cycle_num", "lane_num", "time_alloted"])
 
-            # print(result_df, self.curr_instance_id)
-
             df_lane_1_2 = result_df[(result_df["lane_num"] == 0) | (result_df["lane_num"] == 1)]
             df_lane_3_4 = result_df[(result_df["lane_num"] == 2) | (result_df["lane_num"] == 3)]
 
-            # print(df_lane_1_2, df_lane_3_4, sep="\n")
             return df_lane_1_2, df_lane_3_4
-
 
     def add_new_user(self, userid, name, password, phone, email):
         with Session(self.engine) as sesh:
@@ -111,8 +104,8 @@ class Database:
                 sesh.add(new_user)
                 sesh.commit()
             except Exception as e:
-                print(e.args[0])
-                return False
+                error = e.args[0].split(" ")[-1][6:]
+                return error
             else:
                 return True
 
@@ -122,10 +115,8 @@ class Database:
 
             if sel_user is None:
                 return None
-
             elif check_password_hash(sel_user.password, password):
                 return sel_user
-
             else:
                 return False
 
@@ -183,29 +174,18 @@ class Database:
 
             message.attach(MIMEText(msg, "html"))
 
-            connection.starttls()
-            connection.login(user="traffixx95@gmail.com", password=PASSWORD)
-            connection.sendmail("traffix95@gmail.com", dest_email, message.as_string())
+            try:
+                connection.starttls()
+                connection.login(user="traffixx95@gmail.com", password=PASSWORD)
+                connection.sendmail("traffix95@gmail.com", dest_email, message.as_string())
+            except Exception as e:
+                print(e.args[0])
 
 
 if __name__ == '__main__':
     db = Database(echo=False)
     db.create_tables()
 
-    # db.add_new_user("KP001", "Kartikkk", "kartikcrs", phone="2234232342", email="kasd23423fas@gmail.com")
-
     with Session(db.engine) as session:
-        # user = session.execute(select(User).filter_by(id="admin")).scalar_one_or_none()
-        # # print(user)
-        # i_id = db.get_current_instance_id()
-        # alt = AllotmentInfo(instance_id=i_id, id=1, lane_num=3, allotment_time=69)
-
-        # session.add(alt)
 
         session.commit()
-
-    # db.send_mail("magarprathamesh112005@gmail.com", "KP0010")
-
-    # print(db.get_current_instance_id())  # print(db.get_current_instance_id())
-
-    # db.update_password("admin", "1234")
